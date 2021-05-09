@@ -1,0 +1,17 @@
+version: '3'
+services:
+  back:
+    build: 
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    container_name: gfbio_search_back
+    ports: 
+      - "3000:3000"
+    
+  front:
+    image: httpd:2.4
+    container_name: gfbio_search_front
+    ports:
+      - "8080:80"
+    volumes:
+      - ./search-ui/build:/usr/local/apache2/htdocs/
