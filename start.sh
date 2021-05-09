@@ -18,6 +18,9 @@ cp DatasetSearchUI/angular/dist/DatasetSearch/*.js.map search-ui/build/static/js
 mkdir -p search-ui/build/assets/img
 cp DatasetSearchUI/angular/dist/DatasetSearch/assets/img/* search-ui/build/assets/img/
 
+# clean submodule folder
+cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
+
 # restart docker
 docker-compose down
 docker-compose up -d

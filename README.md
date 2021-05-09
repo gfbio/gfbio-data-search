@@ -12,3 +12,8 @@ Run `start.sh` script:
 ```
 It will automatically restart docker containers if they are already running.  
 For more details please have a look inside `start.sh` script.
+
+### Stop docker containers
+```
+docker-compose down
+```
