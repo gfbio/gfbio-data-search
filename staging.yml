@@ -1,0 +1,23 @@
+version: '3'
+services:
+  back:
+    build: 
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    container_name: gfbio_search_back
+    networks:
+      - internal
+    restart: always
+    
+  front:
+    image: httpd:2.4
+    container_name: gfbio_search_front
+    volumes:
+      - ./search-ui/build:/usr/local/apache2/htdocs/
+    networks:
+      - internal
+    restart: always
+
+networks:
+  internal:
+   external: true
