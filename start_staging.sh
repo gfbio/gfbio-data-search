@@ -25,5 +25,5 @@ cp DatasetSearchUI/angular/dist/DatasetSearch/assets/img/* search-ui/build/asset
 cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
 
 # restart docker
-docker-compose down
-docker-compose up -d
+docker-compose -f staging.yml down
+docker-compose -f staging.yml up -d
