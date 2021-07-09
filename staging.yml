@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: ./docker/backend/Dockerfile
     container_name: gfbio_search_back
+    env_file:
+      - /root/gfbio-search.env
     networks:
       - internal
     restart: always
