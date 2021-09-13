@@ -8,7 +8,7 @@ services:
     env_file:
       - /root/gfbio-search.env
     networks:
-      - internal
+      - internalProxy
     restart: always
 
   front:
@@ -23,5 +23,5 @@ services:
     restart: always
 
 networks:
-  internal:
+  internalProxy:
    external: true
