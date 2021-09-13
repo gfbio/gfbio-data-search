@@ -6,7 +6,7 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     container_name: gfbio_search_back
     env_file:
-      - /root/gfbio-search.env
+      - ./.envs
     networks:
       - internalProxy
     restart: always
