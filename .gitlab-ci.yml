@@ -1,0 +1,19 @@
+stages:
+  - build_and_update_staging
+
+build_and_update_staging:
+  stage: build_and_update_staging
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+  script:
+    - cp /home/gitlab-runner/.search-gfbio.env ./.env
+    - docker-compose -f staging.yml build --no-cache --force-rm
+    - docker-compose -f staging.yml down
+    - docker-compose -f staging.yml up -d
+  environment:
+    name: staging
+    url: https://search.gfbio.dev/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  tags:
+    - docker-lxc
