@@ -19,7 +19,7 @@ services:
         SERVICE_HOST: 'https:\/\/search.gfbio.dev' # this str will be used in sed, so we need to escape /
     container_name: gfbio_search_front
     networks:
-      - internal
+      - internalProxy
     restart: always
 
 networks:
