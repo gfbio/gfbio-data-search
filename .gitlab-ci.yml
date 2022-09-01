@@ -18,51 +18,17 @@
 #   tags:
 #     - docker-lxc
 #
-# # according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
-# before_script:
-#   - docker info
-#
+# according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
+
+before_script:
+  - docker info
+
 include:
   - project: gfbio/cicd
     file:
       - ".tag_release.yml"
-#
 stages:
-  # - create_merge_request
-  # - staging_release
-  # - tag_release_check
   - tag_release
-
-# create_merge_request:
-#   tags:
-#     - dev-denbi
-
-# tag_release_check:
-#   variables:
-#     MAIN_BRANCH_NAME: "main"
-#   tags:
-#     - dev-denbi
-
-# staging_release:
-#   stage: staging_release
-#   script:
-#     - rm -rf .envs
-#     - cp -r /home/gitlab-runner/.environments/ena2pansimple .envs
-#     - docker-compose -f production.yml down
-#     - docker-compose -f production.yml build
-#     - docker-compose -f production.yml up -d postgres
-#     - docker-compose -f production.yml run --rm postgres backup
-#     - docker-compose -f production.yml run --rm django python manage.py migrate
-#     - docker-compose -f production.yml run --rm django python manage.py collectstatic
-#     - docker-compose -f production.yml down
-#     - docker-compose -f production.yml up -d
-#   environment:
-#     name: production
-#     url: https://ena2pansimple.gfbio.dev
-#   tags:
-#     - staging-denbi
-#   rules:
-#     - if: '$CI_COMMIT_BRANCH == "main"'
 
 tag_release:
   variables:
