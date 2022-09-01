@@ -1,13 +1,15 @@
-version: '3'
+version: "3"
 services:
   back:
-    build: 
+    build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
     container_name: gfbio_search_back
-    ports: 
+    env_file:
+      - ./.env
+    ports:
       - "3000:3000"
-    
+
   front:
     image: httpd:2.4
     container_name: gfbio_search_front
