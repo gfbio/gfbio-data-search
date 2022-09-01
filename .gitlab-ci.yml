@@ -67,6 +67,8 @@ web_test_update:
   variables:
     PROJECT_NAME: "gfbio-search"
     COMPOSE_FILE: "web-test.yml"
+    CONFIG_FRONTEND: "./DatasetSearchUI/angular/src/environments/environment.ts"
+    CONFIG_FRONTEND_PROD: "./DatasetSearchUI/angular/src/environments/environment.prod.ts"
   script:
     # get issue id and test name
     - ISSUE_ID=$(awk -F- '{print $1}' <<< ${CI_COMMIT_REF_NAME})
@@ -78,6 +80,8 @@ web_test_update:
 
     # - sed -i s/DJANGO_ALLOWED_HOSTS=.*/DJANGO_ALLOWED_HOSTS=\.$TEST_NAME\.test.gfbio\.dev/g .envs/.production/.django
     - sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
+    - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND
+    - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND_PROD
 
     # remove email verification requirements from web-test
     # - sed -i 's/ACCOUNT_EMAIL_VERIFICATION = "mandatory"/ACCOUNT_EMAIL_VERIFICATION = "none"/g' config/settings/base.py
