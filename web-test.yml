@@ -9,7 +9,6 @@ networks:
 
 services:
   back:
-    hostname: gfbio_search_backend
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
@@ -17,8 +16,13 @@ services:
     env_file:
       - ./.env
     networks:
-      - local
+      - internalProxy
     restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.BRANCH-django.rule=Host(`BRANCH.test.gfbio.dev`) && PathPrefix(`/gfbio`)
+      - traefik.http.routers.BRANCH-django.entrypoints=web
+      - traefik.http.services.BRANCH-django.loadbalancer.server.port=3000
 
   front:
     build:
