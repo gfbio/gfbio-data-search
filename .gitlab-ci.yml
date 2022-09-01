@@ -27,7 +27,7 @@ include:
     file:
       - ".create_merge_request_v2.yml"
       - ".tag_release.yml"
-      - ".web_test.yml"
+      - ".web-test.yml"
 
 stages:
   - create_merge_request
