@@ -1,8 +1,71 @@
+# stages:
+#   - build_and_update_staging
+#
+# build_and_update_staging:
+#   stage: build_and_update_staging
+#   variables:
+#     GIT_SUBMODULE_STRATEGY: normal
+#   script:
+#     - cp /home/gitlab-runner/.search-gfbio.env ./.env
+#     - docker-compose -f staging.yml build --no-cache --force-rm
+#     - docker-compose -f staging.yml down
+#     - docker-compose -f staging.yml up -d
+#   environment:
+#     name: production
+#     url: https://search.gfbio.dev/
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+#   tags:
+#     - docker-lxc
+#
+# # according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
+# before_script:
+#   - docker info
+#
+include:
+  - project: gfbio/cicd
+    file:
+      - ".create_merge_request.yml"
+      - ".tag_release.yml"
+#
 stages:
-  - build_and_update_staging
+  - create_merge_request
+  # - staging_release
+  - tag_release_check
+  - tag_release
 
-build_and_update_staging:
-  stage: build_and_update_staging
+create_merge_request:
+  tags:
+    - dev-denbi
+
+tag_release_check:
+  variables:
+    MAIN_BRANCH_NAME: "main"
+  tags:
+    - dev-denbi
+
+# staging_release:
+#   stage: staging_release
+#   script:
+#     - rm -rf .envs
+#     - cp -r /home/gitlab-runner/.environments/ena2pansimple .envs
+#     - docker-compose -f production.yml down
+#     - docker-compose -f production.yml build
+#     - docker-compose -f production.yml up -d postgres
+#     - docker-compose -f production.yml run --rm postgres backup
+#     - docker-compose -f production.yml run --rm django python manage.py migrate
+#     - docker-compose -f production.yml run --rm django python manage.py collectstatic
+#     - docker-compose -f production.yml down
+#     - docker-compose -f production.yml up -d
+#   environment:
+#     name: production
+#     url: https://ena2pansimple.gfbio.dev
+#   tags:
+#     - staging-denbi
+#   rules:
+#     - if: '$CI_COMMIT_BRANCH == "main"'
+
+tag_release:
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   script:
@@ -12,8 +75,6 @@ build_and_update_staging:
     - docker-compose -f staging.yml up -d
   environment:
     name: production
-    url: https://search.gfbio.dev/
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    url: https://search.gfbio.org
   tags:
     - docker-lxc
