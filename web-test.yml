@@ -8,6 +8,7 @@ networks:
 
 services:
   back:
+    hostname: gfbio_search_backend
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
