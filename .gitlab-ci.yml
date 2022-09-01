@@ -29,20 +29,20 @@ include:
       - ".tag_release.yml"
 #
 stages:
-  - create_merge_request
+  # - create_merge_request
   # - staging_release
-  - tag_release_check
+  # - tag_release_check
   - tag_release
 
-create_merge_request:
-  tags:
-    - dev-denbi
+# create_merge_request:
+#   tags:
+#     - dev-denbi
 
-tag_release_check:
-  variables:
-    MAIN_BRANCH_NAME: "main"
-  tags:
-    - dev-denbi
+# tag_release_check:
+#   variables:
+#     MAIN_BRANCH_NAME: "main"
+#   tags:
+#     - dev-denbi
 
 # staging_release:
 #   stage: staging_release
@@ -76,5 +76,7 @@ tag_release:
   environment:
     name: production
     url: https://search.gfbio.org
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
   tags:
     - docker-lxc
