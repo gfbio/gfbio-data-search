@@ -25,7 +25,6 @@
 include:
   - project: gfbio/cicd
     file:
-      - ".create_merge_request.yml"
       - ".tag_release.yml"
 #
 stages:
