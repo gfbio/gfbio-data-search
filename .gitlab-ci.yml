@@ -18,7 +18,7 @@
 #   tags:
 #     - docker-lxc
 #
-# according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
+# # according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
 
 before_script:
   - docker info
@@ -26,13 +26,25 @@ before_script:
 include:
   - project: gfbio/cicd
     file:
+      - ".create_merge_request.yml"
       - ".tag_release.yml"
+
 stages:
+  - create_merge_request
+  - tag_release_check
   - tag_release
 
-tag_release:
+create_merge_request:
+  tags:
+    - dev-denbi
+
+tag_release_check:
   variables:
-    GIT_SUBMODULE_STRATEGY: normal
+    MAIN_BRANCH_NAME: "main"
+  tags:
+    - dev-denbi
+
+tag_release:
   script:
     - cp /home/gitlab-runner/.search-gfbio.env ./.env
     - docker-compose -f staging.yml build --no-cache --force-rm
@@ -40,8 +52,6 @@ tag_release:
     - docker-compose -f staging.yml up -d
   environment:
     name: production
-    url: https://search.gfbio.org
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    url: https://search.gfbio.dev
   tags:
     - docker-lxc
