@@ -9,6 +9,7 @@ networks:
 
 services:
   back:
+    hostname: gfbio_search_backend
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
@@ -26,12 +27,15 @@ services:
       - "traefik.http.services.BRANCH-django.loadbalancer.server.port=3000"
 
   front:
+    hostname: gfbio_search_frontend
     build:
       context: .
       dockerfile: ./docker/frontend/Dockerfile
       args:
         SERVICE_HOST: 'https:\/\/BRANCH.test.gfbio.dev' # this str will be used in sed, so we need to escape /
     image: gfbio_search_front
+    env_file:
+      - ./.env
     networks:
       - internalProxy
       - local
