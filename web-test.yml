@@ -1,12 +1,9 @@
 # comment
 version: "3"
-
 networks:
-  local:
   internalProxy:
     external:
       name: internalProxy
-
 services:
   back:
     hostname: gfbio_search_backend
@@ -18,15 +15,15 @@ services:
       - ./.env
     networks:
       - internalProxy
-      - local
     restart: always
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.BRANCH-django.rule=Host(`BRANCH.test.gfbio.dev`) && PathPrefix(`/gfbio/`)"
-    #   - "traefik.http.routers.BRANCH-django.entrypoints=web"
-    #   - "traefik.http.services.BRANCH-django.loadbalancer.server.port=3000"
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.BRANCH-django.rule=Host(`BRANCH.test.gfbio.dev`) && PathPrefix(`/gfbio/`)"
+      - "traefik.http.routers.BRANCH-django.entrypoints=web"
+      - "traefik.http.services.BRANCH-django.loadbalancer.server.port=3000"
   front:
+    depends_on:
+      - back
     hostname: gfbio_search_frontend
     build:
       context: .
@@ -38,7 +35,6 @@ services:
       - ./.env
     networks:
       - internalProxy
-      - local
     restart: always
     labels:
       - "traefik.enable=true"
