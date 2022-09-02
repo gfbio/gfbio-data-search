@@ -21,7 +21,6 @@
 # according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
 # before_script:
 #   - docker info
-
 include:
   - project: gfbio/cicd
     file:
@@ -106,5 +105,5 @@ web_test_update_env_url:
 # will stop running environmnet
 web_test_stop:
   variables:
-    MAIN_BRANCH_NAME: "master"
+    MAIN_BRANCH_NAME: "main"
     PROJECT_NAME: "gfbio-search"
