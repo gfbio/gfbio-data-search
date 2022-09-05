@@ -12,11 +12,12 @@ cd search-ui && npm i && npm run build && cd ../
 
 # copy files from angular
 mkdir -p search-ui/build/static/js/angular
-cp DatasetSearchUI/angular/dist/DaiSi/*.js search-ui/build/static/js/angular/
-cp DatasetSearchUI/angular/dist/DaiSi/*.js.map search-ui/build/static/js/angular/
+cp DatasetSearchUI/angular/dist/DatasetSearch/*.js search-ui/build/static/js/angular/
+cp DatasetSearchUI/angular/dist/DatasetSearch/*.js.map search-ui/build/static/js/angular/
+cp DatasetSearchUI/angular/dist/DatasetSearch/styles.css* search-ui/build/static/css/
 
 mkdir -p search-ui/build/assets/img
-cp DatasetSearchUI/angular/dist/DaiSi/assets/img/* search-ui/build/assets/img/
+cp DatasetSearchUI/angular/dist/DatasetSearch/assets/img/* search-ui/build/assets/img/
 
 # clean submodule folder
 cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
