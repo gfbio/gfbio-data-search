@@ -1,6 +1,6 @@
 
 # Compile stage
-FROM node:14 AS build-env
+FROM node:16 AS build-env
 
 ARG SERVICE_HOST='http:\/\/localhost:3000'
 
