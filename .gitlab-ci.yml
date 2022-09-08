@@ -51,6 +51,8 @@ tag_release_check:
     - dev-denbi
 
 tag_release:
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
   script:
     - cp /home/gitlab-runner/.search-gfbio.env ./.env
     - docker-compose -f staging.yml build --no-cache --force-rm

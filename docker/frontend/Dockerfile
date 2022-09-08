@@ -1,6 +1,6 @@
 
 # Compile stage
-FROM node:16 AS build-env
+FROM node:14 AS build-env
 
 ARG SERVICE_HOST='http:\/\/localhost:3000'
 
@@ -17,7 +17,6 @@ COPY ./search-ui/ /search-ui
 RUN sed -i 's/class="toolbarMenu"/class="toolbarMenu" style="display:none;"/g' /angular/src/app/app.component.html && \
     sed -i "s/url.*=.*;/url = '${SERVICE_HOST}';/g" /angular/src/app/services/remote/node.service.ts && \
     cd /angular && NG_CLI_ANALYTICS=ci npm install && npm run build
-
 
 #Build GFBio
 RUN cd /search-ui && npm i && npm run build && \
