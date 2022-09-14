@@ -19,7 +19,7 @@ export default function NavBar(props) {
   return (
     <div style={classes.navWrapper}>
       <div style={classes.navBar}>
-        <img src={logo} style={classes.logo} />
+        <img src={logo} style={classes.logo} alt="NFDI logo with claim" />
       </div>
     </div>
   );

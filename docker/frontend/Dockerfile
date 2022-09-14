@@ -1,4 +1,3 @@
-
 # Compile stage
 FROM node:14 AS build-env
 
