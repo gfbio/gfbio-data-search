@@ -77,7 +77,7 @@ web_test_update:
     # your custom commands
     # - rm -r ./.envs/
     # - cp -r /home/gitlab-runner/.gfbio_dmp_envs/ ./.envs/
-    - cp /home/gitlab-runner/.search-gfbio.env ./.env
+    - cp /home/gitlab-runner/.search-gfbio-tag-release.env ./.env
 
     # - sed -i s/DJANGO_ALLOWED_HOSTS=.*/DJANGO_ALLOWED_HOSTS=\.$TEST_NAME\.test.gfbio\.dev/g .envs/.production/.django
     - sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
