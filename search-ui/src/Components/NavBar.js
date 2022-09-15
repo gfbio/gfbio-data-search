@@ -1,14 +1,15 @@
-import logo from "../images/NFDI_logo_claim.png";
+// import logo from "../images/NFDI_logo_claim.png";
+import logo from "../images/GFBio_logo.png";
 
 export default function NavBar(props) {
   const classes = {
     navWrapper: {
       maxWidth: "100%",
-      "box-shadow": "0 6px 6px -6px #999",
-      "background-color": "white",
+      boxShadow: "0 6px 6px -6px #999",
+      backgroundColor: "white",
     },
     navBar: {
-      "max-width": "960px",
+      maxWidth: "960px",
       margin: "0 auto",
       padding: "5px 0",
     },
