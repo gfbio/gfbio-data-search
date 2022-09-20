@@ -1,0 +1,7 @@
+{
+  "/api/*": {
+    "target": "https://dev.gfbio.uni-jena.de/daisi-api",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
