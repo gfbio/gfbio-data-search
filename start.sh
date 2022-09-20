@@ -15,6 +15,10 @@ mkdir -p search-ui/build/static/js/angular
 cp DatasetSearchUI/angular/dist/DatasetSearch/*.js search-ui/build/static/js/angular/
 cp DatasetSearchUI/angular/dist/DatasetSearch/*.js.map search-ui/build/static/js/angular/
 cp DatasetSearchUI/angular/dist/DatasetSearch/styles.css* search-ui/build/static/css/
+# adding fonts
+cp DatasetSearchUI/angular/dist/DatasetSearch/*.woff search-ui/build/static/css/
+cp DatasetSearchUI/angular/dist/DatasetSearch/*.woff2 search-ui/build/static/css/
+cp DatasetSearchUI/angular/dist/DatasetSearch/*.ttf search-ui/build/static/css/
 
 mkdir -p search-ui/build/assets/img
 cp DatasetSearchUI/angular/dist/DatasetSearch/assets/img/* search-ui/build/assets/img/
