@@ -68,8 +68,8 @@ web_test_update:
   variables:
     PROJECT_NAME: "gfbio-search"
     COMPOSE_FILE: "web-test.yml"
-    CONFIG_FRONTEND: "./DatasetSearchUI/angular/src/environments/environment.ts"
-    CONFIG_FRONTEND_PROD: "./DatasetSearchUI/angular/src/environments/environment.prod.ts"
+    CONFIG_FRONTEND: "./DatasetSearchUIOwn/angular/src/environments/environment.ts"
+    CONFIG_FRONTEND_PROD: "./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts"
   script:
     # get issue id and test name
     - ISSUE_ID=$(awk -F- '{print $1}' <<< ${CI_COMMIT_REF_NAME})
