@@ -8,7 +8,7 @@ RUN mkdir -p /angular
 RUN mkdir -p /search-ui
 
 # Copy files
-COPY ./DatasetSearchUI/angular/ /angular
+COPY ./DatasetSearchUIOwn/angular/ /angular
 COPY ./search-ui/ /search-ui
 
 
