@@ -24,9 +24,9 @@
 include:
   - project: gfbio/cicd
     file:
-      - ".create_merge_request_v2.yml"
+      - ".create_merge_request_v3.yml"
       - ".tag_release.yml"
-      - ".web-test.yml"
+      - ".web_test_v2.yml"
 
 stages:
   - create_merge_request
@@ -34,14 +34,13 @@ stages:
   - tag_release
   - web_test_check
   - web_test_update
-  - web_test_update_env_url
   - web_test_stop
 
 create_merge_request:
   tags:
     - dev-denbi
   variables:
-    APPROVERS: "3834 6157 3832"
+    PROJECT_NAME: "gfbio-search" 
     REVIEWERS: "2370 3999"
 
 tag_release_check:
@@ -98,11 +97,6 @@ web_test_update:
     - docker stack rm $TEST_NAME || true
     - while [[ $(docker ps | grep $TEST_NAME | wc -l) > 0 ]]; do sleep 1; done
     - docker stack deploy -c $COMPOSE_FILE $TEST_NAME
-
-# will set correct url for environmnet so you can 'view environment' in gitlab
-web_test_update_env_url:
-  variables:
-    PROJECT_NAME: "gfbio-search"
 
 # will stop running environmnet
 web_test_stop:
