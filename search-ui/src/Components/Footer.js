@@ -3,7 +3,7 @@ import dfg_logo from "../images/dfg_logo_schriftzug_weiss_foerderung_en.gif";
 export default function Footer(props) {
 
     return (
-      <footer class="footer text-center">
+      <footer class="text-center">
         <div class="container">
           <div class="row">
             <div class="col-4">
@@ -65,7 +65,7 @@ export default function Footer(props) {
                   <br />
                   <p>
                     <a href="https://sso.gfbio.org/simplesaml/module.php/accountui/register.php"
-                       class="btn btn-primary btn-footer">Create an account!</a>
+                       class="btn btn-primary btn-footer">Create an account !</a>
                   </p>
                 </div>
               </div>
