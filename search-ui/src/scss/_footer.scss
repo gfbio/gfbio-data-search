@@ -25,6 +25,7 @@ footer {
   }
 
   h5 {
+    @include header-sans-serif-font();
     font-size: 1.2em;
     padding-left: 3.4rem;
     padding-top: 0.75rem;
@@ -155,6 +156,10 @@ footer {
     .container {
       max-width: 1140px !important;
     }
+  }
+
+  .btn {
+    text-transform: none !important;
   }
 }
 
