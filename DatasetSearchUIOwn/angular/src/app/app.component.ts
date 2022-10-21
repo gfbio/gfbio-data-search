@@ -1,6 +1,5 @@
 import {Component, OnInit } from '@angular/core';
 import 'reflect-metadata';
-import {Title} from '@angular/platform-browser';
 import {KeycloakService} from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 
@@ -13,8 +12,6 @@ import { KeycloakProfile } from 'keycloak-js';
 export class AppComponent implements OnInit {
     public isLoggedIn = false;
     public userProfile: KeycloakProfile | null = null;
-
-    title = '[Dai:Si] - Dataset Search UI';
 
     user = '';
 
@@ -29,11 +26,7 @@ export class AppComponent implements OnInit {
                 }*/
     ];
 
-    constructor(private titleService: Title, private keycloakService: KeycloakService) {
-    }
-
-    public setTitle(newTitle: string) {
-        this.titleService.setTitle(newTitle);
+    constructor(private keycloakService: KeycloakService) {
     }
 
     private initializeUserOptions(): void {
@@ -50,7 +43,6 @@ export class AppComponent implements OnInit {
     }
 
     public async ngOnInit() {
-        this.titleService.setTitle(this.title);
         this.initializeUserOptions();
 
         if (await this.keycloakService.isLoggedIn()) {
