@@ -36,7 +36,7 @@ export default function Footer(props) {
                   <h4>Want to know more ?</h4>
                   <ul class="list-group">
                     <a class="list-group-item list-group-item-action"
-                       href="https://gfbio.org/training">Training</a>
+                       href="https://www.gfbio.org/training">Training</a>
                     <a class="list-group-item list-group-item-action"
                        href="https://kb.gfbio.org/" target="_blank"
                        rel="noopener noreferrer">FAQ's</a>
@@ -48,7 +48,7 @@ export default function Footer(props) {
                   <h4>Got Questions ?</h4>
                   <ul class="list-group">
                     <a class="list-group-item list-group-item-action"
-                       href="http://helpdesk.gfbio.org/servicedesk/customer/portal/2/group/9">Contact
+                       href="mailto:info@gfbio.org">Contact
                       Us !</a>
                   </ul>
                 </div>
@@ -139,13 +139,13 @@ export default function Footer(props) {
               <div class="col-8 d-flex align-items-center">
                 <ul class="list-group list-group-horizontal align-middle">
                   <li class="list-group-item">
-                    <a href="https://gfbio.org/terms-of-use">Terms of use</a>
+                    <a href="https://www.gfbio.org/terms-of-use">Terms of use</a>
                   </li>
                   <li class="list-group-item">
-                    <a href="https://gfbio.org/legal-notice">Legal Notice</a>
+                    <a href="https://www.gfbio.org/legal-notice">Legal Notice</a>
                   </li>
                   <li class="list-group-item">
-                    <a href="https://gfbio.org/privacy-policy">Privacy Policy</a>
+                    <a href="https://www.gfbio.org/privacy-policy">Privacy Policy</a>
                   </li>
                 </ul>
               </div>
