@@ -23,13 +23,13 @@ export default function NavBar(props) {
                     id="navbarResponsive" >
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item {% if request.path == url %}active{% endif %}">
-                            <a class="nav-link" href="https://gfbio.org/services/" target="_blank"
+                            <a class="nav-link" href="https://www.gfbio.org/services/" target="_blank"
                                     rel="noopener noreferrer">
                                 GFBio Services
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="https://gfbio.org/gfbio_ev">
+                            <a class="nav-link " href="https://www.gfbio-ev.de/">
                                 GFBio e.V.
                             </a>
                         </li>
