@@ -1,0 +1,12 @@
+// Import custom variables
+@import "./variables.scss";
+
+// Import Bootstrap
+@import "bootstrap/scss/bootstrap.scss";
+
+@import "./mixins.scss";
+
+// Import custom styles
+@import "./navbar.scss";
+@import "./footer.scss";
+
