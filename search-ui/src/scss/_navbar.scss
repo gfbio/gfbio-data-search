@@ -1,0 +1,207 @@
+// Styling for the navbar
+.navbar {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#mainNav, #mainNavContent {
+  background-color: $white;
+  border-bottom: 0;
+  -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+  -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+  box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+
+  @include sans-serif-font-2;
+  @include transition-all;
+
+  min-height: 62px;
+
+  .navbar-brand {
+    line-height: 70px;
+    height: 70px;
+    margin: 0;
+    padding: 0;
+
+    h1 {
+      @include transition-all;
+      padding: 44px 90px 0 0;
+      margin: 0;
+      height: 70px;
+    }
+
+  }
+
+  &.navbar-shrink {
+    .navbar-brand {
+      h1 {
+        background: url("../images/gfbio_logo_small.svg") no-repeat center center !important;
+        padding: 44px 90px 0 0;
+      }
+
+    }
+  }
+
+  .navbar-nav {
+    > li.nav-item {
+      > a.nav-link,
+      > a.nav-link:focus {
+        font-size: 1rem;
+        color: $gray-dark-2;
+        line-height: 20px;
+
+        &:hover {
+          color: $primary;
+        }
+
+        &.active {
+          color: $primary !important;
+          background-color: transparent;
+
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
+
+      .dropdown-toggle::after {
+        display: none;
+      }
+
+      .dropdown-menu {
+        .dropdown-item {
+          &:hover {
+            color: $primary;
+            background-color: inherit;
+          }
+
+          &.active {
+            color: $primary !important;
+            background-color: inherit;
+
+            &:hover {
+              background-color: inherit;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: 992px) {
+    background-color: transparent;
+    border-bottom: 1px solid $gray-dark-2;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+
+    .navbar-brand {
+      color: fade-out($white, .3);
+
+      &:focus,
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    li.sign-up {
+      padding-left: 4rem;
+    }
+
+    .navbar-nav > li.nav-item > a.nav-link {
+      padding: 0 0.75rem;
+    }
+    .navbar-nav > li.nav-item > a.nav-link,
+    .navbar-nav > li.nav-item > a.nav-link:focus {
+      color: $gray-dark-2;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+    &.navbar-shrink {
+      background-color: $white;
+
+      border-bottom: 0;
+      -moz-box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+      -webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+      box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+
+      .navbar-brand {
+        color: $primary;
+
+        &:focus,
+        &:hover {
+          color: darken($primary, .1);
+        }
+      }
+
+      .navbar-nav > li.nav-item > a.nav-link,
+      .navbar-nav > li.nav-item > a.nav-link:focus {
+        color: $gray-dark-2;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+
+    &.navbar-shrink-content {
+      background-color: $white;
+      border-bottom: 1px solid $gray-dark-2;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  .nav {
+    display:flex;
+    flex-wrap:wrap;
+    padding-left:0;
+    margin-bottom:0;
+    list-style:none;
+  }
+  .nav-link {
+    display:block;
+    padding:0.5rem 1rem;
+    color:#81b248;
+    text-decoration:none;
+    transition:color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out;
+  }
+
+  ul {
+    margin-top:0;
+  }
+
+  .collapse:not(.show) {
+    display:none
+  }
+
+  a {
+    color: #81B248;
+    transition: all 0.2s;
+    text-decoration: none !important;
+    outline: none;
+  }
+  a:hover {
+    color: #81b248;
+  }
+  @media (min-width: 1400px) {
+    .container {
+      max-width: 1140px !important;
+    }
+  }
+  @media (min-width: 992px) {
+    .flex-lg-row-reverse {
+      flex-direction: row-reverse !important;
+    }
+  }
+
+  .navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
