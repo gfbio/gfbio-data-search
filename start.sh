@@ -21,7 +21,7 @@ cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.woff2 search-ui/build/static/
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.ttf search-ui/build/static/css/
 
 mkdir -p search-ui/build/static/fonts
-cp DatasetSearchUIOwn/angular/dist/DatasetSearch/assets/fonts/* search-ui/build/static/fonts/
+cp DatasetSearchUIOwn/angular/dist/DatasetSearch/static/fonts/* search-ui/build/static/fonts/
 
 mkdir -p search-ui/build/assets/img
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/assets/img/* search-ui/build/assets/img/
