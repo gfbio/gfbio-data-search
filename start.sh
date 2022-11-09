@@ -20,9 +20,14 @@ cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.woff search-ui/build/static/c
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.woff2 search-ui/build/static/css/
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.ttf search-ui/build/static/css/
 
+mkdir -p search-ui/build/static/fonts
+cp DatasetSearchUIOwn/angular/dist/DatasetSearch/assets/fonts/* search-ui/build/static/fonts/
+
 mkdir -p search-ui/build/assets/img
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/assets/img/* search-ui/build/assets/img/
 
+# copy third party css's
+cp search-ui/src/third-party-css/*.css search-ui/build/static/css/
 # clean submodule folder
 # cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
 
