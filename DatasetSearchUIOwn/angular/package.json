@@ -31,6 +31,7 @@
     "boolean-parser": "0.0.2",
     "bootstrap": "^4.5.2",
     "class-transformer": "^0.4.0",
+    "copyfiles": "^2.4.1",
     "es6-shim": "^0.35.6",
     "fast-cartesian": "^6.1.0",
     "jw-angular-pagination": "^1.2.0",
