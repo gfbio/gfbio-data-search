@@ -38,11 +38,11 @@ font-family: 'Rubik', sans-serif;
 }
 
 @mixin header-sans-serif-font() {
-  @include open-sans();
+  @include raleway();
 }
 
 @mixin sans-serif-font-2() {
-  @include open-sans();
+  @include raleway();
 }
 
 @mixin sans-serif-font-3() {
