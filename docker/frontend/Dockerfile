@@ -26,8 +26,11 @@ RUN cd /search-ui && npm i && npm run build && \
     cp /angular/dist/DatasetSearch/*.woff /search-ui/build/static/css/ && \
     cp /angular/dist/DatasetSearch/*.woff2 /search-ui/build/static/css/&& \
     cp /angular/dist/DatasetSearch/*.ttf /search-ui/build/static/css/ && \
+    mkdir -p /search-ui/build/static/fonts && \
+    cp /angular/dist/DatasetSearch/static/fonts/* /search-ui/build/static/fonts/ && \
     mkdir -p /search-ui/build/assets/img && \
-    cp /angular/dist/DatasetSearch/assets/img/* /search-ui/build/assets/img/
+    cp /angular/dist/DatasetSearch/assets/img/* /search-ui/build/assets/img/ && \
+    cp /search-ui/src/third-party-css/*.css /search-ui/build/static/css/
 
 
 # Final stage
