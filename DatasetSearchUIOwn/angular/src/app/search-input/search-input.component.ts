@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
 import {NodeService} from '../services/remote/node.service';
 import {CommunicationService} from '../services/local/communication.service';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
@@ -21,11 +21,11 @@ export class SearchInputComponent implements OnInit {
     }
 
     faSearch = faSearch;
-    searchKey: any;
+    @Input() searchKey: any;
     @Output() searchKeyEmmit = new EventEmitter<any>();
     result: any;
     windowSuggestion = false;
-    semanticValue: boolean;
+    @Input() semanticValue: boolean;
     formatSimpleSearch = /[!@#$%^&_\-=\[\]{};:\\,<>\/?]+/;
     formatSemanticSearch = /[!@#$%^&_\-=\[\]{};:\\,<>\/?]+/;
     alertSearch = false;
@@ -36,6 +36,15 @@ export class SearchInputComponent implements OnInit {
         // const str = 'fff (gg tt gg) hhh (jj vv + cc gg) lll + kkk + rrr bee*';
         // console.log(str);
         // this.inputAnalysis.getAnalysis(str).then((response) => console.log(response));
+
+        if(this.searchKey != "") {
+            if (this.semanticValue) {
+                this.semantic();
+            }
+            else {
+                this.onSearch();
+            }
+        }
     }
 
     // by entering a letter on the form, a request will be sent to the node server and then it will be sent to suggestion-window
