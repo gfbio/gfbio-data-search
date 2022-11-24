@@ -5,6 +5,8 @@ import {StartSearchingService} from '../services/local/start-searching.service';
 import {SearchResult} from '../interface/search-result';
 import {Filters} from '../interface/filters';
 import {SearchInput} from '../interface/search-input';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
     selector: 'app-gfbio',
@@ -19,13 +21,24 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
     from = 0;
     filters;
     markers;
+    searchKeyFromQuery = "";
 
     constructor(private communicationService: CommunicationService,
-                private startSearchingService: StartSearchingService) {
+                private startSearchingService: StartSearchingService,
+                private route: ActivatedRoute,
+                private location: Location) {
     }
 
     ngOnInit(): void {
-        this.startSearching();
+        let queryFromUri = decodeURIComponent(this.route.snapshot?.queryParamMap?.get("q") ?? "");
+        
+        if( queryFromUri != "" && !queryFromUri.match(/(\<|\>)/)) {
+            this.semantic = (this.route.snapshot?.queryParamMap?.get("s")) == "1";
+            this.searchKeyFromQuery = queryFromUri;
+        }
+        else {
+            this.startSearching();
+        }
         this.communicationService.getResult().subscribe(value => {
             if (value !== undefined) {
                 this.result = value;
@@ -44,6 +57,7 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
     }
 
     searchKeySubmitted(key): void {
+        this.location.go("?q=" + key[0].join("+") + (key[1] ? "&s=1" : "") );
         this.resetFilters = true;
         this.searchKey = key[0];
         this.semantic = key[1];
