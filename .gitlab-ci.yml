@@ -59,7 +59,7 @@ tag_release:
     - docker-compose -f staging.yml up -d
   environment:
     name: production
-    url: https://search.gfbio.org
+    url: https://search.gfbio.dev
   tags:
     - docker-lxc
 
