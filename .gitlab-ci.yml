@@ -40,7 +40,7 @@ create_merge_request:
   tags:
     - dev-denbi
   variables:
-    PROJECT_NAME: "gfbio-search" 
+    PROJECT_NAME: "gfbio-search"
     REVIEWERS: "2370 3999"
 
 tag_release_check:
@@ -59,7 +59,7 @@ tag_release:
     - docker-compose -f staging.yml up -d
   environment:
     name: production
-    url: https://search.gfbio.dev
+    url: https://search.gfbio.org
   tags:
     - docker-lxc
 
