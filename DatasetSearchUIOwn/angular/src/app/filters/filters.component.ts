@@ -10,7 +10,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 })
 export class FiltersComponent implements OnChanges {
     @Input() result: Result;
-    chosenFilter: Array<object> = [];
+    @Input() chosenFilter: Array<object> = [];
     filterValues: Array<string> = [];
     @Output() filters = new EventEmitter<any>();
     @Input() resetFilters: boolean;
@@ -28,6 +28,9 @@ export class FiltersComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.resetFilters?.currentValue === true){
             this.clearAllFilters();
+        }
+        if(changes?.chosenFilter?.currentValue?.length > 0) {
+            this.setAllFilters(changes.chosenFilter.currentValue);
         }
     }
 
@@ -133,5 +136,31 @@ export class FiltersComponent implements OnChanges {
             }
             this.startSearching();
         }
+    }
+
+    setAllFilters(filterList) : void {
+        this.communicationService.setFilter(filterList);
+        this.filterValues = [];
+        filterList.forEach(val => {
+            if(val.term) {
+                this.filterValues.push(val.term[Object.keys(val.term)[0]]);
+            }
+            else if(val.range) {
+                let facetName = Object.keys(val.range)[0];
+                let datePickerType, modifier;
+                switch(facetName) {
+                    case("minDateTime"): datePickerType = "Collection"; break;
+                    case("citation_yearFacet"): datePickerType = "Publication"; break;
+                }
+                let modifierName = Object.keys(val.range[facetName])[0];
+                switch(modifierName) {
+                    case("gte"): modifier = "start"; break;
+                    case("lte"): modifier = "end"; break;
+                }
+                this.filterValues.push(`${datePickerType} ${modifier} date`)
+                this.result.getDatePickers().find(dp => dp.type == "collection")[modifier] = val.range[facetName][modifierName];
+            }
+        });
+        this.chosenFilter = filterList;
     }
 }
