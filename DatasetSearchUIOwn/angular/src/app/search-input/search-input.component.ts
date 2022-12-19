@@ -37,14 +37,6 @@ export class SearchInputComponent implements OnInit {
         // console.log(str);
         // this.inputAnalysis.getAnalysis(str).then((response) => console.log(response));
 
-        if(this.searchKey != "") {
-            if (this.semanticValue) {
-                this.semantic();
-            }
-            else {
-                this.onSearch();
-            }
-        }
     }
 
     // by entering a letter on the form, a request will be sent to the node server and then it will be sent to suggestion-window

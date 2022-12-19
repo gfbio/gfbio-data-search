@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-3">
                 <app-map [markers]="markers"></app-map>
-                <app-filters [result]="result" (filters)="filterSubmitted($event)" [resetFilters]="resetFilters"></app-filters>
+                <app-filters [result]="result" (filters)="filterSubmitted($event)" [resetFilters]="resetFilters" [chosenFilter]="filters"></app-filters>
             </div>
             <div class="col-md-9">
                 <app-search-input (searchKeyEmmit)="searchKeySubmitted($event)" [searchKey]="searchKeyFromQuery" [semanticValue]="semantic"></app-search-input>
