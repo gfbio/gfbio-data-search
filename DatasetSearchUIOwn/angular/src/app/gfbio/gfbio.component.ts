@@ -30,15 +30,19 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
     }
 
     ngOnInit(): void {
-        let queryFromUri = decodeURIComponent(this.route.snapshot?.queryParamMap?.get("q") ?? "");
+        let filterFromUri = this.route.snapshot?.queryParamMap?.get("filter") ?? "";
+        if(filterFromUri != "") {
+            this.filters = JSON.parse(decodeURIComponent(filterFromUri));
+        }
         
+        this.semantic = (this.route.snapshot?.queryParamMap?.get("s")) == "1";
+
+        let queryFromUri = decodeURIComponent(this.route.snapshot?.queryParamMap?.get("q") ?? "");        
         if( queryFromUri != "" && !queryFromUri.match(/(\<|\>)/)) {
-            this.semantic = (this.route.snapshot?.queryParamMap?.get("s")) == "1";
             this.searchKeyFromQuery = queryFromUri;
+            this.searchKey = [queryFromUri];
         }
-        else {
-            this.startSearching();
-        }
+        this.startSearching();
         this.communicationService.getResult().subscribe(value => {
             if (value !== undefined) {
                 this.result = value;
@@ -57,7 +61,6 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
     }
 
     searchKeySubmitted(key): void {
-        this.location.go("?q=" + key[0].join("+") + (key[1] ? "&s=1" : "") );
         this.resetFilters = true;
         this.searchKey = key[0];
         this.semantic = key[1];
@@ -74,6 +77,16 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
     }
 
     startSearching(): void {
+        this.setPageUrl();
         this.startSearchingService.startSearching(this.searchKey, this.semantic, this.from, this.filters);
+    }
+
+    setPageUrl(): void {
+        var parameters = [
+            (this.searchKey?.join("")) ? "q=" + this.searchKey.join("+") : null,
+            this.semantic ? "s=1" : null,
+            this.filters?.length > 0 ? "filter=" + JSON.stringify(this.filters) : null,
+        ].filter(p => p);
+        this.location.go((parameters.length > 0) ? "?" + parameters.join("&") : "");
     }
 }
