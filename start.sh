@@ -2,6 +2,9 @@
 
 # deactive default navbar
 sed -i 's/class="toolbarMenu"/class="toolbarMenu" style="display:none;"/g' DatasetSearchUIOwn/angular/src/app/app.component.html
+# some node versions error out
+# https://stackoverflow.com/questions/69665222/node-js-17-0-1-gatsby-error-digital-envelope-routinesunsupported-err-os
+export NODE_OPTIONS=--openssl-legacy-provider
 
 # install and build
 # NG_CLI_ANALYTICS=ci will not ask if you want to participate in angular analitics during package installation
