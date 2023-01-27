@@ -26,9 +26,10 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        try{
+        try {
             this.user = this.keycloakService.getUsername();
-            if (this.user !== undefined){
+
+            if (this.user !== undefined) {
                 this.nodeService.readFromBasket(this.user).subscribe(result => {
                     if (result.length !== 0) {
                         const basket = JSON.parse(result[0]?.basketcontent)?.selected;
@@ -39,15 +40,14 @@ export class SearchResultComponent implements OnInit, OnChanges {
                         this.mapItem.emit(this.basketValues);
                     }
                 });
-            } 
-             else
-            {
+            } else {
                 this.user = null;
             }
-        }catch{
+            // console.log('ngOnInit() search-result.components | this.user : ', this.user);
+        } catch {
             this.user = null;
         }
-        
+
         this.basketId = null;
     }
 
@@ -58,6 +58,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     checkBoxClick(item: Hit): void {
+        // console.log('checkBoxClick(item: Hit): void | ...');
         if (item.getCheckBox()) {
             this.basketValues.push(item);
         } else {
@@ -68,6 +69,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     basketClick(): void {
+        // console.log('basketClick(): void | ...');
         const dialogRef = this.dialog.open(BasketDialogComponent, {
             data: this.basketValues,
             disableClose: true
