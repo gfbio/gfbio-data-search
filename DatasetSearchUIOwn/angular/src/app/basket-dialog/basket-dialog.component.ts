@@ -23,12 +23,12 @@ export class BasketDialogComponent implements OnInit {
     textTooltipBasketMultimediaAvailable = environment.textTooltipBasketMultimediaAvailable;
     textTooltipBasketMultimediaNotAvailable = environment.textTooltipBasketMultimediaNotAvailable;
     textTooltipBasketRemove = environment.textTooltipBasketRemove;
-	textTooltipBasketRemoveSure = environment.textTooltipBasketRemoveSure;
+    textTooltipBasketRemoveSure = environment.textTooltipBasketRemoveSure;
     textTooltipBasketEmpty = environment.textTooltipBasketEmpty;
     spinner = false;
     savedData: Array<Hit> = [];
     user;
-    basketId: string = "";
+    basketId = ``;
 
     constructor(
         public dialogRef: MatDialogRef<BasketDialogComponent>,
@@ -37,7 +37,7 @@ export class BasketDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.initializeUserOptions();
-        this.basketId = "";
+        this.basketId = '';
     }
 
     remove(item): void {
@@ -52,6 +52,10 @@ export class BasketDialogComponent implements OnInit {
         const basket = {
             basket: this.data
         };
+        console.log('downloadZip | this.data');
+        console.log(this.data);
+        console.log('downloadZip | basket');
+        console.log(basket);
         this.nodeService.basketDownload(basket).subscribe(data => this.downloadSuccess(data),
             err => this.downloadFailed());
 
@@ -74,6 +78,8 @@ export class BasketDialogComponent implements OnInit {
 
     emptyBasket(): void {
         const r = confirm('Are you sure that you want to empty the basket?');
+        console.log('emptyBasket | this.data');
+        console.log(this.data);
         if (r === true) {
             this.data.splice(0, this.data.length);
             // this.saveBasket();
@@ -83,6 +89,8 @@ export class BasketDialogComponent implements OnInit {
     saveBasket(): void {
         const basket = new Basket();
         basket.setContent(this.data);
+        console.log('saveBaseket | this.data');
+        console.log(this.data);
         basket.setUserId(this.user);
         this.nodeService.addToBasket(basket).subscribe(val => {
             this.basketId = JSON.stringify(val.basketId);
@@ -102,7 +110,7 @@ export class BasketDialogComponent implements OnInit {
     }
 
     private initializeUserOptions(): void {
-        try{
+        try {
             this.user = this.keycloakService.getUsername();
             if (this.user !== undefined) {
                 this.nodeService.readFromBasket(this.user).subscribe(result => {
@@ -114,12 +122,12 @@ export class BasketDialogComponent implements OnInit {
                         });
                     }
                 });
-            }else{
+            } else {
                 this.user = null;
             }
-        }catch{
+        } catch {
             this.user = null;
         }
-        
+
     }
 }
