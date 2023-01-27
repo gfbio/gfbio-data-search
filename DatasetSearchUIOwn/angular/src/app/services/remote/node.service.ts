@@ -74,7 +74,18 @@ export class NodeService {
     }
 
     basketDownload(baskets): any {
+        // console.log('basketDownload | baskets');
+        // console.log(baskets);
+        // console.log('post to this.url ', this.url, ' | this.basketURL ', this.basketURL);
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
+    }
+
+    postBasketToCollection(baskets): any {
+        // console.log('postBasketToCollection | baskets');
+        // console.log(baskets);
+        // console.log('Here a http post to collection service will take place');
+        // TODO: I think it is exactly this payload but sended to collectionservice host
+        return this.http.post(this.url + this.basketURL, baskets);
     }
 
     narrow(id, uri): any {
