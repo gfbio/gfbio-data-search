@@ -52,10 +52,10 @@ export class BasketDialogComponent implements OnInit {
         const basket = {
             basket: this.data
         };
-        console.log('downloadZip | this.data');
-        console.log(this.data);
-        console.log('downloadZip | basket');
-        console.log(basket);
+        // console.log('downloadZip | this.data');
+        // console.log(this.data);
+        // console.log('downloadZip | basket');
+        // console.log(basket);
         this.nodeService.basketDownload(basket).subscribe(data => this.downloadSuccess(data),
             err => this.downloadFailed());
 
@@ -76,10 +76,41 @@ export class BasketDialogComponent implements OnInit {
         this.spinner = false;
     }
 
+    sendBasketToCollectionService(): void {
+        this.spinner = true;
+        const basket = {
+            basket: this.data
+        };
+        // console.log('sendBasketToCollectionService | this.data');
+        // console.log(this.data);
+        // console.log('sendBasketToCollectionService | basket');
+        // console.log(basket);
+        this.nodeService.postBasketToCollection(basket).subscribe(data => this.sendCollectionSuccess(data),
+            err => this.sendCollectionFailed());
+    }
+
+
+    sendCollectionFailed(): void {
+        // alert(environment.textAlertBasketErrorDownload);
+        this.spinner = false;
+    }
+
+    sendCollectionSuccess(data): void {
+        // const a = document.createElement('a');
+        // const objectUrl = URL.createObjectURL(blob);
+        // a.href = objectUrl;
+        // a.click();
+        // URL.revokeObjectURL(objectUrl);
+        // console.log('sendCollectionSuccess | data');
+        // console.log(data);
+        this.spinner = false;
+    }
+
+
     emptyBasket(): void {
         const r = confirm('Are you sure that you want to empty the basket?');
-        console.log('emptyBasket | this.data');
-        console.log(this.data);
+        // console.log('emptyBasket | this.data');
+        // console.log(this.data);
         if (r === true) {
             this.data.splice(0, this.data.length);
             // this.saveBasket();
@@ -89,8 +120,8 @@ export class BasketDialogComponent implements OnInit {
     saveBasket(): void {
         const basket = new Basket();
         basket.setContent(this.data);
-        console.log('saveBaseket | this.data');
-        console.log(this.data);
+        // console.log('saveBaseket | this.data');
+        // console.log(this.data);
         basket.setUserId(this.user);
         this.nodeService.addToBasket(basket).subscribe(val => {
             this.basketId = JSON.stringify(val.basketId);
