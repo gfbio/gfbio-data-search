@@ -74,6 +74,9 @@ export class NodeService {
     }
 
     basketDownload(baskets): any {
+        console.log('basketDownload | baskets');
+        console.log(baskets);
+        console.log('post to this.url ', this.url, ' | this.basketURL ', this.basketURL);
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
     }
 

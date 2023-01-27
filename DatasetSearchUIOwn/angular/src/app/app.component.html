@@ -1,5 +1,5 @@
 <div class="position-relative">
-    <div class="toolbarMenu" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;">
+    <div class="toolbarMenu" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;" style="display:none;">
             <a *ngFor="let index of indexes" routerLink="{{index.link}}" routerLinkActive="toolbarMenuItemActive" class="toolbarMenuItem"
                [routerLinkActiveOptions]="{exact:true}">{{index.key}}</a>
             <a *ngIf="userProfile" class="toolbarMenuItem" (click)="logout()">Log out</a>
