@@ -43,7 +43,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
             } else {
                 this.user = null;
             }
-            console.log('ngOnInit() search-result.components | this.user : ', this.user);
+            // console.log('ngOnInit() search-result.components | this.user : ', this.user);
         } catch {
             this.user = null;
         }
@@ -58,7 +58,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     checkBoxClick(item: Hit): void {
-        console.log('checkBoxClick(item: Hit): void | ...');
+        // console.log('checkBoxClick(item: Hit): void | ...');
         if (item.getCheckBox()) {
             this.basketValues.push(item);
         } else {
@@ -69,7 +69,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     basketClick(): void {
-        console.log('basketClick(): void | ...');
+        // console.log('basketClick(): void | ...');
         const dialogRef = this.dialog.open(BasketDialogComponent, {
             data: this.basketValues,
             disableClose: true
