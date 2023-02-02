@@ -4,6 +4,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {CommunicationService} from '../local/communication.service';
 import {Result} from '../../models/result/result';
 import {environment} from '../../../environments/environment';
+import {SearchSettings} from '../../global.constants';
 
 @Injectable({
     providedIn: 'root'
@@ -83,9 +84,15 @@ export class NodeService {
     postBasketToCollection(baskets): any {
         // console.log('postBasketToCollection | baskets');
         // console.log(baskets);
+        const headers = {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Token ${SearchSettings.COLLECTIONS_API_TOKEN}`,
+
+        };
         // console.log('Here a http post to collection service will take place');
         // TODO: I think it is exactly this payload but sended to collectionservice host
-        return this.http.post(this.url + this.basketURL, baskets);
+        return this.http.post(SearchSettings.COLLECTIONS_API_ENDPOINT, {set: baskets.basket}, {headers});
     }
 
     narrow(id, uri): any {
