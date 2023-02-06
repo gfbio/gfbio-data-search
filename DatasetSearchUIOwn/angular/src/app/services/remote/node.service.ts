@@ -81,7 +81,7 @@ export class NodeService {
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
     }
 
-    postBasketToCollection(baskets): any {
+    postBasketToCollection(baskets, userId): any {
         // console.log('postBasketToCollection | baskets');
         // console.log(baskets);
         const headers = {
@@ -92,7 +92,10 @@ export class NodeService {
         };
         // console.log('Here a http post to collection service will take place');
         // TODO: I think it is exactly this payload but sended to collectionservice host
-        return this.http.post(SearchSettings.COLLECTIONS_API_ENDPOINT, {set: baskets.basket}, {headers});
+        return this.http.post(SearchSettings.COLLECTIONS_API_ENDPOINT, {
+            set: baskets.basket,
+            external_user_id: userId
+        }, {headers});
     }
 
     narrow(id, uri): any {
