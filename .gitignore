@@ -1,4 +1,5 @@
 **/.idea
+.env
 node_modules/
 DatasetSearchUIOwn/angular/dist/
 DatasetSearchUIOwn/angular/.angular/
