@@ -121,6 +121,15 @@
               ><fa-icon [icon]="faImage"></fa-icon> Image
             </a>
           </span>
+          <span>
+            <a
+              *ngIf="item.getType().includes('ABCD_Dataset')"
+              [href]="item.getLinkage().getData()"
+              class="btn btn-sm btn-primary"
+              download
+              ><fa-icon [icon]="faDownload"></fa-icon> Dataset</a
+            >
+          </span>
         </div>
       </div>
     </div>
