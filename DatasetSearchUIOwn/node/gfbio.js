@@ -16,6 +16,8 @@ var GFBioTS_URL = process.env.GFBIOTS_URL;
 var Pangaea_URL = process.env.PANGAEA_URL;
 var Pangaea_Suggest_URL = process.env.PANGAEA_SUGGEST_URL;
 var TERMINOLOGY_SUGGEST_URL = process.env.TERMINOLOGY_SUGGEST_URL;
+
+
 const { cartesianProduct } = require('cartesian-product-multiple-arrays');
 // Sets up the routes.
 /********************** GFBIO code *******************/
