@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "config": "ts-node ./scripts/setenv.ts",
+    "start": "npm run config -- --environment=prod && ng serve",
+    "build": "npm run config -- --environment=prod && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -31,6 +32,7 @@
     "boolean-parser": "0.0.2",
     "bootstrap": "^4.5.2",
     "class-transformer": "^0.4.0",
+    "dotenv": "^16.0.3",
     "es6-shim": "^0.35.6",
     "fast-cartesian": "^6.1.0",
     "jw-angular-pagination": "^1.2.0",
@@ -45,6 +47,7 @@
     "tokenizr": "^1.6.5",
     "tslib": "^2.0.0",
     "xml-js": "^1.6.11",
+    "yargs": "^17.6.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

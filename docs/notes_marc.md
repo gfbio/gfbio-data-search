@@ -59,7 +59,7 @@
 
 - docker stack, see above, needs to be up and running
 - in ./DatasetSearchUIOwn/angular
-- ng serve
+- ng serve UPDATE: there are start and build commands in package json that do provide dedicated server commands
 - http://localhost:4200/
 
 
