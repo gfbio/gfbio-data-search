@@ -3,3 +3,5 @@
 node_modules/
 DatasetSearchUIOwn/angular/dist/
 DatasetSearchUIOwn/angular/.angular/
+gfbio.environment.prod.ts
+environment.prod.ts
