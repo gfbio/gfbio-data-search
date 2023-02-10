@@ -81,17 +81,18 @@ export class BasketDialogComponent implements OnInit {
         const basket = {
             basket: this.data
         };
-        // console.log('sendBasketToCollectionService | this.data');
+        console.log('sendBasketToCollectionService | this.data');
         // console.log(this.data);
         // console.log('sendBasketToCollectionService | basket');
         // console.log(basket);
-        this.nodeService.postBasketToCollection(basket).subscribe(data => this.sendCollectionSuccess(data),
-            err => this.sendCollectionFailed());
+        this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
+            err => this.sendCollectionFailed(err));
     }
 
 
-    sendCollectionFailed(): void {
-        // alert(environment.textAlertBasketErrorDownload);
+    sendCollectionFailed(err): void {
+        console.log('sendCollectionFailed | err');
+        console.log(err);
         this.spinner = false;
     }
 
@@ -101,8 +102,8 @@ export class BasketDialogComponent implements OnInit {
         // a.href = objectUrl;
         // a.click();
         // URL.revokeObjectURL(objectUrl);
-        // console.log('sendCollectionSuccess | data');
-        // console.log(data);
+        console.log('sendCollectionSuccess | data');
+        console.log(data);
         this.spinner = false;
     }
 
