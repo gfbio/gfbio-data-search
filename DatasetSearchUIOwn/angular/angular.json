@@ -50,6 +50,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/environments/gfbio.environment.ts",
+                  "with": "src/environments/gfbio.environment.prod.ts"
                 }
               ],
               "optimization": true,

@@ -4,6 +4,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {CommunicationService} from '../local/communication.service';
 import {Result} from '../../models/result/result';
 import {environment} from '../../../environments/environment';
+import {gfbioEnvironment} from "../../../environments/gfbio.environment";
 
 @Injectable({
     providedIn: 'root'
@@ -80,12 +81,21 @@ export class NodeService {
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
     }
 
-    postBasketToCollection(baskets): any {
+    postBasketToCollection(baskets, userId): any {
         // console.log('postBasketToCollection | baskets');
         // console.log(baskets);
+        const headers = {
+            accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Token ${gfbioEnvironment.COLLECTIONS_API_TOKEN}`,
+
+        };
         // console.log('Here a http post to collection service will take place');
         // TODO: I think it is exactly this payload but sended to collectionservice host
-        return this.http.post(this.url + this.basketURL, baskets);
+        return this.http.post(gfbioEnvironment.COLLECTIONS_API_URL, {
+            set: baskets.basket,
+            external_user_id: userId
+        }, {headers});
     }
 
     narrow(id, uri): any {
