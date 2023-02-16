@@ -11,7 +11,7 @@ export const environment = {
   Keycloak_ClientId: "dev-gfbio-angular",
 
   apiUrl: "http://localhost:3000",
-  context: "/",
+  context: "/gfbio",
   searchUrl: "/search",
   semSearchUrl: "/semantic-search",
   suggestUrl: "/suggest",
