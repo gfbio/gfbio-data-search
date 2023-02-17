@@ -4,7 +4,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {CommunicationService} from '../local/communication.service';
 import {Result} from '../../models/result/result';
 import {environment} from '../../../environments/environment';
-import {gfbioEnvironment} from "../../../environments/gfbio.environment";
+import {gfbioEnvironment} from '../../../environments/gfbio.environment';
 
 @Injectable({
     providedIn: 'root'
@@ -80,6 +80,7 @@ export class NodeService {
         // console.log('post to this.url ', this.url, ' | this.basketURL ', this.basketURL);
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
     }
+
 
     postBasketToCollection(baskets, userId): any {
         // console.log('postBasketToCollection | baskets');
