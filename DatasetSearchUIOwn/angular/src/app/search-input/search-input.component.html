@@ -1,29 +1,88 @@
 <div>
-    <form action="#" (ngSubmit)="onSearch()" autocomplete="off">
-        <input type="text" [(ngModel)]="searchKey" (ngModelChange)="onSuggest()" class="searchInput"
-               id="searchField" name="gfbioSearch">
-        <button type="submit" class="btn btn-primary btn-blue">
-            <fa-icon [icon]="faSearch" class="fa-lg text-white" id="button"></fa-icon>
-            search
+  <form (ngSubmit)="onSearch()" autocomplete="off">
+    <div class="input-group">
+      <input
+        #searchInput
+        type="text"
+        [(ngModel)]="searchKey"
+        (ngModelChange)="onSuggest()"
+        [ngModelOptions]="{ standalone: true }"
+        class="form-control"
+        placeholder="Search..."
+      />
+      <div class="input-group-append">
+        <button
+          type="submit"
+          class="btn btn-outline-primary fw-bold"
+          id="button-search"
+        >
+          Search
         </button>
-        <button type="button" class="btn btn-primary btn-blue" (click)="semantic()"><img src="{{semSearchImg}}"
-                                                                                         height="18"> semantic search
+        <button
+          type="button"
+          class="btn btn-outline-primary fw-bold"
+          (click)="semantic()"
+        >
+          Semantic Search
         </button>
-
-    </form>
+      </div>
+    </div>
     <div class="position-relative">
-        <div class="suggestion-window" *ngIf="windowSuggestion">
-            <app-suggestion-window (windowSuggestKey)="onWindowSuggestKey($event)"
-                                   (isClicked)="windowSuggestion = false"></app-suggestion-window>
-        </div>
+      <div class="suggestion-window" *ngIf="windowSuggestion">
+        <app-suggestion-window
+          (windowSuggestKey)="onWindowSuggestKey($event)"
+          (isClicked)="windowSuggestion = false"
+        ></app-suggestion-window>
+      </div>
     </div>
-    <div class="text-danger ml-1" *ngIf="alertSearch">
-        <div>please do not use these special characters for simple search:</div>
-        <div>!@#$%^&_+-=[];':\|,<>/?&#123;&#125;</div>
-    </div>
-    <div class="text-danger ml-1" *ngIf="alertSemanticSearch">
-        <div>please do not use these special characters for semantic search:</div>
-        <div>!@#$%^&_+-=[];':"\|,<>/?*&#123;&#125;</div>
-    </div>
+  </form>
+  <div class="text-danger ml-1" *ngIf="alertSearch">
+    <div>Please do not use these special characters in a search:</div>
+    <div>!@#$%^&_+-=[];':\|,<>/?{{ "{}" }}</div>
+  </div>
 </div>
 
+<!-- <div> -->
+<!--   <form (ngSubmit)="onSearch()" autocomplete="off"> -->
+<!--     <div class="input-group"> -->
+<!--       <input -->
+<!--         #searchInput -->
+<!--         type="text" -->
+<!--         [(ngModel)]="searchKey" -->
+<!--         (ngModelChange)="onSuggest()" -->
+<!--         [ngModelOptions]="{ standalone: true }" -->
+<!--         class="form-control" -->
+<!--         placeholder="Search..." -->
+<!--       /> -->
+<!--       <div class="input-group-append"> -->
+<!--         <button -->
+<!--           type="submit" -->
+<!--           class="btn btn-outline-primary fw-bold" -->
+<!--           id="button-search" -->
+<!--         > -->
+<!--           Search -->
+<!--         </button> -->
+<!--         <button -->
+<!--           type="button" -->
+<!--           class="btn btn-outline-primary fw-bold" -->
+<!--           (click)="semantic()" -->
+<!--         > -->
+<!--           Semantic Search -->
+<!--         </button> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--   </form> -->
+<!--   <div class="position-relative"> -->
+<!--     <div class="suggestion-window" *ngIf="windowSuggestion"> -->
+<!--       <app-suggestion-window -->
+<!--         (windowSuggestKey)="onWindowSuggestKey($event)" -->
+<!--         (isClicked)="windowSuggestion = false" -->
+<!--         (selectSuggestion)="onSelectSuggestion($event)" -->
+<!--       ></app-suggestion-window> -->
+<!--     </div> -->
+<!--   </div> -->
+<!--   <div class="text-danger ml-1" *ngIf="alertSearch"> -->
+<!--     <div>Please do not use these special characters in a search:</div> -->
+<!--     <div>!@#$%^&_+-=[];':\|,<>/?{{ "{}" }}</div> -->
+<!--   </div> -->
+<!-- </div> -->
