@@ -18,7 +18,8 @@ const environmentFileContent = `
 export const gfbioEnvironment = {
    production: ${isProduction},
    COLLECTIONS_API_URL: "${process.env.COLLECTIONS_API_URL}",
-   COLLECTIONS_API_TOKEN: "${process.env.COLLECTIONS_API_TOKEN}"
+   COLLECTIONS_API_TOKEN: "${process.env.COLLECTIONS_API_TOKEN}",
+   VAT_ROOT_URL: "${process.env.VAT_ROOT_URL}"
 };
 `;
 
