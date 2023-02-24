@@ -99,6 +99,7 @@ export class NodeService {
         }, {headers});
     }
 
+
     narrow(id, uri): any {
         const body = {
             id,
