@@ -6,6 +6,7 @@ import {Basket} from '../models/basket';
 import {Hit} from '../models/result/hit';
 import {plainToClass} from 'class-transformer';
 import {KeycloakService} from 'keycloak-angular';
+import {gfbioEnvironment} from '../../environments/gfbio.environment';
 
 @Component({
     selector: 'app-basket-dialog',
@@ -74,6 +75,10 @@ export class BasketDialogComponent implements OnInit {
         a.click();
         URL.revokeObjectURL(objectUrl);
         this.spinner = false;
+    }
+
+    showVATButton(): boolean {
+        return (gfbioEnvironment.production !== true);
     }
 
     sendBasketToCollectionService(): void {
