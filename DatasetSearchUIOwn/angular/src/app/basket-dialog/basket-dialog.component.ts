@@ -30,6 +30,9 @@ export class BasketDialogComponent implements OnInit {
     savedData: Array<Hit> = [];
     user;
     basketId = ``;
+    collectionId = ``;
+    linkToVatForVisualization = ``;
+    vatButtonText = `visualize in VAT`;
 
     constructor(
         public dialogRef: MatDialogRef<BasketDialogComponent>,
@@ -53,10 +56,6 @@ export class BasketDialogComponent implements OnInit {
         const basket = {
             basket: this.data
         };
-        // console.log('downloadZip | this.data');
-        // console.log(this.data);
-        // console.log('downloadZip | basket');
-        // console.log(basket);
         this.nodeService.basketDownload(basket).subscribe(data => this.downloadSuccess(data),
             err => this.downloadFailed());
 
@@ -81,42 +80,47 @@ export class BasketDialogComponent implements OnInit {
         return (gfbioEnvironment.production !== true);
     }
 
-    sendBasketToCollectionService(): void {
+    sendBasketToCollectionService(collectionId): void {
         this.spinner = true;
+        this.linkToVatForVisualization = '';
         const basket = {
             basket: this.data
         };
-        console.log('sendBasketToCollectionService | this.data');
-        // console.log(this.data);
-        // console.log('sendBasketToCollectionService | basket');
-        // console.log(basket);
+        // TODO: currently there is no PUT implemented in the collection service, thus no update is possible
+        console.log('sendBasketToCollectionService | collectionId ', collectionId);
         this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
             err => this.sendCollectionFailed(err));
     }
 
 
+    resetVatLink(): void {
+        console.log('RESET VAT LINK');
+    }
+
     sendCollectionFailed(err): void {
         console.log('sendCollectionFailed | err');
         console.log(err);
+        this.linkToVatForVisualization = ``;
+        this.collectionId = ``;
+        this.vatButtonText = `visualize in VAT`;
         this.spinner = false;
     }
 
     sendCollectionSuccess(data): void {
-        // const a = document.createElement('a');
-        // const objectUrl = URL.createObjectURL(blob);
-        // a.href = objectUrl;
-        // a.click();
-        // URL.revokeObjectURL(objectUrl);
-        console.log('sendCollectionSuccess | data');
-        console.log(data);
+        this.linkToVatForVisualization = ``;
+        this.collectionId = ``;
+        this.vatButtonText = `visualize in VAT`;
+        if ('id' in data) {
+            this.collectionId = `${data.id}`;
+            this.linkToVatForVisualization = `${gfbioEnvironment.VAT_ROOT_URL}/#/?collectionId=${data.id}`;
+            this.vatButtonText = `update Visualization link`;
+        }
         this.spinner = false;
     }
 
 
     emptyBasket(): void {
         const r = confirm('Are you sure that you want to empty the basket?');
-        // console.log('emptyBasket | this.data');
-        // console.log(this.data);
         if (r === true) {
             this.data.splice(0, this.data.length);
             // this.saveBasket();
@@ -126,8 +130,6 @@ export class BasketDialogComponent implements OnInit {
     saveBasket(): void {
         const basket = new Basket();
         basket.setContent(this.data);
-        // console.log('saveBaseket | this.data');
-        // console.log(this.data);
         basket.setUserId(this.user);
         this.nodeService.addToBasket(basket).subscribe(val => {
             this.basketId = JSON.stringify(val.basketId);
