@@ -9,16 +9,15 @@ export NODE_OPTIONS=--openssl-legacy-provider
 
 # install and build
 # NG_CLI_ANALYTICS=ci will not ask if you want to participate in angular analitics during package installation
-cd DatasetSearchUIOwn/angular/ && NG_CLI_ANALYTICS=ci npm i --force && npm run build && cd ../../
+cd DatasetSearchUIOwn/angular/ && NG_CLI_ANALYTICS=ci npm i --force && ng build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization && cd ../../
 
 # build our own react app
-cd search-ui && npm --force i && npm run build && cd ../
+cd search-ui && npm --force i && npm run build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization && cd ../
 
 # copy files from angular
 mkdir -p search-ui/build/static/js/angular
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.js search-ui/build/static/js/angular/
-cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.js.map search-ui/build/static/js/angular/
-cp DatasetSearchUIOwn/angular/dist/DatasetSearch/styles.css* search-ui/build/static/css/
+cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.css search-ui/build/static/css/
 # adding fonts
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.woff search-ui/build/static/css/
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.woff2 search-ui/build/static/css/
