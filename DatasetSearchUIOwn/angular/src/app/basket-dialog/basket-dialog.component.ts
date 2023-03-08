@@ -6,7 +6,7 @@ import {Basket} from '../models/basket';
 import {Hit} from '../models/result/hit';
 import {plainToClass} from 'class-transformer';
 import {KeycloakService} from 'keycloak-angular';
-import {gfbioEnvironment} from '../../environments/gfbio.environment';
+// import {gfbioEnvironment} from '../../environments/gfbio.environment';
 
 @Component({
     selector: 'app-basket-dialog',

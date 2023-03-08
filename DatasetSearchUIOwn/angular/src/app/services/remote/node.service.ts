@@ -4,7 +4,7 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {CommunicationService} from '../local/communication.service';
 import {Result} from '../../models/result/result';
 import {environment} from '../../../environments/environment';
-import {gfbioEnvironment} from '../../../environments/gfbio.environment';
+// import {gfbioEnvironment} from '../../../environments/gfbio.environment';
 
 @Injectable({
     providedIn: 'root'
