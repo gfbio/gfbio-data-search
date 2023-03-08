@@ -32,7 +32,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
               "./node_modules/leaflet/dist/leaflet.css",
-			        "src/styles.css",
+              "src/styles.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/custom_styles_fonts.css"
             ],
@@ -50,10 +50,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/environments/gfbio.environment.ts",
-                  "with": "src/environments/gfbio.environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -84,7 +80,7 @@
           "options": {
             "browserTarget": "DatasetSearch:build",
             "proxyConfig": "src/proxy.conf.json",
-			      "port": 4200,
+            "port": 4200,
             "ssl": false
           },
           "configurations": {
