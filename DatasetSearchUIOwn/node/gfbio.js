@@ -1,24 +1,22 @@
-var express = require('express');
-var app = express();
-var router = require('express').Router();
-var bodyParser = require('body-parser').json();
-const axios = require('axios');
-const Blob = require('node-blob');
-var FileSaver = require('file-saver');
-var fs = require("fs");
-var JSZip = require("jszip");
-var basket = require('./controllers/basket.controller')
-// module to establish a connection to Elasticsearch
-// currently not needed
-//var search = require('./connectionElastic');
+import {Router} from "express";
+import axios from "axios";
+import fs from "fs";
+import JSZip from "jszip";
 
-var GFBioTS_URL = process.env.GFBIOTS_URL;
-var Pangaea_URL = process.env.PANGAEA_URL;
-var Pangaea_Suggest_URL = process.env.PANGAEA_SUGGEST_URL;
-var TERMINOLOGY_SUGGEST_URL = process.env.TERMINOLOGY_SUGGEST_URL;
+import {cartesianProduct} from "cartesian-product-multiple-arrays";
 
+const router = Router();
+const basket = require('./controllers/basket.controller')
 
-const { cartesianProduct } = require('cartesian-product-multiple-arrays');
+// FIXME: module to establish a connection to Elasticsearch.
+//  currently not needed
+// var search = require('./connectionElastic');
+
+const GFBioTS_URL = process.env.GFBIOTS_URL;
+const Pangaea_URL = process.env.PANGAEA_URL;
+const Pangaea_Suggest_URL = process.env.PANGAEA_SUGGEST_URL;
+const TERMINOLOGY_SUGGEST_URL = process.env.TERMINOLOGY_SUGGEST_URL;
+
 // Sets up the routes.
 /********************** GFBIO code *******************/
 /**
@@ -79,7 +77,6 @@ router.post('/search', (req, res) => {
     * {"queryterm":"quercus","from":0,"size":10,"filter":[]}
     */
 
-
     //get the keyword from the body
     const keyword = req.body.queryterm;
     console.log('keywords: ' + keyword)
@@ -102,7 +99,6 @@ router.post('/search', (req, res) => {
 
     //get the filtered query
     const filteredQuery = getFilteredQuery(keyword, filter);
-
 
     //apply the boost
     const boostedQuery = applyBoost(filteredQuery);
@@ -130,8 +126,6 @@ router.post('/search', (req, res) => {
                 msg: 'Error', err
             });
         });
-
-
 });
 
 /**
@@ -200,7 +194,6 @@ router.post('/suggest-pan', (req, res) => {
                 msg: 'Error', err
             });
         });
-
 })
 
 /**
@@ -250,7 +243,6 @@ router.post('/suggest-ter', (req, res) => {
                 msg: 'Error', err
             });
         });
-
 })
 
 /**
@@ -287,20 +279,20 @@ router.post('/basketDownload', (req, res) => {
     // res.status(200).send(req.body.basket);
     const selectedBasket = req.body.basket;
 
-    var zip = new JSZip();
-    var axiosArray = [];
-    var names = []
+    const zip = new JSZip();
+    const axiosArray = [];
+    let names = []
     selectedBasket.forEach(function (result, index) {
 
         // metadata
-        var identifier = result['dcIdentifier'].replace(/[` ~!@#$%^&*()_|+\-=÷¿?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        const identifier = result['dcIdentifier'].replace(/[` ~!@#$%^&*()_|+\-=÷¿?;:'",.<>{}\[\]\\\/]/gi, '');
         zip.file(identifier + "_metadata.xml", result['xml']);
 
         // data
         if (result.linkage.data) {
             names.push("");
 
-            var datalink = decodeURIComponent(result.linkage.data);
+            const datalink = decodeURIComponent(result.linkage.data);
 
             axiosArray.push(axios.get(datalink, {
                 responseType: 'arraybuffer',
@@ -310,10 +302,10 @@ router.post('/basketDownload', (req, res) => {
 
         // multimedia
         if (result.linkage.multimedia) {
-            for (var i = 0; i < result.linkage.multimedia.length; i++) {
+            for (let i = 0; i < result.linkage.multimedia.length; i++) {
                 names.push(new URL(result.linkage.multimedia[i].url).pathname.split('/').pop());
 
-                var multimedialink = decodeURIComponent(result.linkage.multimedia[i].url);
+                const multimedialink = decodeURIComponent(result.linkage.multimedia[i].url);
 
                 axiosArray.push(axios.get(multimedialink, {
                     responseType: 'arraybuffer'
@@ -322,20 +314,20 @@ router.post('/basketDownload', (req, res) => {
         }
     })
 
-    console.log("length of array: " + axiosArray.length);
+    // console.log("length of array: " + axiosArray.length);
 
     axios.all(axiosArray)
         .then(axios.spread((...responses) => {
-            for (var i = 0; i < axiosArray.length; i++) {
+            for (let i = 0; i < axiosArray.length; i++) {
                 if (responses[i].headers['content-disposition']) {
-                    var regexp = /filename=(.*)/;
+                    const regexp = /filename=(.*)/;
                     zip.file(regexp.exec(responses[i].headers['content-disposition'])[1], Buffer.from(responses[i].data), {base64: false});
                 } else {
                     zip.file(names[i], Buffer.from(responses[i].data), {base64: false});
                 }
             }
 
-            var zipName = 'gfbio_basket' + '.zip';
+            const zipName = 'gfbio_basket' + '.zip';
 
             zip
                 .generateNodeStream({type: 'nodebuffer', streamFiles: true})
@@ -523,7 +515,7 @@ router.post('/semantic-search', (req, res) => {
     let termData = [];
 
     //at first, send each keyword to GFBio TS
-    for (i = 0; i < flatKeyWords.length; i++) {
+    for (let i = 0; i < flatKeyWords.length; i++) {
         //console.log("keyword: "+keywords[i]);
         axiosArray.push(axios.get(GFBioTS_URL + "search?query=" + flatKeyWords[i] + "&match_type=exact"));
     }
@@ -531,11 +523,11 @@ router.post('/semantic-search', (req, res) => {
     //axios will handle them in parallel and will only continue when all calls are back
     return axios.all(axiosArray)
         .then(axios.spread((...responses) => {
-            for (i = 0; i < axiosArray.length; i++) {
+            for (let i = 0; i < axiosArray.length; i++) {
                 let allKeyWords = [flatKeyWords[i]];
-                var results = responses[i].data.results;
+                const results = responses[i].data.results;
                 results.forEach(function (item) {
-                    var log = "";
+                    const log = "";
                     //console.log(item);
                     for (const [key, value] of Object.entries(item)) {
                         if (item.sourceTerminology !== 'GEONAMES' && item.sourceTerminology !== 'RIVERS_DE') {
@@ -543,9 +535,9 @@ router.post('/semantic-search', (req, res) => {
                                 // var keyword = value.toString().replace(/,/g, "\"|\"");
                                 // allKeyWords = allKeyWords.concat("\"" + keyword + "\"")
                                 // log += "----- commonName : " + value + "\n";
-                                var keyword = value.toString();
+                                let keyword = value.toString();
                                 keyword = keyword.split(",");
-                                for (var t = 0; t < keyword.length; t++) {
+                                for (let t = 0; t < keyword.length; t++) {
                                     keyword[t] = '\'' + keyword[t] + '\''
                                     if (!keyword[t].startsWith('(') && !keyword[t].startsWith('\'')) {
                                         keyword[t] = '\'' + keyword[t] + '\'';
@@ -558,9 +550,9 @@ router.post('/semantic-search', (req, res) => {
                                 // allKeyWords = allKeyWords.concat("\"" + keyword + "\"")
                                 // log += "----- synonym : " + value + "\n";
 
-                                var keyword = value.toString();
+                                let keyword = value.toString();
                                 keyword = keyword.split(",");
-                                for (var t = 0; t < keyword.length; t++) {
+                                for (let t = 0; t < keyword.length; t++) {
                                     keyword[t] = '\'' + keyword[t] + '\''
                                     if (!keyword[t].startsWith('(') && !keyword[t].startsWith('\'')) {
                                         keyword[t] = '\'' + keyword[t] + '\'';
@@ -594,19 +586,19 @@ router.post('/semantic-search', (req, res) => {
             }
             console.log(" ************************** ");
             let z = 0
-            for (var i = 0; i < keywordsCombination.length; i++) {
-                for (var j = 0; j < keywordsCombination[i].length; j++) {
-                    
-					keywordsCombination[i][j] = response[z++];
+            for (let i = 0; i < keywordsCombination.length; i++) {
+                for (let j = 0; j < keywordsCombination[i].length; j++) {
+
+                    keywordsCombination[i][j] = response[z++];
                 }
             }
             let cartesianProductAll = []
-            for (var t = 0; t < keywordsCombination.length; t++) {
+            for (let t = 0; t < keywordsCombination.length; t++) {
                 cartesianProductAll.push(cartesianProduct(...keywordsCombination[t]))
             }
             cartesianProductAll = cartesianProductAll.flat()
             const lastArr = []
-            for (var t = 0; t < cartesianProductAll.length; t++) {
+            for (let t = 0; t < cartesianProductAll.length; t++) {
                 lastArr.push(cartesianProductAll[t].join(' + '))
             }
             console.log(lastArr)
@@ -659,18 +651,18 @@ router.post('/semantic-search', (req, res) => {
             resp.data.termData = termData;
             // console.log("termData is: " + JSON.stringify(termData));
             //resp.data.lastItem = allKeyWords;
-            var extendedTerms = [];
-            var result = resp.data.hits.hits;
-            for (var i = 0, iLen = result.length; i < iLen; i++) {
-                var highlight = result[i].highlight;
+            const extendedTerms = [];
+            const result = resp.data.hits.hits;
+            for (let i = 0, iLen = result.length; i < iLen; i++) {
+                const highlight = result[i].highlight;
                 // console.log(highlight)
                 if (highlight != null) {
-                    var highlightArr = extractHighlightedSearch(highlight);
+                    const highlightArr = extractHighlightedSearch(highlight);
                     // console.log(highlightArr);
-                    var isAdded = false;
-                    for (var iHighlight = 0; iHighlight < highlightArr.length; iHighlight++) {
-                        for (var iExtended = 0; iExtended < extendedTerms.length; iExtended++) {
-                            if (extendedTerms[iExtended].toLowerCase() == highlightArr[iHighlight].toLowerCase()) {
+                    let isAdded = false;
+                    for (let iHighlight = 0; iHighlight < highlightArr.length; iHighlight++) {
+                        for (let iExtended = 0; iExtended < extendedTerms.length; iExtended++) {
+                            if (extendedTerms[iExtended].toLowerCase() === highlightArr[iHighlight].toLowerCase()) {
                                 isAdded = true;
                             }
                         }
@@ -762,9 +754,9 @@ router.post('/broad', (req, res) => {
  * Output: JSONObject : filtered query
  */
 function getFilteredQuery(keyword, filterArray) {
-    var queryObj;
+    let queryObj;
     console.log(':: filterArray ' + JSON.stringify(filterArray));
-    if (keyword != "") {
+    if (keyword !== "") {
         queryObj = {
             "simple_query_string": {
                 "query": keyword,
@@ -786,79 +778,82 @@ function getFilteredQuery(keyword, filterArray) {
         }
     };
 }
-function getBooleanQuery(keyword, filterArray) {
-    // console.log(keyword)
-    var queryObj = {};
-    var boostedKeywords = [];
 
-    //keyword array with original term [0] and expanded terms [1] - [X]
-    if (keyword.length > 0) {
-        for (var i = 0; i < keyword.length; i++) {
-            var booster = 1; //less priority to expanded terms
-            var fields = [];
-            if (i == 0) { // higher priority to original keyword
-                booster = 2.2;
-                fields = ["citation_title^3", "citation_title.folded^2.1",
-                    "description^2.1", "description.folded",
-                    "type.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
-                //["fulltext", "fulltext.folded^.7", "citation^3", "citation.folded^2.1"];
-            } else { // extended keywords
-                fields = ["citation_title^3", "citation_title.folded^2.1",
-                    "description^2.1", "description.folded",
-                    "parameter.folded", "region.folded", "dataCenter.folded"];
-            }
-            var keywordWithQuotes = keyword[i];
-            boostedKeywords.push({
-                "simple_query_string": {
-                    "query": keywordWithQuotes,
-                    "fields": fields,
-                    "default_operator": "or",
-                    "boost": booster
-                }
-            });
-        }
+// FIXME: this is not used. Can this be deleted then ?
+// function getBooleanQuery(keyword, filterArray) {
+//     // console.log(keyword)
+//     let queryObj = {};
+//     let boostedKeywords = [];
+//
+//     //keyword array with original term [0] and expanded terms [1] - [X]
+//     if (keyword.length > 0) {
+//         for (let i = 0; i < keyword.length; i++) {
+//             let booster = 1; //less priority to expanded terms
+//             let fields = [];
+//             if (i == 0) { // higher priority to original keyword
+//                 booster = 2.2;
+//                 fields = ["citation_title^3", "citation_title.folded^2.1",
+//                     "description^2.1", "description.folded",
+//                     "type.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
+//                 //["fulltext", "fulltext.folded^.7", "citation^3", "citation.folded^2.1"];
+//             } else { // extended keywords
+//                 fields = ["citation_title^3", "citation_title.folded^2.1",
+//                     "description^2.1", "description.folded",
+//                     "parameter.folded", "region.folded", "dataCenter.folded"];
+//             }
+//             let keywordWithQuotes = keyword[i];
+//             boostedKeywords.push({
+//                 "simple_query_string": {
+//                     "query": keywordWithQuotes,
+//                     "fields": fields,
+//                     "default_operator": "or",
+//                     "boost": booster
+//                 }
+//             });
+//         }
+//
+//         queryObj = {
+//             "bool": {
+//                 "should": boostedKeywords
+//             }
+//         };
+//     } else {
+//         return {"match_all": {}};
+//     }
+//
+//
+//     queryObj = {
+//         "bool": {
+//             "must": [{
+//                 "bool": {
+//                     "should": boostedKeywords
+//                 }
+//             }],
+//             "filter": filterArray
+//         }
+//     }
+//
+//
+//     return queryObj;
+// }
 
-        queryObj = {
-            "bool": {
-                "should": boostedKeywords
-            }
-        };
-    } else {
-        return {"match_all": {}};
-    }
-
-
-    queryObj = {
-        "bool": {
-            "must": [{
-                "bool": {
-                    "should": boostedKeywords
-                }
-            }],
-            "filter": filterArray
-        }
-    }
-
-
-    return queryObj;
-}
 function getQuery(keyword, filterArray) {
     //console.log(keyword)
-    var queryObj = {};
-    var boostedKeywords = [];
+    let queryObj = {};
+    let boostedKeywords = [];
     console.log(keyword)
 
     //keyword array with original term [0] and expanded terms [1] - [X]
     if (keyword.length > 0) {
-        var firstKeyWord = keyword[0];
+        let firstKeyWord = keyword[0];
         keyword.shift();
-        var keysWithParanthesis = []
+        let keysWithParanthesis = []
         for (let i = 0; i < keyword.length; i++) {
             keysWithParanthesis.push('(' + keyword[i] + ')');
         }
-        var secondKeyWord = keysWithParanthesis.join(' ');
-        var firstBooster = getBooster(1, firstKeyWord)
-        var secondBooster = getBooster(2, secondKeyWord)
+        let secondKeyWord = keysWithParanthesis.join(' ');
+        let firstBooster = getBooster(1, firstKeyWord)
+        let secondBooster = getBooster(2, secondKeyWord)
         boostedKeywords.push(firstBooster);
         boostedKeywords.push(secondBooster);
 
@@ -886,30 +881,30 @@ function getQuery(keyword, filterArray) {
 
     return queryObj;
 }
+
 function getBooster(level, keys) {
-        var booster = level; //less priority to expanded terms
-        var fields = [];
-        if (level === 1) { // higher priority to original keyword
-            booster = 2.2;
-            fields = ["citation_title^3", "citation_title.folded^2.1",
-                "description^2.1", "description.folded",
-                "type.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
-            //["fulltext", "fulltext.folded^.7", "citation^3", "citation.folded^2.1"];
-        } else { // extended keywords
-            booster = 1;
-            fields = ["citation_title^3", "citation_title.folded^2.1",
-                "description^2.1", "description.folded",
-                "parameter.folded", "region.folded", "dataCenter.folded"];
+    let booster; //less priority to expanded terms
+    let fields;
+    if (level === 1) { // higher priority to original keyword
+        booster = 2.2;
+        fields = ["citation_title^3", "citation_title.folded^2.1",
+            "description^2.1", "description.folded",
+            "type.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
+        //["fulltext", "fulltext.folded^.7", "citation^3", "citation.folded^2.1"];
+    } else { // extended keywords
+        booster = 1;
+        fields = ["citation_title^3", "citation_title.folded^2.1",
+            "description^2.1", "description.folded",
+            "parameter.folded", "region.folded", "dataCenter.folded"];
+    }
+    return {
+        "simple_query_string": {
+            "query": keys,
+            "fields": fields,
+            "default_operator": "or",
+            "boost": booster
         }
-        var obj = {
-            "simple_query_string": {
-                "query": keys,
-                "fields": fields,
-                "default_operator": "or",
-                "boost": booster
-            }
-        }
-        return obj;
+    }
 }
 
 
@@ -996,16 +991,16 @@ function getCompleteQuery(boostedQuery, iDisplayStart, iDisplayLength) {
  ** Output: array with keywords
  **/
 function extractHighlightedSearch(highlightArray) {
-    var jArr = [];
-    for (var fieldsKey in highlightArray) {
+    let jArr = [];
+    for (let fieldsKey in highlightArray) {
         //console.log("key:"+fieldsKey+", value:"+highlightArray[fieldsKey]); 
-        var fieldsArray = highlightArray[fieldsKey];
-        for (j = 0; j < fieldsArray.length; j++) {
-            var highlightedText = fieldsArray[j];
+        let fieldsArray = highlightArray[fieldsKey];
+        for (let j = 0; j < fieldsArray.length; j++) {
+            let highlightedText = fieldsArray[j];
             //console.log(highlightedText);
-            var startTag = highlightedText.indexOf("<em>");
-            var endTag = 0;
-            var taggedText = "";
+            let startTag = highlightedText.indexOf("<em>");
+            let endTag = 0;
+            let taggedText = "";
             while (startTag >= 0) {
                 endTag = highlightedText.indexOf("</em>", startTag);
                 taggedText = highlightedText.substring(startTag + 4, endTag);
@@ -1015,9 +1010,9 @@ function extractHighlightedSearch(highlightArray) {
                 startTag = highlightedText.indexOf("<em>", endTag + 5);
             }
         }
-        ;
+
     }
-    ;
+
     return jArr;
 }
 
