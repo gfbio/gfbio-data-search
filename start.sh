@@ -44,6 +44,7 @@ cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.js search-ui/build/static/js/
 # adding css
 mkdir -p search-ui/build/static/css
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.css search-ui/build/static/css/
+echo "CSS ----------------------------"
 
 # adding fonts
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.woff search-ui/build/static/css/
@@ -52,15 +53,19 @@ cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.ttf search-ui/build/static/cs
 
 mkdir -p search-ui/build/static/fonts
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/static/fonts/* search-ui/build/static/fonts/
+echo "FONTS ----------------------------"
 
 mkdir -p search-ui/build/assets/img
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/assets/img/* search-ui/build/assets/img/
+echo "IMAGES ----------------------------"
 
 # copy third party css's
 cp search-ui/src/third-party-css/*.css search-ui/build/static/css/
-# clean submodule folder
-# cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
+echo "3rd PARTY CSS ----------------------------"
 
-# restart docker
+## clean submodule folder
+## cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
+#
+## restart docker
 docker-compose down
 docker-compose up -d
