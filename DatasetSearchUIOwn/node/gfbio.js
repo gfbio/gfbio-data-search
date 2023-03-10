@@ -1,16 +1,29 @@
-import {Router} from "express";
-import axios from "axios";
-import fs from "fs";
-import JSZip from "jszip";
-
-import {cartesianProduct} from "cartesian-product-multiple-arrays";
-
-const router = Router();
-const basket = require('./controllers/basket.controller')
-
-// FIXME: module to establish a connection to Elasticsearch.
-//  currently not needed
-// var search = require('./connectionElastic');
+// import {Router} from "express";
+// import axios from "axios";
+// import fs from "fs";
+// import JSZip from "jszip";
+//
+// import {cartesianProduct} from "cartesian-product-multiple-arrays";
+//
+// const router = Router();
+// const basket = require('./controllers/basket.controller')
+//
+// // FIXME: module to establish a connection to Elasticsearch.
+// //  currently not needed
+// // var search = require('./connectionElastic');
+var express = require('express');
+var app = express();
+var router = require('express').Router();
+var bodyParser = require('body-parser').json();
+const axios = require('axios');
+const Blob = require('node-blob');
+var FileSaver = require('file-saver');
+var fs = require("fs");
+var JSZip = require("jszip");
+var basket = require('./controllers/basket.controller')
+// module to establish a connection to Elasticsearch
+// currently not needed
+//var search = require('./connectionElastic');
 
 const GFBioTS_URL = process.env.GFBIOTS_URL;
 const Pangaea_URL = process.env.PANGAEA_URL;
@@ -21,6 +34,7 @@ const COLLECTIONS_API_URL = process.env.COLLECTIONS_API_URL;
 const COLLECTIONS_API_TOKEN = process.env.COLLECTIONS_API_TOKEN;
 const VAT_ROOT_URL = process.env.VAT_ROOT_URL;
 
+const {cartesianProduct} = require('cartesian-product-multiple-arrays');
 // Sets up the routes.
 /********************** GFBIO code *******************/
 /**

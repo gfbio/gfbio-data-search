@@ -25,6 +25,16 @@
   
   
   -------------------------------
+## DASS-571 build problems
+
+- docker-compose build --no-cache
+otherwise it seems that the backend is not build properly, the sourceso
+of /node are not updated when using ./start.sh
+- if then ./start.sh is executed the search ui is not shown in the browser
+- the local variant, using ng serve or npm run start works
+
+
+  -------------------------------
   
   
   - git fetch
