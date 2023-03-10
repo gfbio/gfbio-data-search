@@ -17,6 +17,10 @@ const Pangaea_URL = process.env.PANGAEA_URL;
 const Pangaea_Suggest_URL = process.env.PANGAEA_SUGGEST_URL;
 const TERMINOLOGY_SUGGEST_URL = process.env.TERMINOLOGY_SUGGEST_URL;
 
+const COLLECTIONS_API_URL = process.env.COLLECTIONS_API_URL;
+const COLLECTIONS_API_TOKEN = process.env.COLLECTIONS_API_TOKEN;
+const VAT_ROOT_URL = process.env.VAT_ROOT_URL;
+
 // Sets up the routes.
 /********************** GFBIO code *******************/
 /**
@@ -58,7 +62,7 @@ const TERMINOLOGY_SUGGEST_URL = process.env.TERMINOLOGY_SUGGEST_URL;
  */
 router.post('/search', (req, res) => {
 
-    console.log('/search' + req.body);
+    console.log('/search body  : ' + req.body);
     //in case you want to use the elasticmodule
     /*search.sendQuery(req.body).then(resp=>{
 
@@ -79,7 +83,7 @@ router.post('/search', (req, res) => {
 
     //get the keyword from the body
     const keyword = req.body.queryterm;
-    console.log('keywords: ' + keyword)
+    console.log('keywords updated: ' + keyword);
     let filter = [];
     let from = 0;
     let size = 0;
@@ -742,6 +746,34 @@ router.post('/broad', (req, res) => {
             });
         });
 
+})
+
+
+router.post('/collection', (req, res) => {
+    console.log('POST COLLECTION');
+    console.log('req.body ');
+    console.log(req.body);
+    // const selectedBasket = req.body.basket;
+    const headers = {
+        accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
+    };
+    // const body = {
+    //     set: selectedBasket,
+    //     external_user_id: userId
+    // };
+    return axios.post(COLLECTIONS_API_URL, req.body, headers).then(resp => {
+        console.log("data is: " + JSON.stringify(data));
+        // if you receive data - send it back
+        res.status(200).send(resp.data);
+    }).catch(err => {
+        //in error case - log it and send the error
+        console.log(err);
+        return res.status(500).json({
+            msg: 'Error', err
+        });
+    });
 })
 
 
