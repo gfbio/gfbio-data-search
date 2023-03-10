@@ -6,7 +6,6 @@ import {Basket} from '../models/basket';
 import {Hit} from '../models/result/hit';
 import {plainToClass} from 'class-transformer';
 import {KeycloakService} from 'keycloak-angular';
-// import {gfbioEnvironment} from '../../environments/gfbio.environment';
 
 @Component({
     selector: 'app-basket-dialog',
@@ -33,6 +32,7 @@ export class BasketDialogComponent implements OnInit {
     collectionId = ``;
     linkToVatForVisualization = ``;
     vatButtonText = `visualize in VAT`;
+    vatUrl = environment.vatRootUrl;
 
     constructor(
         public dialogRef: MatDialogRef<BasketDialogComponent>,
@@ -77,7 +77,7 @@ export class BasketDialogComponent implements OnInit {
     }
 
     showVATButton(): boolean {
-        return (gfbioEnvironment.production !== true);
+        return (environment.production !== true);
     }
 
     sendBasketToCollectionService(collectionId): void {
@@ -112,7 +112,7 @@ export class BasketDialogComponent implements OnInit {
         this.vatButtonText = `visualize in VAT`;
         if ('id' in data) {
             this.collectionId = `${data.id}`;
-            this.linkToVatForVisualization = `${gfbioEnvironment.VAT_ROOT_URL}/#/?collectionId=${data.id}`;
+            this.linkToVatForVisualization = `${this.vatUrl}/#/?collectionId=${data.id}`;
             this.vatButtonText = `update Visualization link`;
         }
         this.spinner = false;
