@@ -764,28 +764,16 @@ router.post('/broad', (req, res) => {
 
 
 router.post('/collection', (req, res) => {
-    console.log('POST COLLECTION');
-    console.log('req.body ');
-    console.log(req.body);
-    // const selectedBasket = req.body.basket;
     const headers = {
         accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
     };
-    // const body = {
-    //     set: selectedBasket,
-    //     external_user_id: userId
-    // };
-    return axios.post(COLLECTIONS_API_URL, req.body, headers).then(resp => {
-        console.log("data is: " + JSON.stringify(data));
-        // if you receive data - send it back
+    return axios.post(COLLECTIONS_API_URL, req.body, {headers: headers}).then(resp => {
         res.status(200).send(resp.data);
     }).catch(err => {
-        //in error case - log it and send the error
-        console.log(err);
         return res.status(500).json({
-            msg: 'Error', err
+            msg: 'Error while posting to /collection'
         });
     });
 })

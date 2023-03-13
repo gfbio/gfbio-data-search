@@ -1,44 +1,25 @@
 #!/bin/bash
 
-# deactive default navbar
-# sed -i 's/class="toolbarMenu"/class="toolbarMenu" style="display:none;"/g' DatasetSearchUIOwn/angular/src/app/app.component.html
+# deactivate default navbar
+sed -i 's/class="toolbarMenu"/class="toolbarMenu" style="display:none;"/g' DatasetSearchUIOwn/angular/src/app/app.component.html
+
 # some node versions error out
 # https://stackoverflow.com/questions/69665222/node-js-17-0-1-gatsby-error-digital-envelope-routinesunsupported-err-os
 # because of: node: --openssl-legacy-provider is not allowed in NODE_OPTIONS
 # export NODE_OPTIONS=--openssl-legacy-provider
 
 # install and build
-# NG_CLI_ANALYTICS=ci will not ask if you want to participate in angular analitics during package installation
-# cd DatasetSearchUIOwn/angular/ && NG_CLI_ANALYTICS=ci npm i --force && ng build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization && cd ../../
-
 cd DatasetSearchUIOwn/angular/
-pwd
 NG_CLI_ANALYTICS=ci npm i --force
 ng build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization
 cd ../../
-
 echo "after build in DatasetSearchUIOwn/angular/"
-pwd
 echo "----------------------------"
-
-# build our own react app
-# cd search-ui && npm --force i && npm run build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization && cd ../
-#cd search-ui
-#pwd
-#npm --force i
-#npm run build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization
-#cd ../
-#
-#echo "after build in search-ui/"
-pwd
-echo "----------------------------"
-
-
 
 # copy files from angular
 mkdir -p search-ui/build/static/js/angular
+echo "COPY FILES FROM ANGULAR ----------------------------"
 pwd
-echo "----------------------------"
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.js search-ui/build/static/js/angular/
 
 # adding css
@@ -63,9 +44,11 @@ echo "IMAGES ----------------------------"
 cp search-ui/src/third-party-css/*.css search-ui/build/static/css/
 echo "3rd PARTY CSS ----------------------------"
 
-## clean submodule folder
-## cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
-#
-## restart docker
+# TODO: is this important ? Why is this in comments ?
+# clean submodule folder
+# cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
+
+# restart docker
 docker-compose down
+docker-compose build
 docker-compose up -d
