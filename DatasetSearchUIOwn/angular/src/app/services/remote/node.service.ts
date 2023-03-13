@@ -77,30 +77,11 @@ export class NodeService {
     }
 
     basketDownload(baskets): any {
-        // console.log('basketDownload | baskets');
-        // console.log(baskets);
-        // console.log('post to this.url ', this.url, ' | this.basketURL ', this.basketURL);
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
     }
 
 
     postBasketToCollection(baskets, userId): any {
-        console.log('postBasketToCollection | baskets');
-        console.log(baskets);
-        console.log('postBasketToCollection | baskets');
-        console.log(baskets);
-        // const headers = {
-        //     accept: 'application/json',
-        //     'Content-Type': 'application/json',
-        //     Authorization: `Token ${gfbioEnvironment.COLLECTIONS_API_TOKEN}`,
-        //
-        // };
-        // // console.log('Here a http post to collection service will take place');
-        // // TODO: I think it is exactly this payload but sended to collectionservice host
-        // return this.http.post(gfbioEnvironment.COLLECTIONS_API_URL, {
-        //     set: baskets.basket,
-        //     external_user_id: userId
-        // }, {headers});
         const headers = this.headers;
         const body = {
             set: baskets.basket,
