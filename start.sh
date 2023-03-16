@@ -48,6 +48,7 @@ echo "3rd PARTY CSS ----------------------------"
 # clean submodule folder
 # cd DatasetSearchUI && git reset --hard && git clean -f -d && cd ../
 
+
 # restart docker
 docker-compose down
 docker-compose build
