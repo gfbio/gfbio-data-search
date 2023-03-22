@@ -143,25 +143,25 @@
                 download
             </button>
 
-<!--            <div *ngIf="showVATButton()">-->
-<!--                <button-->
-<!--                        class="btn btn-success"-->
-<!--                        (click)=sendBasketToCollectionService(collectionId)-->
-<!--                        [disabled]="data.length === 0"-->
-<!--                >-->
-<!--                    <mat-icon inline="true">explore</mat-icon>-->
-<!--                    {{vatButtonText}}-->
-<!--                </button>-->
+            <div *ngIf="showVATButton()">
+                <button
+                        class="btn btn-success"
+                        (click)=sendBasketToCollectionService(collectionId)
+                        [disabled]="data.length === 0"
+                >
+                    <mat-icon inline="true">explore</mat-icon>
+                    {{vatButtonText}}
+                </button>
 
-<!--                &lt;!&ndash; (click)="resetVatLink()"&ndash;&gt;-->
-<!--                <a *ngIf="linkToVatForVisualization.length > 0" href="{{linkToVatForVisualization}}" target="_blank"-->
-<!--                   rel="noopener noreferrer"-->
-<!--                   class="btn btn-warning ml-3"-->
-<!--                >-->
-<!--                    <mat-icon inline="true">explore</mat-icon>-->
-<!--                    Open Visualization-->
-<!--                </a>-->
-<!--            </div>-->
+                <!-- (click)="resetVatLink()"-->
+                <a *ngIf="linkToVatForVisualization.length > 0" href="{{linkToVatForVisualization}}" target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn-warning ml-3"
+                >
+                    <mat-icon inline="true">explore</mat-icon>
+                    Open Visualization
+                </a>
+            </div>
         </mat-dialog-actions>
     </div>
 </div>

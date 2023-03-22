@@ -4,7 +4,8 @@ import {NgxSpinnerService} from 'ngx-spinner';
 import {CommunicationService} from '../local/communication.service';
 import {Result} from '../../models/result/result';
 import {environment} from '../../../environments/environment';
-import {gfbioEnvironment} from '../../../environments/gfbio.environment';
+
+// import {gfbioEnvironment} from '../../../environments/gfbio.environment';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,7 @@ export class NodeService {
     deleteFromBasketUrl = environment.context + environment.deleteFromBasket;
     deleteAllBasketUrl = environment.context + environment.deleteAllBasket;
     readFromBasketUrl = environment.context + environment.readFromBasketUrl;
+    collectionUrl = environment.collections;
     semantic = false;
     headers: { 'Content-Type': string } = {'Content-Type': 'application/json'};
 
@@ -75,28 +77,17 @@ export class NodeService {
     }
 
     basketDownload(baskets): any {
-        // console.log('basketDownload | baskets');
-        // console.log(baskets);
-        // console.log('post to this.url ', this.url, ' | this.basketURL ', this.basketURL);
         return this.http.post(this.url + this.basketURL, baskets, {responseType: 'blob'});
     }
 
 
     postBasketToCollection(baskets, userId): any {
-        // console.log('postBasketToCollection | baskets');
-        // console.log(baskets);
-        const headers = {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Token ${gfbioEnvironment.COLLECTIONS_API_TOKEN}`,
-
-        };
-        // console.log('Here a http post to collection service will take place');
-        // TODO: I think it is exactly this payload but sended to collectionservice host
-        return this.http.post(gfbioEnvironment.COLLECTIONS_API_URL, {
+        const headers = this.headers;
+        const body = {
             set: baskets.basket,
             external_user_id: userId
-        }, {headers});
+        };
+        return this.http.post<any>(this.url + '/gfbio' + this.collectionUrl, body, {headers});
     }
 
 
