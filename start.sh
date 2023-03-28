@@ -6,13 +6,19 @@ sed -i 's/class="toolbarMenu"/class="toolbarMenu" style="display:none;"/g' Datas
 # some node versions error out
 # https://stackoverflow.com/questions/69665222/node-js-17-0-1-gatsby-error-digital-envelope-routinesunsupported-err-os
 # because of: node: --openssl-legacy-provider is not allowed in NODE_OPTIONS
-# export NODE_OPTIONS=--openssl-legacy-provider
+export NODE_OPTIONS=--openssl-legacy-provider
 
 # install and build
-cd DatasetSearchUIOwn/angular/
+pushd DatasetSearchUIOwn/angular/
 NG_CLI_ANALYTICS=ci npm i --force
 ng build --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization
-cd ../../
+popd
+
+pushd search-ui 
+npm --force i 
+npm run build -- --configuration=production --output-hashing=none --aot=true --sourceMap=false --buildOptimizer=true --optimization
+popd
+
 echo "after build in DatasetSearchUIOwn/angular/"
 echo "----------------------------"
 
@@ -21,10 +27,12 @@ mkdir -p search-ui/build/static/js/angular
 echo "COPY FILES FROM ANGULAR ----------------------------"
 pwd
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.js search-ui/build/static/js/angular/
+# cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.js.map search-ui/build/static/js/angular/
 
 # adding css
 mkdir -p search-ui/build/static/css
 cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.css search-ui/build/static/css/
+# cp DatasetSearchUIOwn/angular/dist/DatasetSearch/*.css.map search-ui/build/static/css/
 echo "CSS ----------------------------"
 
 # adding fonts
@@ -51,5 +59,7 @@ echo "3rd PARTY CSS ----------------------------"
 
 # restart docker
 docker-compose down
+# docker-compose build
+# docker-compose build --no-cache --force-rm
 docker-compose build
 docker-compose up -d
