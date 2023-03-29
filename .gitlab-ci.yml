@@ -55,6 +55,7 @@ tag_release:
   script:
     - cp /home/gitlab-runner/.search-gfbio.env ./.env
     - cp /home/gitlab-runner/.search-gfbio.angular.env ./DatasetSearchUIOwn/angular/.env
+    - cp /home/gitlab-runner/.environment.prod.ts ./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts
     - docker-compose -f staging.yml build --no-cache --force-rm
     - docker-compose -f staging.yml down
     - docker-compose -f staging.yml up -d
@@ -68,7 +69,7 @@ web_test_update:
   variables:
     PROJECT_NAME: "gfbio-search"
     COMPOSE_FILE: "web-test.yml"
-    CONFIG_FRONTEND: "./DatasetSearchUIOwn/angular/src/environments/environment.ts"
+    # CONFIG_FRONTEND: "./DatasetSearchUIOwn/angular/src/environments/environment.ts"
     # CONFIG_FRONTEND_PROD: "./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts"
   script:
     # get issue id and test name
@@ -78,10 +79,12 @@ web_test_update:
     # - rm -r ./.envs/
     # - cp -r /home/gitlab-runner/.gfbio_dmp_envs/ ./.envs/
     - cp /home/gitlab-runner/.search-gfbio-tag-release.env ./.env
+    - cp /home/gitlab-runner/.search-gfbio.angular.env ./DatasetSearchUIOwn/angular/.env
+    - cp /home/gitlab-runner/.environment.prod.ts ./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts
 
     # - sed -i s/DJANGO_ALLOWED_HOSTS=.*/DJANGO_ALLOWED_HOSTS=\.$TEST_NAME\.test.gfbio\.dev/g .envs/.production/.django
     - sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
-    - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND
+    # - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND
     # - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND_PROD
 
     # remove email verification requirements from web-test
