@@ -58,8 +58,6 @@ export class BasketDialogComponent implements OnInit {
         };
         this.nodeService.basketDownload(basket).subscribe(data => this.downloadSuccess(data),
             err => this.downloadFailed());
-
-
     }
 
     downloadFailed(): void {
@@ -76,18 +74,12 @@ export class BasketDialogComponent implements OnInit {
         this.spinner = false;
     }
 
-    showVATButton(): boolean {
-        return (environment.production !== true);
-    }
-
     sendBasketToCollectionService(collectionId): void {
         this.spinner = true;
         this.linkToVatForVisualization = '';
         const basket = {
             basket: this.data
         };
-        // TODO: currently there is no PUT implemented in the collection service, thus no update is possible
-        console.log('sendBasketToCollectionService | collectionId ', collectionId);
         this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
             err => this.sendCollectionFailed(err));
     }
