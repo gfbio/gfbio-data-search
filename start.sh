@@ -60,6 +60,6 @@ echo "3rd PARTY CSS ----------------------------"
 # restart docker
 docker-compose down
 # docker-compose build
-# docker-compose build --no-cache --force-rm
-docker-compose build
+docker-compose build --no-cache --force-rm
+#docker-compose build
 docker-compose up -d

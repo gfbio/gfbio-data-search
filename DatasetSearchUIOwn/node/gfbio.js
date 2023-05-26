@@ -75,7 +75,7 @@ const {cartesianProduct} = require('cartesian-product-multiple-arrays');
  *         description: hits.hits contains an array with dataset objects matching the query.
  */
 router.post('/search', (req, res) => {
-
+    console.warn('POST /search');
     console.log('/search body  : ' + req.body);
     //in case you want to use the elasticmodule
     /*search.sendQuery(req.body).then(resp=>{
@@ -764,6 +764,7 @@ router.post('/broad', (req, res) => {
 
 
 router.post('/collection', (req, res) => {
+    console.log('POST COLLECTION ------------');
     const headers = {
         accept: 'application/json',
         'Content-Type': 'application/json',
