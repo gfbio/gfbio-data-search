@@ -1,26 +1,3 @@
-# stages:
-#   - build_and_update_staging
-#
-# build_and_update_staging:
-#   stage: build_and_update_staging
-#   variables:
-#     GIT_SUBMODULE_STRATEGY: normal
-#   script:
-#     - cp /home/gitlab-runner/.search-gfbio.env ./.env
-#     - docker-compose -f staging.yml build --no-cache --force-rm
-#     - docker-compose -f staging.yml down
-#     - docker-compose -f staging.yml up -d
-#   environment:
-#     name: production
-#     url: https://search.gfbio.dev/
-#   rules:
-#     - if: '$CI_COMMIT_BRANCH == "main"'
-#   tags:
-#     - docker-lxc
-#
-# according to https://gitlab.gwdg.de/gfbio/cicd -------------------------------
-# before_script:
-#   - docker info
 include:
   - project: gfbio/cicd
     file:
@@ -54,7 +31,7 @@ tag_release:
     GIT_SUBMODULE_STRATEGY: normal
   script:
     - cp /home/gitlab-runner/.search-gfbio.env ./.env
-    - cp /home/gitlab-runner/.search-gfbio.angular.env ./DatasetSearchUIOwn/angular/.env
+    - cp /home/gitlab-runner/.search-gfbio.node.env  ./DatasetSearchUIOwn/node/.env
     - cp /home/gitlab-runner/.environment.prod.ts ./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts
     - docker-compose -f staging.yml build --no-cache --force-rm
     - docker-compose -f staging.yml down
@@ -76,26 +53,12 @@ web_test_update:
     - ISSUE_ID=$(awk -F- '{print $2}' <<< ${CI_COMMIT_REF_NAME})
     - TEST_NAME=$ISSUE_ID-$PROJECT_NAME
     # your custom commands
-    # - rm -r ./.envs/
-    # - cp -r /home/gitlab-runner/.gfbio_dmp_envs/ ./.envs/
     - cp /home/gitlab-runner/.search-gfbio-tag-release.env ./.env
-    - cp /home/gitlab-runner/.search-gfbio.angular.env ./DatasetSearchUIOwn/angular/.env
+    - cp /home/gitlab-runner/.search-gfbio.node.env  ./DatasetSearchUIOwn/node/.env
     - cp /home/gitlab-runner/.environment.prod.ts ./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts
 
     # - sed -i s/DJANGO_ALLOWED_HOSTS=.*/DJANGO_ALLOWED_HOSTS=\.$TEST_NAME\.test.gfbio\.dev/g .envs/.production/.django
     - sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
-    # - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND
-    # - sed -i s/localhost/gfbio_search_backend/g $CONFIG_FRONTEND_PROD
-
-    # remove email verification requirements from web-test
-    # - sed -i 's/ACCOUNT_EMAIL_VERIFICATION = "mandatory"/ACCOUNT_EMAIL_VERIFICATION = "none"/g' config/settings/base.py
-    # set super user credentials from GitLab CI/CD Variables
-    # - sed -i s/ADMIN_NICKNAME=/ADMIN_NICKNAME=${ADMIN_NICKNAME}/g ./compose/production/django/ci_start
-    # - sed -i s/ADMIN_EMAIL=/ADMIN_EMAIL=${ADMIN_EMAIL}/g ./compose/production/django/ci_start
-    # - sed -i s/ADMIN_PASSWORD=/ADMIN_PASSWORD=${ADMIN_PASSWORD}/g ./compose/production/django/ci_start
-    # TODO: add dmpt-app specific build and copy commands
-    #    - cd ammod_ui && npm i && npm run collect
-    #    - cd ../
     - docker-compose -f $COMPOSE_FILE build
     # run docker stack
     - docker stack rm $TEST_NAME || true
