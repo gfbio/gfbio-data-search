@@ -58,7 +58,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     checkBoxClick(item: Hit): void {
-        // console.log('checkBoxClick(item: Hit): void | ...');
+        console.log('checkBoxClick(item: Hit): void | ...');
         if (item.getCheckBox()) {
             this.basketValues.push(item);
         } else {
@@ -69,13 +69,14 @@ export class SearchResultComponent implements OnInit, OnChanges {
     }
 
     basketClick(): void {
-        // console.log('basketClick(): void | ...');
+        console.log('basketClick(): void | ...');
         const dialogRef = this.dialog.open(BasketDialogComponent, {
             data: this.basketValues,
             disableClose: true
         });
         dialogRef.afterClosed().subscribe(basketValues => {
-
+            console.log('basketClick(): void | after close ... subscribe');
+            console.log(basketValues);
             this.basketValues = basketValues[0];
             this.result.getHits().forEach(resultValue => {
                 resultValue.setCheckbox(false);

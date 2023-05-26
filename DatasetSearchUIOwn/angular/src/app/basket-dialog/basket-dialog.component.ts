@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NodeService} from '../services/remote/node.service';
 import {environment} from '../../environments/environment';
-import {Basket} from '../models/basket';
 import {Hit} from '../models/result/hit';
 import {plainToClass} from 'class-transformer';
 import {KeycloakService} from 'keycloak-angular';
@@ -28,7 +27,7 @@ export class BasketDialogComponent implements OnInit {
     spinner = false;
     savedData: Array<Hit> = [];
     user;
-    basketId = ``;
+    // basketId = ``;
     collectionId = ``;
     linkToVatForVisualization = ``;
     vatButtonText = `visualize in VAT`;
@@ -41,7 +40,7 @@ export class BasketDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.initializeUserOptions();
-        this.basketId = '';
+        // this.basketId = '';
     }
 
     remove(item): void {
@@ -75,37 +74,49 @@ export class BasketDialogComponent implements OnInit {
     }
 
     sendBasketToCollectionService(collectionId): void {
+        console.log('sendBasketToCollectionService | collectionID');
+        console.log(collectionId);
+        console.log('basket/this.data ');
+        console.log(this.data);
+        console.log('-----------------\n');
         this.spinner = true;
         this.linkToVatForVisualization = '';
         const basket = {
             basket: this.data
         };
-        this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
-            err => this.sendCollectionFailed(err));
+        if (collectionId.length > 0) {
+            this.nodeService.updateBasketInCollection(basket, this.user, collectionId).subscribe(data => this.sendCollectionSuccess(data),
+                err => this.sendCollectionFailed(err));
+        } else {
+            this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
+                err => this.sendCollectionFailed(err));
+        }
     }
 
 
-    resetVatLink(): void {
-        console.log('RESET VAT LINK');
-    }
+    // resetVatLink(): void {
+    //     console.log('RESET VAT LINK');
+    // }
 
     sendCollectionFailed(err): void {
         console.log('sendCollectionFailed | err');
         console.log(err);
         this.linkToVatForVisualization = ``;
         this.collectionId = ``;
-        this.vatButtonText = `visualize in VAT`;
+        // this.vatButtonText = `visualize in VAT`;
         this.spinner = false;
     }
 
     sendCollectionSuccess(data): void {
+        console.log('sendBasketToCollectionService | sendCollectionSuccess');
+        console.log(data);
         this.linkToVatForVisualization = ``;
-        this.collectionId = ``;
-        this.vatButtonText = `visualize in VAT`;
+        this.collectionId = data.id;
+        // this.vatButtonText = `visualize in VAT`;
         if ('id' in data) {
             this.collectionId = `${data.id}`;
             this.linkToVatForVisualization = `${this.vatUrl}/#/?collectionId=${data.id}`;
-            this.vatButtonText = `update Visualization link`;
+            // this.vatButtonText = `update Visualization link`;
         }
         this.spinner = false;
     }
@@ -119,26 +130,26 @@ export class BasketDialogComponent implements OnInit {
         }
     }
 
-    saveBasket(): void {
-        const basket = new Basket();
-        basket.setContent(this.data);
-        basket.setUserId(this.user);
-        this.nodeService.addToBasket(basket).subscribe(val => {
-            this.basketId = JSON.stringify(val.basketId);
-        });
-        this.savedData = this.data.slice(0);
-    }
+    // saveBasket(): void {
+    //     const basket = new Basket();
+    //     basket.setContent(this.data);
+    //     basket.setUserId(this.user);
+    //     this.nodeService.addToBasket(basket).subscribe(val => {
+    //         this.basketId = JSON.stringify(val.basketId);
+    //     });
+    //     this.savedData = this.data.slice(0);
+    // }
 
-    checkSaveButton(): boolean {
-        if (this.data.length === 0) {
-            return true;
-        }
-        return JSON.stringify(this.data) === JSON.stringify(this.savedData);
-    }
+    // checkSaveButton(): boolean {
+    //     if (this.data.length === 0) {
+    //         return true;
+    //     }
+    //     return JSON.stringify(this.data) === JSON.stringify(this.savedData);
+    // }
 
-    visualize(): void {
-        alert(this.basketId);
-    }
+    // visualize(): void {
+    //     alert(this.basketId);
+    // }
 
     private initializeUserOptions(): void {
         try {

@@ -20,6 +20,8 @@ export class NodeService {
     deleteAllBasketUrl = environment.context + environment.deleteAllBasket;
     readFromBasketUrl = environment.context + environment.readFromBasketUrl;
     collectionUrl = environment.collections;
+    collectionUpdateUrl = environment.collectionsUpdate;
+
     semantic = false;
     headers: { 'Content-Type': string } = {'Content-Type': 'application/json'};
 
@@ -88,6 +90,16 @@ export class NodeService {
             external_user_id: userId
         };
         return this.http.post<any>(this.url + '/gfbio' + this.collectionUrl, body, {headers});
+    }
+
+    updateBasketInCollection(baskets, userId, collectionId): any {
+        const headers = this.headers;
+        const body = {
+            set: baskets.basket,
+            external_user_id: userId,
+            collection_id: collectionId
+        };
+        return this.http.post<any>(this.url + '/gfbio' + this.collectionUpdateUrl, body, {headers});
     }
 
 
