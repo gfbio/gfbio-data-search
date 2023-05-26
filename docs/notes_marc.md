@@ -81,6 +81,36 @@ of /node are not updated when using ./start.sh
 - http://localhost:4200/
 
 
+## downgrading, removing, installing, choose different version
+
+- ng version
+- node -v
+
+- sudo apt-get remove nodejs
+- sudo apt-get purge nodejs
+- sudo apt-get autoremove
+
+- node --version
+- ng version
+- npm --version
+ 
+
+- curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+- sudo apt-get install nodejs
+
+
+### https://hackernoon.com/best-way-to-install-node-and-keep-it-up-to-date
+
+- sudo npm install n -g
+- sudo n lts or sudo n latest or sudo n install <num>
+- node --version
+
+
+n
+3470  npm
+3471  npm --version
+3472  ng version
+3473  node --version
 ----------------------------------------------------------------------------------------------------
 
 ### NFDI4BIO-237:
