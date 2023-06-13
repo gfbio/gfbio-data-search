@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {NodeService} from '../services/remote/node.service';
 import {environment} from '../../environments/environment';
-import {Basket} from '../models/basket';
 import {Hit} from '../models/result/hit';
 import {plainToClass} from 'class-transformer';
 import {KeycloakService} from 'keycloak-angular';
@@ -28,7 +27,6 @@ export class BasketDialogComponent implements OnInit {
     spinner = false;
     savedData: Array<Hit> = [];
     user;
-    basketId = ``;
     collectionId = ``;
     linkToVatForVisualization = ``;
     vatButtonText = `visualize in VAT`;
@@ -41,7 +39,6 @@ export class BasketDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.initializeUserOptions();
-        this.basketId = '';
     }
 
     remove(item): void {
@@ -58,8 +55,6 @@ export class BasketDialogComponent implements OnInit {
         };
         this.nodeService.basketDownload(basket).subscribe(data => this.downloadSuccess(data),
             err => this.downloadFailed());
-
-
     }
 
     downloadFailed(): void {
@@ -76,44 +71,36 @@ export class BasketDialogComponent implements OnInit {
         this.spinner = false;
     }
 
-    showVATButton(): boolean {
-        return (environment.production !== true);
-    }
-
     sendBasketToCollectionService(collectionId): void {
         this.spinner = true;
         this.linkToVatForVisualization = '';
         const basket = {
             basket: this.data
         };
-        // TODO: currently there is no PUT implemented in the collection service, thus no update is possible
-        console.log('sendBasketToCollectionService | collectionId ', collectionId);
-        this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
-            err => this.sendCollectionFailed(err));
+        if (collectionId.length > 0) {
+            this.nodeService.updateBasketInCollection(basket, this.user, collectionId).subscribe(data => this.sendCollectionSuccess(data),
+                err => this.sendCollectionFailed(err));
+        } else {
+            this.nodeService.postBasketToCollection(basket, this.user).subscribe(data => this.sendCollectionSuccess(data),
+                err => this.sendCollectionFailed(err));
+        }
     }
 
-
-    resetVatLink(): void {
-        console.log('RESET VAT LINK');
-    }
 
     sendCollectionFailed(err): void {
         console.log('sendCollectionFailed | err');
         console.log(err);
         this.linkToVatForVisualization = ``;
         this.collectionId = ``;
-        this.vatButtonText = `visualize in VAT`;
         this.spinner = false;
     }
 
     sendCollectionSuccess(data): void {
         this.linkToVatForVisualization = ``;
-        this.collectionId = ``;
-        this.vatButtonText = `visualize in VAT`;
         if ('id' in data) {
             this.collectionId = `${data.id}`;
             this.linkToVatForVisualization = `${this.vatUrl}/#/?collectionId=${data.id}`;
-            this.vatButtonText = `update Visualization link`;
+            window.open(this.linkToVatForVisualization, '_blank');
         }
         this.spinner = false;
     }
@@ -123,30 +110,9 @@ export class BasketDialogComponent implements OnInit {
         const r = confirm('Are you sure that you want to empty the basket?');
         if (r === true) {
             this.data.splice(0, this.data.length);
-            // this.saveBasket();
         }
     }
 
-    saveBasket(): void {
-        const basket = new Basket();
-        basket.setContent(this.data);
-        basket.setUserId(this.user);
-        this.nodeService.addToBasket(basket).subscribe(val => {
-            this.basketId = JSON.stringify(val.basketId);
-        });
-        this.savedData = this.data.slice(0);
-    }
-
-    checkSaveButton(): boolean {
-        if (this.data.length === 0) {
-            return true;
-        }
-        return JSON.stringify(this.data) === JSON.stringify(this.savedData);
-    }
-
-    visualize(): void {
-        alert(this.basketId);
-    }
 
     private initializeUserOptions(): void {
         try {

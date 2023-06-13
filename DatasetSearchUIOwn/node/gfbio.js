@@ -75,7 +75,7 @@ const {cartesianProduct} = require('cartesian-product-multiple-arrays');
  *         description: hits.hits contains an array with dataset objects matching the query.
  */
 router.post('/search', (req, res) => {
-
+    console.warn('POST /search');
     console.log('/search body  : ' + req.body);
     //in case you want to use the elasticmodule
     /*search.sendQuery(req.body).then(resp=>{
@@ -189,10 +189,8 @@ router.post('/suggest-pan', (req, res) => {
     //specific data object required
     const data = {
         suggest: {
-            text: term,
-            completion: {
-                field: 'suggest',
-                size: 12
+            text: term, completion: {
+                field: 'suggest', size: 12
             }
         }
     }
@@ -313,8 +311,7 @@ router.post('/basketDownload', (req, res) => {
             const datalink = decodeURIComponent(result.linkage.data);
 
             axiosArray.push(axios.get(datalink, {
-                responseType: 'arraybuffer',
-                headers: {"Content-Type": "text/plain; charset=x-user-defined"}
+                responseType: 'arraybuffer', headers: {"Content-Type": "text/plain; charset=x-user-defined"}
             }));
         }
 
@@ -764,13 +761,14 @@ router.post('/broad', (req, res) => {
 
 
 router.post('/collection', (req, res) => {
+    console.log('POST COLLECTION ------------');
     const headers = {
-        accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
+        accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
     };
     return axios.post(COLLECTIONS_API_URL, req.body, {headers: headers}).then(resp => {
         res.status(200).send(resp.data);
+        console.log('collection post response ');
+        // console.log(resp.data);
     }).catch(err => {
         return res.status(500).json({
             msg: 'Error while posting to /collection'
@@ -778,6 +776,26 @@ router.post('/collection', (req, res) => {
     });
 })
 
+router.post('/collection-update', (req, res) => {
+    console.log('UPDATE COLLECTION ------------');
+    console.log('request body');
+    console.log(req.body.collection_id);
+    const headers = {
+        accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
+    };
+    const updateUrl = `${COLLECTIONS_API_URL}${req.body.collection_id}`;
+    console.log('updateURL: ', updateUrl);
+    return axios.put(updateUrl, req.body, {headers: headers}).then(resp => {
+        console.log('collection put response ');
+        res.status(200).send(resp.data);
+    }).catch(err => {
+        console.log('Error catch of PUT ');
+        console.log(err);
+        return res.status(500).json({
+            msg: 'Error while posting to /collection-update'
+        });
+    });
+})
 
 /****************** Helper function ******************************/
 
@@ -807,8 +825,7 @@ function getFilteredQuery(keyword, filterArray) {
 
     return {
         "bool": {
-            "must": queryObj,
-            "filter": filterArray
+            "must": queryObj, "filter": filterArray
         }
     };
 }
@@ -907,8 +924,7 @@ function getQuery(keyword, filterArray) {
                 "bool": {
                     "should": boostedKeywords
                 }
-            }],
-            "filter": filterArray
+            }], "filter": filterArray
         }
     }
 
@@ -921,22 +937,15 @@ function getBooster(level, keys) {
     let fields;
     if (level === 1) { // higher priority to original keyword
         booster = 2.2;
-        fields = ["citation_title^3", "citation_title.folded^2.1",
-            "description^2.1", "description.folded",
-            "type.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
+        fields = ["citation_title^3", "citation_title.folded^2.1", "description^2.1", "description.folded", "type.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
         //["fulltext", "fulltext.folded^.7", "citation^3", "citation.folded^2.1"];
     } else { // extended keywords
         booster = 1;
-        fields = ["citation_title^3", "citation_title.folded^2.1",
-            "description^2.1", "description.folded",
-            "parameter.folded", "region.folded", "dataCenter.folded"];
+        fields = ["citation_title^3", "citation_title.folded^2.1", "description^2.1", "description.folded", "parameter.folded", "region.folded", "dataCenter.folded"];
     }
     return {
         "simple_query_string": {
-            "query": keys,
-            "fields": fields,
-            "default_operator": "or",
-            "boost": booster
+            "query": keys, "fields": fields, "default_operator": "or", "boost": booster
         }
     }
 }
@@ -950,14 +959,11 @@ function getBooster(level, keys) {
 function applyBoost(query) {
     return {
         "function_score": {
-            "query": query,
-            "functions": [{
+            "query": query, "functions": [{
                 "field_value_factor": {
                     "field": "boost"
                 }
-            }
-            ],
-            "score_mode": "multiply"
+            }], "score_mode": "multiply"
         }
     }
 }
@@ -972,47 +978,32 @@ function applyBoost(query) {
  */
 function getCompleteQuery(boostedQuery, iDisplayStart, iDisplayLength) {
     return {
-        'query': boostedQuery,
-        'highlight': {
+        'query': boostedQuery, 'highlight': {
             'fields': {'*': {}}
-        },
-        'from': iDisplayStart,
-        'size': iDisplayLength,
-        'aggs': {
+        }, 'from': iDisplayStart, 'size': iDisplayLength, 'aggs': {
             'taxonomy': {
                 'terms': {
-                    'field': 'taxonomyFacet',
-                    'size': 50
+                    'field': 'taxonomyFacet', 'size': 50
                 }
-            },
-            'region': {
+            }, 'region': {
                 'terms': {
-                    'field': 'regionFacet',
-                    'size': 50
+                    'field': 'regionFacet', 'size': 50
                 }
-            },
-            'parameter': {
+            }, 'parameter': {
                 'terms': {
-                    'field': 'parameterFacet',
-                    'size': 50
+                    'field': 'parameterFacet', 'size': 50
                 }
-            },
-            'gfbioDataKind': {
+            }, 'gfbioDataKind': {
                 'terms': {
-                    'field': 'gfbioDataKindFacet',
-                    'size': 50
+                    'field': 'gfbioDataKindFacet', 'size': 50
                 }
-            },
-            'dataCenter': {
+            }, 'dataCenter': {
                 'terms': {
-                    'field': 'dataCenterFacet',
-                    'size': 50
+                    'field': 'dataCenterFacet', 'size': 50
                 }
-            },
-            'type': {
+            }, 'type': {
                 'terms': {
-                    'field': 'typeFacet',
-                    'size': 50
+                    'field': 'typeFacet', 'size': 50
                 }
             }
         }

@@ -12,6 +12,7 @@ export const environment = {
 
     vatRootUrl: 'https://vat.gfbio.dev',
     collections: '/collection',
+    collectionsUpdate: '/collection-update',
 
     apiUrl: 'http://localhost:3000',
     context: '/gfbio',
