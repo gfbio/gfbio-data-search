@@ -75,8 +75,8 @@ const {cartesianProduct} = require('cartesian-product-multiple-arrays');
  *         description: hits.hits contains an array with dataset objects matching the query.
  */
 router.post('/search', (req, res) => {
-    console.warn('POST /search');
-    console.log('/search body  : ' + req.body);
+    // console.warn('POST /search');
+    // console.log('/search body  : ' + req.body);
     //in case you want to use the elasticmodule
     /*search.sendQuery(req.body).then(resp=>{
 
@@ -97,7 +97,7 @@ router.post('/search', (req, res) => {
 
     //get the keyword from the body
     const keyword = req.body.queryterm;
-    console.log('keywords updated: ' + keyword);
+    // console.log('keywords updated: ' + keyword);
     let filter = [];
     let from = 0;
     let size = 0;
@@ -131,7 +131,7 @@ router.post('/search', (req, res) => {
     }
     //post it to GFBio elasticsearch index
     return axios.post(Pangaea_URL, data, config).then(resp => {
-        console.log("data is: " + JSON.stringify(data));
+        // console.log("data is: " + JSON.stringify(data));
 
         // if you receive data - send it back
         res.status(200).send(resp.data);
@@ -176,7 +176,7 @@ router.post('/search', (req, res) => {
  *         description: object with key 'suggest' containing an array with options
  */
 router.post('/suggest-pan', (req, res) => {
-    console.log('/suggest:' + req.body.term);
+    // console.log('/suggest:' + req.body.term);
     //get the term from the body
     const term = req.body.term
 
@@ -199,7 +199,7 @@ router.post('/suggest-pan', (req, res) => {
     return axios.post(Pangaea_Suggest_URL, data, config)
         .then((resp) => {
             //console.log(`Status: ${resp.status}`);
-            //console.log('Body: ', resp.data);
+            //// console.log('Body: ', resp.data);
             res.status(200).send(resp.data);
 
         })
@@ -242,7 +242,7 @@ router.post('/suggest-pan', (req, res) => {
  *         description: object with key 'suggest' containing an array with labels
  */
 router.post('/suggest-ter', (req, res) => {
-    console.log('/suggest:' + req.body.term);
+    // console.log('/suggest:' + req.body.term);
     //get the term from the body
     const term = req.body.term
 
@@ -591,15 +591,15 @@ router.post('/semantic-search', (req, res) => {
 
 
                     if (log.length > 0) {
-                        console.log("----- sourceTerminology : " + item.sourceTerminology);
-                        console.log("----- uri : " + item.uri);
+                        // console.log("----- sourceTerminology : " + item.sourceTerminology);
+                        // console.log("----- uri : " + item.uri);
                         console.log(log);
                     }
                 });
                 response.push(allKeyWords)
 
             }
-            console.log(" ************************** ");
+            // console.log(" ************************** ");
             let z = 0
             for (let i = 0; i < keywordsCombination.length; i++) {
                 for (let j = 0; j < keywordsCombination[i].length; j++) {
@@ -618,7 +618,7 @@ router.post('/semantic-search', (req, res) => {
             }
             console.log(lastArr)
             // allKeyWords = allKeyWords.filter((a, b) => allKeyWords.indexOf(a) === b)
-            // console.log('allKeyWords: '+ allKeyWords)
+            // // console.log('allKeyWords: '+ allKeyWords)
             // var semanticTerms = allKeyWords;
             // var semanticTerms = allKeyWords.join("|");
             //elastic call
@@ -657,7 +657,7 @@ router.post('/semantic-search', (req, res) => {
             // console.log("data is: " + JSON.stringify(data));
 
             //post the expanded query to GFBio elastic index
-            console.log("data is: " + JSON.stringify(data));
+            // console.log("data is: " + JSON.stringify(data));
             return axios.post(Pangaea_URL, data, config);
 
         }))
@@ -688,8 +688,8 @@ router.post('/semantic-search', (req, res) => {
                     }
                 }
             }
-            console.log(" ************************** ");
-            console.log("----- search terms found in datasets: " + extendedTerms.join(", "));
+            // console.log(" ************************** ");
+            // console.log("----- search terms found in datasets: " + extendedTerms.join(", "));
             resp.data.lastItem = extendedTerms;
 
             res.set('Content-Type', 'application/json');
@@ -706,7 +706,7 @@ router.post('/semantic-search', (req, res) => {
 })
 
 router.post('/narrow', (req, res) => {
-    console.log('narrow:' + req.body);
+    // console.log('narrow:' + req.body);
     //get term from the body
     const id = req.body.id
     const uri = req.body.uri
@@ -733,7 +733,7 @@ router.post('/narrow', (req, res) => {
 })
 
 router.post('/broad', (req, res) => {
-    console.log('broad:' + req.body);
+    // console.log('broad:' + req.body);
     //get term from the body
     const id = req.body.id
     const uri = req.body.uri
@@ -761,13 +761,13 @@ router.post('/broad', (req, res) => {
 
 
 router.post('/collection', (req, res) => {
-    console.log('POST COLLECTION ------------');
+    // console.log('POST COLLECTION ------------');
     const headers = {
         accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
     };
     return axios.post(COLLECTIONS_API_URL, req.body, {headers: headers}).then(resp => {
         res.status(200).send(resp.data);
-        console.log('collection post response ');
+        // console.log('collection post response ');
         // console.log(resp.data);
     }).catch(err => {
         return res.status(500).json({
@@ -777,19 +777,19 @@ router.post('/collection', (req, res) => {
 })
 
 router.post('/collection-update', (req, res) => {
-    console.log('UPDATE COLLECTION ------------');
-    console.log('request body');
+    // console.log('UPDATE COLLECTION ------------');
+    // console.log('request body');
     console.log(req.body.collection_id);
     const headers = {
         accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Token ${COLLECTIONS_API_TOKEN}`,
     };
     const updateUrl = `${COLLECTIONS_API_URL}${req.body.collection_id}`;
-    console.log('updateURL: ', updateUrl);
+    // console.log('updateURL: ', updateUrl);
     return axios.put(updateUrl, req.body, {headers: headers}).then(resp => {
-        console.log('collection put response ');
+        // console.log('collection put response ');
         res.status(200).send(resp.data);
     }).catch(err => {
-        console.log('Error catch of PUT ');
+        // console.log('Error catch of PUT ');
         console.log(err);
         return res.status(500).json({
             msg: 'Error while posting to /collection-update'
@@ -807,7 +807,7 @@ router.post('/collection-update', (req, res) => {
  */
 function getFilteredQuery(keyword, filterArray) {
     let queryObj;
-    console.log(':: filterArray ' + JSON.stringify(filterArray));
+    // console.log(':: filterArray ' + JSON.stringify(filterArray));
     if (keyword !== "") {
         queryObj = {
             "simple_query_string": {
