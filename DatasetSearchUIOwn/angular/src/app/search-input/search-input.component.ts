@@ -88,7 +88,7 @@ export class SearchInputComponent implements OnInit {
       this.inputAnalysis
         .getAnalysis2(this.searchKey, semantic)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           const keyAndSemantic = [response, semantic];
           // console.log(keyAndSemantic);
           this.searchKeyEmmit.emit(keyAndSemantic);
