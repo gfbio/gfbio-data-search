@@ -1,22 +1,26 @@
 # GFBio search 
+# 
+## Description
 
-This repository holds the search interface of GFBio. It is based on the Dai:Si
-search interface. That interface is written in Angular and also comes with a
-node server to handle the backend related tasks.
+The GfBio search is based on the Dai:Si search UI and enables a search of
+Datasets which are distributed and published across th GfBio data centers. The
+data centers and the data sources they provide are listed in an aggregator
+https://bms.gfbio.org/. A harvester is collecting the resources from the
+aggregator and extracts the information into an elastic search index. 
 
-## Local development 
+## Developer guide 
 
-Clone the repository. Then check out the DatasetSearchUI as submodule. Finally,
-run the start script to get a fully dockerized local version.
-
-Run `start.sh` script:  
+The UI component itself is writtin in Angular and combined with a thin backend
+layer which is written in node which takes care of data handling. You can clone
+the repository and adapt the source code to your needs. A test instance of the
+search can be built for local testing using the start script which is included
+in the repository. it builds the UI and the backend and runs the search
+interface in a dockerzed environment available for you exploration and
+development via the browser. 
 
 ```
 ./start.sh
 ```
-
-It will automatically restart docker containers if they are already running.  
-For more details please have a look inside `start.sh` script.
 
 Stopping the containers manually.
 
@@ -24,27 +28,8 @@ Stopping the containers manually.
 docker-compose down
 ```
 
-## The submodule approach 
+## References
 
-The main purpose of using the submodule structure is to developm in the
-search-ui folder our own version of the search with different branding and nav
-e.g. So the **search-iu** folder is a simple create-react-app with only one
-component called NavBar at the moment.
-
-## Branches
-
-Currently, there are two important branches in here. One contains an NFDI
-branded version of the search interface. This is in the 24-ddp branch. Please
-do not merge it into master. 
-
-Master contains the tip of development and the currently productive instance of
-the GFBio branded search.
-
-## Deployment
-
-Currently, we have two machines deployed on DenBi running code from master and
-from the 24-ddp branch. They both are located on the machine docker-lxc in the
-DenBi dev project being reachable at 
-
-* search.gfbio.dev (future search.gfbio.org, gfbio productive search instance)
-* ddp.gfbio.dev (data discover portal prepared for all hands conference and future nfdi4bio search)
+Shafiei, F., Löffler, F., Thiel, S., Opasjumruskit, K., Grabiger, D., Rauh, P.,
+König-Ries, B.: [Dai:Si] - A Modular Dataset Retrieval Framework with a
+Semantic Search for Biological Data, 2021
