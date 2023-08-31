@@ -1,18 +1,16 @@
-# GFBio search 
-# 
+# GFBio Data Search # 
 ## Description
 
-The GfBio search is based on the Dai:Si search UI and enables a search of
-Datasets which are distributed and published across th GfBio data centers. The
-data centers and the data sources they provide are listed in an aggregator
-https://bms.gfbio.org/. A harvester is collecting the resources from the
-aggregator and extracts the information into an elastic search index. 
+The GFBio Data Search is based on the [Dai:Si search UI](#ref1) and enables a search of datasets
+which are distributed and published across th [GFBio data centers](https://gfbio.org/data-centers/).
+The data centers and the data sources they provide are listed in an aggregator service. 
+A harvester servuice collects the resources from the aggregator and extracts the information into an Elasticsearch index. 
 
 ## Developer guide 
 
-The UI component itself is writtin in Angular and combined with a thin backend
-layer which is written in node which takes care of data handling. You can clone
-the repository and adapt the source code to your needs. A test instance of the
+The UI component itself is writtin in Angular and combined with a thin backend layer
+which is written in node which takes care of data handling. You can clone the repository
+and adapt the source code to your needs. A test instance of the
 search can be built for local testing using the start script which is included
 in the repository. it builds the UI and the backend and runs the search
 interface in a dockerzed environment available for you exploration and
@@ -28,8 +26,12 @@ Stopping the containers manually.
 docker-compose down
 ```
 
+## Contact Us
+Please email any questions and comments to our [Service Helpdesk](mailto:info@gfbio.org) (<info@gfbio.org>).
+
 ## References
 
-Shafiei, F., Löffler, F., Thiel, S., Opasjumruskit, K., Grabiger, D., Rauh, P.,
+<a name="ref1"></a>[Shafiei, F., Löffler, F., Thiel, S., Opasjumruskit, K., Grabiger, D., Rauh, P.,
 König-Ries, B.: [Dai:Si] - A Modular Dataset Retrieval Framework with a
-Semantic Search for Biological Data, 2021
+Semantic Search for Biological Data, 2021](https://api.semanticscholar.org/CorpusID:240005304)
+
