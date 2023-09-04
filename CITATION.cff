@@ -10,7 +10,8 @@ authors:
 - family-names: "Franz"
   given-names: "Linus"
   orcid: "https://orcid.org/0009-0007-0441-8630"
-title: "A search across GfBio data centers"
+title: "GFBio Data Search"
+type: software
 keywords:
   - Research Software
   - Research Data Management
