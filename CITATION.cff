@@ -11,7 +11,9 @@ authors:
   given-names: "Linus"
   orcid: "https://orcid.org/0009-0007-0441-8630"
 title: "GFBio Data Search"
+abstract: "The GFBio Data Search is based on the Dai:Si search UI (https://api.semanticscholar.org/CorpusID:240005304) and enables a search of datasets\nwhich are distributed and published across the GFBio Data Centers (https://gfbio.org/data-centers/). The data centers and the data sources they provide are listed in an aggregator service. A harvester service collects the resources from the aggregator and extracts the information into an Elasticsearch index."
 type: software
+doi: 10.5281/zenodo.8308204
 keywords:
   - Research Software
   - Research Data Management

@@ -1,10 +1,13 @@
-# GFBio Data Search # 
+# GFBio Data Search #
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8308204.svg)](https://doi.org/10.5281/zenodo.8308204)
+
 ## Description
 
 The GFBio Data Search is based on the [Dai:Si search UI](#ref1) and enables a search of datasets
 which are distributed and published across th [GFBio data centers](https://gfbio.org/data-centers/).
 The data centers and the data sources they provide are listed in an aggregator service. 
-A harvester servuice collects the resources from the aggregator and extracts the information into an Elasticsearch index. 
+A harvester service collects the resources from the aggregator and extracts the information into an Elasticsearch index. 
 
 ## Developer guide 
 
@@ -35,3 +38,7 @@ Please email any questions and comments to our [Service Helpdesk](mailto:info@gf
 König-Ries, B.: [Dai:Si] - A Modular Dataset Retrieval Framework with a
 Semantic Search for Biological Data, 2021](https://api.semanticscholar.org/CorpusID:240005304)
 
+## Acknowledgements
+
+- This work was supported by the German Research Foundation (DFG) within the project “Establishment of the National Research Data Infrastructure (NFDI)” in the consortium NFDI4Biodiversity (project number [442032008](https://gepris.dfg.de/gepris/projekt/442032008)).
+- This work was supported by the German Research Foundation (DFG) within the project "German Federation for Biological Data e.V.: Concept for a sustainable research data management of environmental data for Germany." (project number [408180549](https://gepris.dfg.de/gepris/projekt/408180549)).
