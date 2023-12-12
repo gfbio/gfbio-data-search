@@ -5,7 +5,7 @@ RUN mkdir -p /app
 WORKDIR /app
 
 # Install
-COPY ./DatasetSearchUIOwn/node/ /app/
+COPY ./DatasetSearchUI/node/ /app/
 RUN npm install .
 
 

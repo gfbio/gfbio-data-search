@@ -6,7 +6,7 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     container_name: gfbio_search_back
     env_file:
-      - ./DatasetSearchUIOwn/node/.env
+      - ./DatasetSearchUI/node/.env
     ports:
       - "3000:3000"
 
