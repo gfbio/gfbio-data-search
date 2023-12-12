@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import NavBar from './Components/NavBar';
-import Footer from './Components/Footer';
-import './scss/styles.scss'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import NavBar from "./Components/NavBar";
+import Footer from "./Components/Footer";
+import "./scss/styles.scss";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,7 +17,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Footer />
   </React.StrictMode>,
-  document.getElementById('footer')
+  document.getElementById("footer")
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
