@@ -3,11 +3,11 @@ FROM node:14 as build
 WORKDIR /angular
 
 # Copy package.json and package-lock.json for npm install
-COPY ./DatasetSearchUI/angular/package*.json ./
+COPY ./search/angular/package*.json ./
 RUN npm install
 
 # Copy the rest of the Angular project files
-COPY ./DatasetSearchUI/angular/ .
+COPY ./search/angular/ .
 
 # Build the application
 RUN npm run ng build -- --configuration production

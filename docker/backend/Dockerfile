@@ -5,13 +5,13 @@ FROM node:14
 WORKDIR /app
 
 # Copy package.json and package-lock.json first to leverage Docker layer caching
-COPY ./DatasetSearchUI/node/package*.json /app/
+COPY ./search/node/package*.json /app/
 
 # Install app dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY ./DatasetSearchUI/node/ /app/
+COPY ./search/node/ /app/
 
 # Expose port 3000
 EXPOSE 3000

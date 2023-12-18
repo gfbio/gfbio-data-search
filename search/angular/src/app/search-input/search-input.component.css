@@ -1,0 +1,19 @@
+/* Style for the input field when it is active (focused) */
+.form-control:focus {
+  border-color: var(--gfbio-green); /* Use the green color variable */
+  box-shadow: 0 0 0 0.2rem rgba(129, 178, 72, 0.25); /* Adjust the rgba value accordingly */
+}
+
+/* Default style for buttons */
+.btn-outline-primary {
+  color: var(--gfbio-green); /* Use the green color variable */
+  border-color: var(--gfbio-green); /* Use the green color variable */
+  font-weight: 700;
+}
+
+/* Style for buttons on hover */
+.btn-outline-primary:hover {
+  color: #000; /* Black text */
+  background-color: var(--gfbio-green); /* Use the green color variable */
+  border-color: var(--gfbio-green); /* Use the green color variable */
+}
