@@ -4,39 +4,66 @@
 
 ## Description
 
-The GFBio Data Search is based on the [Dai:Si search UI](#ref1) and enables a search of datasets
-which are distributed and published across th [GFBio data centers](https://gfbio.org/data-centers/).
-The data centers and the data sources they provide are listed in an aggregator service. 
-A harvester service collects the resources from the aggregator and extracts the information into an Elasticsearch index. 
+The GFBio Data Search, built upon the Dai:Si Search UI, facilitates the
+exploration of datasets distributed and published across various [GFBio data
+centers](https://gfbio.org/data-centers/). These data centers, along with the
+resources they offer, are cataloged in an aggregator service. A dedicated
+harvester service then retrieves resources from the aggregator, extracting and
+organizing the information into an Elasticsearch index for efficient searching.
 
 ## Developer guide 
 
-The UI component itself is writtin in Angular and combined with a thin backend layer
-which is written in node which takes care of data handling. You can clone the repository
-and adapt the source code to your needs. A test instance of the
-search can be built for local testing using the start script which is included
-in the repository. it builds the UI and the backend and runs the search
-interface in a dockerzed environment available for you exploration and
-development via the browser. 
+This document provides guidance on building and running the GFBio Data Search
+application using Docker. The application consists of three main components:
 
-```
-./start.sh
+* Backend: A Node.js application serving as the backend.
+* Frontend: An Angular-based user interface.
+ 
+The Docker environment is configured to be suitable for both local development
+and production deployment.
+
+### Local Development Setup
+
+For building and running the containers. Navigate to the Project Directory
+
+```sh
+cd path/to/project
 ```
 
-Stopping the containers manually.
+Then build and start the containers
 
+
+```sh
+docker-compose up --build
 ```
-docker-compose down
-```
+
+This command builds the images and starts the containers defined in
+docker-compose.yml. The --build flag ensures that Docker rebuilds the images,
+which is useful during development.
+
+Accessing the application
+
+* The frontend can be accessed at http://localhost:4200.
+* The backend is available at http://localhost:3000.
+ 
+Making Changes
+
+When making changes to the source code, the respective containers can be
+rebuilt and restarted. For changes in the backend or frontend Dockerfiles,
+rerun the docker-compose up --build command.
+
 
 ## Contact Us
-Please email any questions and comments to our [Service Helpdesk](mailto:info@gfbio.org) (<info@gfbio.org>).
+
+Please email any questions and comments to our [Service
+Helpdesk](mailto:info@gfbio.org) (<info@gfbio.org>).
 
 ## References
 
-<a name="ref1"></a>[Shafiei, F., Löffler, F., Thiel, S., Opasjumruskit, K., Grabiger, D., Rauh, P.,
-König-Ries, B.: [Dai:Si] - A Modular Dataset Retrieval Framework with a
-Semantic Search for Biological Data, 2021](https://api.semanticscholar.org/CorpusID:240005304)
+<a name="ref1"></a>[Shafiei, F., Löffler, F., Thiel, S., Opasjumruskit, K.,
+Grabiger, D., Rauh, P., König-Ries, B.: [Dai:Si] - A Modular Dataset Retrieval
+Framework with a Semantic Search for Biological Data,
+2021](https://api.semanticscholar.org/CorpusID:240005304)
 
 ## Acknowledgements
 
