@@ -3,25 +3,25 @@
  - local development for this scripted
  - DataSearchUI (actual search) included as submodul -> GITHub -> letzter commit von Sven Thiel 03.08.2022
 
- - DataSearchUIOwn ist lokale kopie/fork auf dem gearbeitet werden kann
+ - DataSearchUI ist lokale kopie/fork auf dem gearbeitet werden kann
     - linus has hier direkt in angular änderungen für das kachelfiltering gemacht
 
   
- - search-ui simple react app als wrapper um DataSearchUIOwn mit gfbio branding
+ - search-ui simple react app als wrapper um DataSearchUI mit gfbio branding
  
  - start.sh
   - versteckt default navbar mittesl css sed
-  - npm build auf DataSearchUIOwn
+  - npm build auf DataSearchUI
   - build search-ui
-  - DataSearchUIOwn gebautes JS nach search-ui kopieren
+  - DataSearchUI gebautes JS nach search-ui kopieren
   - css, fonts, bilder auch
   - docker restart
   
   - docker/frontend
-   - Dockerfile mit build kommandos für DataSearchUIOwn ähnlich search-ui und einem Apache2 webserver
+   - Dockerfile mit build kommandos für DataSearchUI ähnlich search-ui und einem Apache2 webserver
  
  - docker/backend
-  - Dockerfile mit node server der app aus DataSearchUIOwn started
+  - Dockerfile mit node server der app aus DataSearchUI started
   
   
   -------------------------------
@@ -47,7 +47,7 @@ of /node are not updated when using ./start.sh
   PREVENTING start.sh
   
     export NODE_OPTIONS=--openssl-legacy-provider
-        maweber@maweber-P17:devel/search.gfbio.org ‹main*›$ cd DatasetSearchUIOwn/angular/ && NG_CLI_ANALYTICS=ci npm i --legacy-peer-deps && npm run build && cd ../../
+        maweber@maweber-P17:devel/search.gfbio.org ‹main*›$ cd DatasetSearchUI/angular/ && NG_CLI_ANALYTICS=ci npm i --legacy-peer-deps && npm run build && cd ../../
         node: --openssl-legacy-provider is not allowed in NODE_OPTIONS
      
     removing export fixes seemingly
@@ -71,7 +71,7 @@ of /node are not updated when using ./start.sh
 #### run locally with HOT reloading
 
 - docker stack, see above, needs to be up and running
-- in ./DatasetSearchUIOwn/angular
+- in ./DatasetSearchUI/angular
 - ng serve UPDATE: there are start (npm run start) and build commands in package json that do provide dedicated server commands
 - http://localhost:4200/
 
