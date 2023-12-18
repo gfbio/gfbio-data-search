@@ -1,4 +1,0 @@
-[submodule "DatasetSearchUI"]
-	path = DatasetSearchUI
-	branch = main
-	url = https://github.com/fusion-jena/DatasetSearchUI.git
