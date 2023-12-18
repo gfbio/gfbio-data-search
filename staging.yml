@@ -1,27 +1,30 @@
-version: '3'
+version: "3"
 services:
   back:
-    build: 
+    build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    container_name: gfbio_search_back
+    container_name: gfbio_search_back_stage
     env_file:
-      - ./.env
+      - ./DatasetSearchUI/node/.env
     networks:
       - internalProxy
     restart: always
-
+    ports:
+      - "3000:3000"
   front:
     build:
       context: .
       dockerfile: ./docker/frontend/Dockerfile
       args:
         SERVICE_HOST: 'https:\/\/search.gfbio.dev' # this str will be used in sed, so we need to escape /
-    container_name: gfbio_search_front
+    container_name: gfbio_search_front_stage
     networks:
       - internalProxy
     restart: always
+    ports:
+      - "4200:80"
 
 networks:
   internalProxy:
-   external: true
+    external: true
