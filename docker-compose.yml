@@ -4,16 +4,20 @@ services:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    container_name: gfbio_search_back
+    container_name: gfbio_search_back_dev
     env_file:
-      - ./DatasetSearchUIOwn/node/.env
+      - ./DatasetSearchUI/node/.env
     ports:
       - "3000:3000"
-
   front:
-    image: httpd:2.4
-    container_name: gfbio_search_front
-    ports:
-      - "8080:80"
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile.dev
+    container_name: gfbio_search_front_dev
     volumes:
-      - ./search-ui/build:/usr/local/apache2/htdocs/
+      - ./DatasetSearchUI/angular:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
