@@ -17,10 +17,43 @@ This document provides guidance on building and running the GFBio Data Search
 application using Docker. The application consists of three main components:
 
 * Backend: A Node.js application serving as the backend.
-* Frontend: An Angular-based user interface.
+* Frontend: An Angular-based user interface. 
+
+Both applications are located in the search folder.
+
+```
+search
+├── angular
+│   ├── angular.json
+│   ├── dist
+│   ├── karma.conf.js
+│   ├── node_modules
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── README.md
+│   ├── src
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.spec.json
+│   └── tslint.json
+├── LICENSE
+└── node
+    ├── app.js
+    ├── config
+    ├── connectionElastic.js
+    ├── controllers
+    ├── fileSaver.js
+    ├── gfbio.js
+    ├── models
+    ├── package.json
+    ├── package-lock.json
+    ├── README.md
+```
  
-The Docker environment is configured to be suitable for both local development
-and production deployment.
+The Docker environment is configured to suit both local development and
+production deployment. The local Docker environment for development runs the
+front-end, the back-end, and a dockerized Elasticsearch index - all important
+components for an easy start.
 
 ### Local Development Setup
 
@@ -31,7 +64,6 @@ cd path/to/project
 ```
 
 Then build and start the containers
-
 
 ```sh
 docker-compose up --build
@@ -45,13 +77,25 @@ Accessing the application
 
 * The frontend can be accessed at http://localhost:4200.
 * The backend is available at http://localhost:3000.
+
+When the containers are running. As a last step of preparation the local
+Elasticsearch index needs to be set up when you run it for the first time. You
+can use the script which is located in the index folder. 
+
+In the root folder of this repository you also find a Make script for your
+convenience to execute the commands for starting, stoping, restarting and
+initializing the index for you. For example:
+
+```
+# run the containers and populate the index with dummy metadata
+make init
+```
  
 Making Changes
 
 When making changes to the source code, the respective containers can be
 rebuilt and restarted. For changes in the backend or frontend Dockerfiles,
 rerun the docker-compose up --build command.
-
 
 ## Contact Us
 
