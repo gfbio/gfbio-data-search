@@ -33,9 +33,9 @@ tag_release:
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   script:
-    - cp /home/gitlab-runner/.search-gfbio.env ./.env
-    - cp /home/gitlab-runner/.search-gfbio.node.env  ./DatasetSearchUIOwn/node/.env
-    - cp /home/gitlab-runner/.environment.prod.ts ./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts
+    #- cp /home/gitlab-runner/.search-gfbio.env ./.env
+    - cp /home/gitlab-runner/.search-gfbio.node.env  ./search/node/.env
+    - cp /home/gitlab-runner/.environment.prod.ts ./search/angular/src/environments/environment.prod.ts
     - docker-compose -f staging.yml build --no-cache --force-rm
     - docker-compose -f staging.yml down
     - docker-compose -f staging.yml up -d
