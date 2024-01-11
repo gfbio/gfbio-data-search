@@ -120,19 +120,6 @@ export class GfbioPreprocessDataService {
     }
   }
 
-  getTitleTooltip(hit: Hit): string {
-    if (hit.getLatitude !== undefined && hit.getLongitude() !== undefined) {
-      return (
-        "min latitude: " +
-        hit.getLatitude() +
-        ", max longitude: " +
-        hit.getLongitude()
-      );
-    } else {
-      return this.noCoordinates;
-    }
-  }
-
   // maps the licenses
   getLicense(dataset): [] {
     let license = dataset?._source?.licenseShort;
@@ -176,7 +163,6 @@ export class GfbioPreprocessDataService {
     hit.setXml(source?.xml);
     hit.setLongitude(source?.maxLongitude);
     hit.setLatitude(source?.minLatitude);
-    hit.setTitleTooltip(this.getTitleTooltip(hit));
     hit.setMetadatalink(source?.metadatalink);
     hit.setDatalink(source?.datalink);
     // set array of descriptions
