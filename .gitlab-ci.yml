@@ -33,7 +33,6 @@ tag_release:
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   script:
-    #- cp /home/gitlab-runner/.search-gfbio.env ./.env
     - cp /home/gitlab-runner/.search-gfbio.node.env  ./search/node/.env
     - cp /home/gitlab-runner/.environment.prod.ts ./search/angular/src/environments/environment.prod.ts
     - docker-compose -f staging.yml build --no-cache --force-rm
@@ -56,9 +55,8 @@ web_test_update:
     - ISSUE_ID=$(awk -F- '{print $2}' <<< ${CI_COMMIT_REF_NAME})
     - TEST_NAME=$ISSUE_ID-$PROJECT_NAME
     # your custom commands
-    - cp /home/gitlab-runner/.search-gfbio-tag-release.env ./.env
-    - cp /home/gitlab-runner/.search-gfbio.node.env  ./DatasetSearchUIOwn/node/.env
-    - cp /home/gitlab-runner/.environment.prod.ts ./DatasetSearchUIOwn/angular/src/environments/environment.prod.ts
+    - cp /home/gitlab-runner/.search-gfbio.node.env  ./search/node/.env
+    - cp /home/gitlab-runner/.environment.prod.ts ./search/angular/src/environments/environment.prod.ts
 
     # - sed -i s/DJANGO_ALLOWED_HOSTS=.*/DJANGO_ALLOWED_HOSTS=\.$TEST_NAME\.test.gfbio\.dev/g .envs/.production/.django
     - sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
