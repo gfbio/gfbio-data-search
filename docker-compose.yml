@@ -9,6 +9,9 @@ services:
       - ./search/node/.env
     ports:
       - "3000:3000"
+    volumes:
+      - ./search/node:/app
+      - /app/node_modules
   front:
     build:
       context: .
@@ -16,7 +19,7 @@ services:
     container_name: gfbio_search_front_dev
     volumes:
       - ./search/angular:/app
-      - /app/node_modules
+      # - /app/node_modules
     ports:
       - "4200:4200"
     environment:
