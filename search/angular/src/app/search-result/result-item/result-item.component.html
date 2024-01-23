@@ -43,6 +43,7 @@
         <strong>VAT</strong>
       </span>
     </div>
+
     <div class="my-button-group">
       <a href="{{ item.getTitleUrl() }}" class="btn btn-outline-secondary mr-2"
         >View More</a
@@ -55,6 +56,19 @@
         download
         >Download</a
       >
+
+      <button
+        *ngIf="
+          item.getCitation().getSource() !== undefined &&
+          item.getCitation().getCreator() !== []
+        "
+        (click)="openDialog(itemId)"
+        class="btn btn-outline-secondary mr-2"
+        matTooltip="Show citation"
+        matTooltipClass="result-item-tooltip"
+      >
+        Citation
+      </button>
 
       <button
         type="button"
