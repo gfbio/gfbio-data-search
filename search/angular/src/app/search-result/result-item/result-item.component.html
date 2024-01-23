@@ -60,8 +60,8 @@
         type="button"
         class="btn"
         [ngClass]="{
-          'btn-danger': item.getCheckBox(),
-          'btn-success': !item.getCheckBox()
+          'btn-outline-danger': item.getCheckBox(),
+          'btn-outline-success': !item.getCheckBox()
         }"
         (click)="toggleCheckbox(itemId, $event.target)"
       >

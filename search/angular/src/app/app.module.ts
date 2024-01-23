@@ -13,7 +13,6 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { PaginationComponent } from "./pagination/pagination.component";
 import { SuggestionWindowComponent } from "./suggestion-window/suggestion-window.component";
 import { FilterBoxComponent } from "./filters/filter-box/filter-box.component";
-// import { JwPaginationModule } from "jw-angular-pagination";
 import { PaginationModule } from "ngx-bootstrap/pagination";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxPaginationModule } from "ngx-pagination";

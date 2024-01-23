@@ -93,7 +93,7 @@ a {
 }
 
 a:hover {
-  color: var(--darkblue);
+  color: var(--gfbio-green);
 }
 
 em {
@@ -146,12 +146,12 @@ em {
 
 /******* Aggregation/Facets ********/
 .linkBlue {
-  color: var(--lightblue);
+  color: var(--gfbio-green);
   cursor: pointer;
 }
 
 .linkBlue:hover {
-  color: var(--darkblue);
+  color: var(--gfbio-green);
   text-decoration: none;
 }
 
@@ -283,55 +283,6 @@ em {
 
 .bg-goldenrod {
   background-color: var(--orange);
-}
-
-.regular-checkbox {
-  -webkit-appearance: none;
-  background-color: #fafafa;
-  border: 1px solid #cacece;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-  padding: 9px;
-  border-radius: 3px;
-  display: inline-block;
-  position: relative;
-}
-
-.regular-checkbox:active,
-.regular-checkbox:checked:active {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-    inset 0px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.regular-checkbox:checked {
-  background-color: #e9ecee;
-  border: 1px solid #adb8c0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
-    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
-    inset 15px 10px -12px rgba(255, 255, 255, 0.1);
-  color: #99a1a7;
-}
-
-.regular-checkbox:checked:after {
-  content: "\2713";
-  font-size: 14px;
-  position: absolute;
-  top: -21px;
-  left: 3px;
-  color: #99a1a7;
-}
-
-.big-checkbox {
-  padding: 12px !important;
-}
-
-.big-checkbox:hover {
-  cursor: pointer;
-}
-
-.big-checkbox:checked:after {
-  font-size: 39px;
-  left: 2px;
 }
 
 .line-bottom {
@@ -504,15 +455,46 @@ table {
 /**** Buttons ****/
 
 /**** Checkbox ****/
-/* input { */
-/*   margin: 5px; */
-/* } */
+
+label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px; /* Spacing between each checkbox */
+}
+
+input[type="checkbox"] {
+  margin-right: 10px; /* Space between checkbox and label text */
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  /* padding: 9px; */
+  /* border-radius: 3px; */
+  display: inline-block;
+  position: relative;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--gfbio-green);
+  border-color: var(--gfbio-green);
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✔"; /* Unicode checkmark */
+  color: white;
+  position: absolute;
+  /* top: 0; */
+  /* left: 4px; */
+  /* font-size: 18px; */
+}
 
 /**** Filters/Aggregation ***/
 .filterIcon {
   color: #666;
   font-size: large;
-  padding-top: 0.15em;
 }
 
 .card-header {
@@ -683,4 +665,15 @@ pre {
 
 .white-background {
   background-color: white;
+}
+
+.btn.btn-outline-success {
+  color: var(--gfbio-green); /* This will change the text color */
+  border-color: var(--gfbio-green); /* This will change the border color */
+}
+
+.btn.btn-outline-success:hover {
+  color: white; /* This will change the text color */
+  background-color: var(--gfbio-green); /* This will change the border color */
+  border-color: var(--gfbio-green); /* This will change the border color */
 }
