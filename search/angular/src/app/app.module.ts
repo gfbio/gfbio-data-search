@@ -1,6 +1,5 @@
 import { BrowserModule, Title } from "@angular/platform-browser";
 import { NgModule, APP_INITIALIZER } from "@angular/core";
-
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FooterComponent } from "./components/footer/footer.component";
@@ -14,8 +13,10 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { PaginationComponent } from "./pagination/pagination.component";
 import { SuggestionWindowComponent } from "./suggestion-window/suggestion-window.component";
 import { FilterBoxComponent } from "./filters/filter-box/filter-box.component";
-import { JwPaginationModule } from "jw-angular-pagination";
+// import { JwPaginationModule } from "jw-angular-pagination";
+import { PaginationModule } from "ngx-bootstrap/pagination";
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxPaginationModule } from "ngx-pagination";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CitationComponent } from "./citation/citation.component";
 import { FiltersComponent } from "./filters/filters.component";
@@ -60,11 +61,13 @@ import { initializeKeycloak } from "./utils/app.init";
     HttpClientModule,
     FormsModule,
     FontAwesomeModule,
-    JwPaginationModule,
+    // JwPaginationModule,
+    NgxPaginationModule,
     NgxSpinnerModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MaterialModule,
+    PaginationModule,
   ],
   providers: [
     {

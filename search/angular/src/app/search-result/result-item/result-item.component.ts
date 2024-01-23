@@ -55,4 +55,9 @@ export class ResultItemComponent implements OnInit {
     this.item.setCheckbox(value.checked);
     this.checkBoxItem.emit(this.item);
   }
+
+  toggleCheckbox(key, value) {
+    this.item.setCheckbox(!this.item.getCheckBox()); // Toggle the checkbox state
+    this.checkBoxItem.emit(this.item);
+  }
 }
