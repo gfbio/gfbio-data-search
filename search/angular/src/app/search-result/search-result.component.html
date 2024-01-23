@@ -1,4 +1,6 @@
 <div>
+  <!-- TODO: This basked I want to have in the navigation  <19-01-24, Claas> -->
+
   <div class="basket mb-3" (click)="basketClick()">
     <div class="basket-img">
       <img src="assets/img/basket.png" class="w-100" />
@@ -8,12 +10,7 @@
     </div>
     <span class="basket-text">Dataset Basket</span>
   </div>
-  <div *ngIf="result?.getHits()?.length !== 0">
-    <app-pagination
-      [result]="result"
-      (paginationClicked)="paginationClicked($event)"
-    ></app-pagination>
-  </div>
+
   <div *ngIf="result?.getHits()?.length === 0" class="text-danger">
     No entries found
   </div>
@@ -44,6 +41,13 @@
         [itemId]="i"
         (checkBoxItem)="checkBoxClick($event)"
       ></app-result-item>
+    </div>
+
+    <div *ngIf="result?.getHits()?.length !== 0">
+      <app-pagination
+        [result]="result"
+        (paginationClicked)="paginationClicked($event)"
+      ></app-pagination>
     </div>
   </div>
 </div>
