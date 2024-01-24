@@ -27,6 +27,8 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-blob": "0.0.2",
+    "node-cache": "~5.1.2",
+    "compression": "~1.7.4",
     "node-zip": "^1.0.1",
     "sequelize": "^6.16.0",
     "swagger-jsdoc": "^6.1.0",
