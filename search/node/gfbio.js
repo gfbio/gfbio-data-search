@@ -61,10 +61,10 @@ router.post("/search", bodyParser, (req, res) => {
   // Check if the data is in cache
   const cachedData = myCache.get(cacheKey);
   if (cachedData) {
-    console.log("Cache hit for key:", cacheKey);
+    // console.log("Cache hit for key:", cacheKey);
     return res.status(200).send(cachedData);
   } else {
-    console.log("Cache miss for key:", cacheKey);
+    // console.log("Cache miss for key:", cacheKey);
   }
 
   // Configuration for the Axios request
@@ -74,10 +74,18 @@ router.post("/search", bodyParser, (req, res) => {
     },
   };
 
+  // Serialize the data for logging the request size
+  // const requestData = JSON.stringify(data);
+  // console.log("Request Size (bytes):", Buffer.from(requestData).length);
+
   // Perform the search using the Axios instance with keep-alive
   axiosInstance
     .post(Pangaea_URL, data, config)
     .then((resp) => {
+      // Serialize the response data for logging the response size
+      const responseData = JSON.stringify(resp.data);
+      // console.log("Response Size (bytes):", Buffer.from(responseData).length);
+
       // Save the response in the cache before sending it
       myCache.set(cacheKey, resp.data);
       res.status(200).send(resp.data);
@@ -91,47 +99,9 @@ router.post("/search", bodyParser, (req, res) => {
     });
 });
 
-/**
- * POST /suggest-Pangaea
- * Pangaea Suggest service for simple search
- */
-/**
- * @swagger
- * /gfbio/suggest-pan:
- *   post:
- *     description: Returns query term suggestions for given characters from Pangaea service
- *     tags: [Search GFBio - Elastic index]
- *     summary: returns query term suggestions
- *     consumes:
- *       - application/json
- *     parameters:
- *       - in: body
- *         name: term
- *         description: the characters for which suggestions are needed
- *         schema:
- *            type: object
- *            required:
- *              - term
- *            properties:
- *              term:
- *                type: string
- *                example: quer
- *     responses:
- *       201:
- *         description: object with key 'suggest' containing an array with options
- */
 router.post("/suggest-pan", (req, res) => {
-  // console.log('/suggest:' + req.body.term);
-  //get the term from the body
   const term = req.body.term;
 
-  //set the header  - only json data permitted
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-  //specific data object required
   const data = {
     suggest: {
       text: term,
@@ -142,18 +112,17 @@ router.post("/suggest-pan", (req, res) => {
     },
   };
 
-  //post the request to elasticsearch
-  return axios
-    .post(Pangaea_Suggest_URL, data, config)
+  // Use the shared axiosInstance with keep-alive configuration
+  axiosInstance
+    .post(Pangaea_Suggest_URL, data)
     .then((resp) => {
       //console.log(`Status: ${resp.status}`);
-      //// console.log('Body: ', resp.data);
+      // console.log('Body: ', resp.data);
       res.status(200).send(resp.data);
     })
     .catch((err) => {
       console.log(err);
-
-      return res.status(500).json({
+      res.status(500).json({
         msg: "Error",
         err,
       });

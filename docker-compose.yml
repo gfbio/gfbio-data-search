@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   back:
     build:
@@ -12,6 +13,9 @@ services:
     volumes:
       - ./search/node:/app
       # - /app/node_modules
+    networks:
+      - custom_network
+
   front:
     build:
       context: .
@@ -24,6 +28,9 @@ services:
       - "4200:4200"
     environment:
       - CHOKIDAR_USEPOLLING=true
+    networks:
+      - custom_network
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
     container_name: gfbio_search_elastic_dev
@@ -34,6 +41,21 @@ services:
       - "9300:9300"
     volumes:
       - esdata:/usr/share/elasticsearch/data
+    networks:
+      - custom_network
+    # Elasticsearch specific optimizations
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 2g
 
 volumes:
   esdata:
+
+networks:
+  custom_network:
+    driver: bridge
