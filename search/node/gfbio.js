@@ -39,6 +39,25 @@ const axiosInstance = axios.create({
 // Node Cache Instance
 const myCache = new NodeCache({ stdTTL: 300 }); // Cache for 300 seconds
 
+// Function to clear cache at midnight every day
+function clearCacheAtMidnight() {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0); // Set to midnight
+  const timeUntilMidnight = midnight - now;
+
+  setTimeout(() => {
+    // Clear the cache
+    myCache.flushAll();
+
+    // Schedule the next cache clear at the next midnight
+    clearCacheAtMidnight();
+  }, timeUntilMidnight);
+}
+
+// Call the function to start cache clearing at midnight
+clearCacheAtMidnight();
+
 router.post("/search", bodyParser, (req, res) => {
   // Extract parameters from the request body
   const keyword = req.body.queryterm;
