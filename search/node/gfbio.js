@@ -1,12 +1,10 @@
 // External Module Imports
 const express = require("express");
 const axios = require("axios");
-const fs = require("fs");
 const JSZip = require("jszip");
+const fs = require("fs");
 const http = require("http");
 const https = require("https");
-const bodyParser = require("body-parser").json();
-const compression = require("compression");
 const NodeCache = require("node-cache");
 
 // Local Module Imports
@@ -26,8 +24,6 @@ const VAT_ROOT_URL = process.env.VAT_ROOT_URL;
 const { cartesianProduct } = require("cartesian-product-multiple-arrays");
 
 // Express App and Router Setup
-const app = express();
-app.use(compression()); // Enable compression middleware
 const router = express.Router();
 
 // Axios Instance with Keep-Alive
@@ -44,21 +40,76 @@ function clearCacheAtMidnight() {
   const now = new Date();
   const midnight = new Date(now);
   midnight.setHours(24, 0, 0, 0); // Set to midnight
-  const timeUntilMidnight = midnight - now;
+  const timeUntilMidnight = midnight.getTime() - now.getTime();
 
   setTimeout(() => {
-    // Clear the cache
     myCache.flushAll();
-
-    // Schedule the next cache clear at the next midnight
     clearCacheAtMidnight();
   }, timeUntilMidnight);
 }
 
-// Call the function to start cache clearing at midnight
 clearCacheAtMidnight();
 
-router.post("/search", bodyParser, (req, res) => {
+/**
+ * @swagger
+ * /search:
+ *   post:
+ *     summary: Performs a search based on the given query term and filters.
+ *     tags: [Search]
+ *     description: This endpoint performs a search operation using a keyword, optional filters, and pagination parameters. It returns search results based on the specified criteria.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - queryterm
+ *             properties:
+ *               queryterm:
+ *                 type: string
+ *                 description: The keyword to search for.
+ *               filter:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Optional filters to apply to the search.
+ *               from:
+ *                 type: integer
+ *                 default: 0
+ *                 description: The starting index for search results (used for pagination).
+ *               size:
+ *                 type: integer
+ *                 default: 10
+ *                 description: The number of search results to return.
+ *     responses:
+ *       200:
+ *         description: Search results returned successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 results:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     description: A search result item.
+ *       500:
+ *         description: Server error or issue with the search operation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                 err:
+ *                   type: object
+ *                   description: Details of the error.
+ */
+
+router.post("/search", (req, res) => {
   // Extract parameters from the request body
   const keyword = req.body.queryterm;
   let filter = req.body.filter || [];

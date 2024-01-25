@@ -1,102 +1,73 @@
-var express = require("express");
-const dotenv = require("dotenv");
-var logger = require("morgan");
-var bodyParser = require("body-parser");
-var Cors = require("cors"); //CORS
-var swaggerJSDoc = require("swagger-jsdoc");
-var swaggerUi = require("swagger-ui-express");
-const axios = require("axios"); //http calls
-
-const app = express();
-dotenv.config();
-
+// Importing required modules
+const express = require("express");
+const dotenv = require("dotenv").config();
+const morgan = require("morgan");
+const cors = require("cors");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const session = require("express-session");
-var memoryStore = new session.MemoryStore();
+const axios = require("axios"); // Ensure this is used if required in other parts of your application
+const compression = require("compression");
+
+// Initialize express app
+const app = express();
+
+// Enable middleware globally
+//
+// compression
+app.use(compression());
+// json body parsing
+app.use(express.json()); // Apply express.json() middleware to all routes
+
+// Session configuration
+const memoryStore = new session.MemoryStore();
 app.use(
   session({
-    secret: "a633d717-1b6e-4ea2-8b38-4af385b13585",
+    secret: process.env.SESSION_SECRET, // Ensure this is set in your .env file
     resave: false,
     saveUninitialized: true,
     store: memoryStore,
   })
 );
+
+// Keycloak configuration
 const keycloak = require("./config/keycloak.config.js").initKeycloak(
   memoryStore
 );
 app.use(keycloak.middleware({ logout: "/logoff" }));
 
-app.get("/", function (req, res) {
+// Basic route
+app.get("/", (req, res) => {
   res.send("Server is up!");
 });
 
-//start application on port 3000
-const PORT = process.env.APP_PORT || 3000;
-const HOST = process.env.HOST;
-
-//swagger definition
+// Swagger configuration
 const swaggerDefinition = {
   info: {
     title: "GFBio/NFDI4Biodiversity Search API",
     version: "1.0.0",
     description: "Endpoints for dataset search",
   },
-  host: `${HOST}:${PORT}`,
+  host: `${process.env.HOST}:${process.env.APP_PORT}`,
   basePath: "/",
 };
 
-//keep each index in a separate module
-const options = {
+const swaggerOptions = {
   swaggerDefinition,
-  apis: ["gfbio.js", "./routes/basket.route.js"],
+  apis: ["./routes/*.js"], // Assuming all route files are in the routes directory
 };
 
-//initialize swagger
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
-app.get("/swagger.json", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  res.send(swaggerSpec);
-});
-
-/*const whitelist = [
-  'http://localhost:3031',
-  'http://localhost:3000',
-  'http://localhost:3003',
-];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  optionsSuccessStatus: 200,
-};*/
-
-//load swagger, cors and bodyparser
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(morgan("dev"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use(Cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(logger("dev"));
 
-//required for PUT and POST request to ensure that the data posted is
-// in json format and has a maximum size
-// if larger input data is permitted - adjust size here
-app.use(
-  express.json({
-    inflate: true,
-    limit: "100kb",
-    reviver: null,
-    strict: true,
-    type: "application/json",
-    verify: undefined,
-  })
-);
-
+// Database connection
 const db = require("./models");
-
 db.sequelize
   .sync()
   .then(() => {
@@ -106,12 +77,20 @@ db.sequelize
     console.error("Database connection and synchronization failed:", err);
   });
 
+// Routes
 require("./routes/basket.route")(app);
-
-//gfbio index (elastic search)
 var elastic_gfbio = require("./gfbio");
-
-// eslint-disable-next-line no-console
-app.listen(PORT, () => console.log(`Listening at ${HOST} on port ${PORT}`));
-
 app.use("/gfbio", elastic_gfbio);
+
+// Start server
+const PORT = process.env.APP_PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
+// Global error handling (optional, add if needed)
+// app.use((err, req, res, next) => {
+//     // Error handling logic here
+// });
+
+module.exports = app;
