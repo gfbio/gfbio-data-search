@@ -1,0 +1,45 @@
+include:
+  - project: "gfbio/cicd"
+    file:
+      - ".create_merge_request_v3.yml"
+      - ".tag_release.yml"
+      - ".web_test_v2.yml"
+      - ".hotfix_workflow.yml"
+  - local: "/.gitlab-ci/common/variables.yml"
+  - local: "/.gitlab-ci/common/tags.yml"
+
+stages:
+  - check_issue_type
+  - create_merge_request
+  - create_hotfix_merge_request
+  - tag_release_check
+  - tag_release
+  - web_test_check
+  - web_test_update
+  - web_test_stop
+
+create_merge_request:
+  extends: .dev-denbi-tags
+  variables:
+    REVIEWERS: "2370 3999"
+
+tag_release_check:
+  extends: .dev-denbi-tags
+  variables:
+    MAIN_BRANCH_NAME: "production"
+
+tag_release:
+  script:
+    - ./gitlab-ci/scripts/tag_release.sh
+  environment:
+    name: production
+    url: https://search.gfbio.org
+  tags:
+    - docker-lxc
+
+web_test_update:
+  script:
+    - ./gitlab-ci/scripts/web_test_update.sh
+
+web_test_stop:
+  extends: .common-variables
