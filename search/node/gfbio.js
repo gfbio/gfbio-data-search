@@ -37,7 +37,7 @@ const axiosInstance = axios.create({
 });
 
 // Node Cache Instance
-const myCache = new NodeCache({ stdTTL: 300 }); // Cache for 300 seconds
+const myCache = new NodeCache();
 
 // Function to clear cache at midnight every day
 function clearCacheAtMidnight() {
