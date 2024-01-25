@@ -5,8 +5,8 @@ include:
       - ".tag_release.yml"
       - ".web_test_v2.yml"
       - ".hotfix_workflow.yml"
-  - local: "/.gitlab-ci/common/variables.yml"
-  - local: "/.gitlab-ci/common/tags.yml"
+  - local: ".gitlab-ci/common/variables.yml"
+  - local: ".gitlab-ci/common/tags.yml"
 
 stages:
   - check_issue_type
@@ -30,7 +30,7 @@ tag_release_check:
 
 tag_release:
   script:
-    - ./gitlab-ci/scripts/tag_release.sh
+    - .gitlab-ci/scripts/tag_release.sh
   environment:
     name: production
     url: https://search.gfbio.org
@@ -39,7 +39,7 @@ tag_release:
 
 web_test_update:
   script:
-    - ./gitlab-ci/scripts/web_test_update.sh
+    - .gitlab-ci/scripts/web_test_update.sh
 
 web_test_stop:
   extends: .common-variables
