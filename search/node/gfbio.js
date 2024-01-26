@@ -35,6 +35,9 @@ const axiosInstance = axios.create({
 // Node Cache Instance
 const myCache = new NodeCache();
 
+// Global set to store unique queries
+const querySet = new Set();
+
 // Function to clear cache at midnight every day
 function clearCacheAtMidnight() {
   const now = new Date();
@@ -44,8 +47,38 @@ function clearCacheAtMidnight() {
 
   setTimeout(() => {
     myCache.flushAll();
+    // Re-execute queries to refresh cache
+    querySet.forEach((queryKey) => {
+      const query = JSON.parse(queryKey);
+      executeSearchQuery(query);
+    });
+    // Clear the query set for the next day
+    querySet.clear();
+
     clearCacheAtMidnight();
   }, timeUntilMidnight);
+}
+
+function executeSearchQuery(query) {
+  const { keyword, filter, from, size } = query;
+  const filteredQuery = getFilteredQuery(keyword, filter);
+  const boostedQuery = applyBoost(filteredQuery);
+  const data = getCompleteQuery(boostedQuery, from, size);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  axiosInstance
+    .post(Pangaea_URL, data, config)
+    .then((resp) => {
+      myCache.set(JSON.stringify(query), resp.data);
+    })
+    .catch((err) => {
+      console.error("Error refreshing cache for query:", query, err);
+    });
 }
 
 clearCacheAtMidnight();
@@ -127,6 +160,9 @@ router.post("/search", (req, res) => {
 
   // Generate a unique cache key based on the query
   const cacheKey = JSON.stringify({ keyword, filter, from, size });
+
+  // Add query to the set
+  querySet.add(cacheKey);
 
   // Check if the data is in cache
   const cachedData = myCache.get(cacheKey);

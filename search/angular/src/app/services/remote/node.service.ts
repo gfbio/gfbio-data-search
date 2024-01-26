@@ -35,7 +35,6 @@ export class NodeService {
     // console.log(body);
     this.spinner.show();
     const headers = this.headers;
-    console.log("Before");
     this.http.post<any>(this.url + urlTerm, body, { headers }).subscribe(
       (data) => {
         let results: Result;
