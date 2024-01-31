@@ -1,8 +1,8 @@
 #!/bin/bash
 ISSUE_ID=$(awk -F- '{print $2}' <<< ${CI_COMMIT_REF_NAME})
 TEST_NAME=$ISSUE_ID-$PROJECT_NAME
-cp /home/gitlab-runner/.search-gfbio.node.env ./search/node/.env
-cp /home/gitlab-runner/.environment.prod.ts ./search/angular/src/environments/environment.prod.ts
+cp /home/gitlab-runner/.search-gfbio.node.env ./search/backend/.env
+cp /home/gitlab-runner/.environment.prod.ts ./search/frontend/src/environments/environment.prod.ts
 sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
 docker-compose -f $COMPOSE_FILE build
 docker stack rm $TEST_NAME || true
