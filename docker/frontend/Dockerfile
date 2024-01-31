@@ -1,13 +1,13 @@
 # Stage 1: Build the Angular application
 FROM node:20.9.0 as build
-WORKDIR /angular
+WORKDIR /frontend
 
 # Copy package.json and package-lock.json for npm install
-COPY ./search/angular/package*.json ./
+COPY ./search/frontend/package*.json ./
 RUN npm install
 
 # Copy the rest of the Angular project files
-COPY ./search/angular/ .
+COPY ./search/frontend/ .
 
 # Build the application
 RUN npm run ng build -- --configuration production
@@ -16,4 +16,4 @@ RUN npm run ng build -- --configuration production
 FROM httpd:2.4
 
 # Copy the built Angular app to the HTTPD serve directory
-COPY --from=build /angular/dist/DatasetSearch /usr/local/apache2/htdocs/
+COPY --from=build /frontend/dist/DatasetSearch /usr/local/apache2/htdocs/

@@ -1,0 +1,46 @@
+<div>
+  <form (ngSubmit)="onSearch()" autocomplete="off">
+    <div class="input-group input-search">
+      <input
+        #searchInput
+        type="text"
+        [(ngModel)]="searchKey"
+        (ngModelChange)="onSuggest()"
+        [ngModelOptions]="{ standalone: true }"
+        class="form-control"
+        placeholder="Search..."
+      />
+      <div class="input-group-append">
+        <button
+          type="submit"
+          class="btn btn-outline-primary fw-bold"
+          id="button-search"
+        >
+          Search
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-primary fw-bold"
+          (click)="semantic()"
+          id="button-search"
+        >
+          Semantic Search
+        </button>
+      </div>
+    </div>
+    <div class="position-relative">
+      <div class="suggestion-window" *ngIf="windowSuggestion">
+        <app-suggestion-window
+          (windowSuggestKey)="onWindowSuggestKey($event)"
+          (isClicked)="windowSuggestion = false"
+        ></app-suggestion-window>
+      </div>
+    </div>
+  </form>
+  <!-- The items which have been found should be displayed here -->
+  <!-- <div class="text-muted pt-2 pl-1">So many items found</div> -->
+  <div class="text-danger ml-1" *ngIf="alertSearch">
+    <div>Please do not use these special characters in a search:</div>
+    <div>!&#64;#$%^&_+-=[];':\|,<>/?{{ "{}" }}</div>
+  </div>
+</div>

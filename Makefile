@@ -17,4 +17,49 @@ restart: down up
 
 init: up populate 
 
-.PHONY: up populate down restart init
+tag-patch-release:
+	@# Fetch the most recent tag
+	$(eval LAST_TAG=$(shell git describe --tags `git rev-list --tags --max-count=1`))
+	@# Break the tag into major, minor, and patch numbers
+	$(eval MAJOR=$(shell echo $(LAST_TAG) | cut -d. -f1))
+	$(eval MINOR=$(shell echo $(LAST_TAG) | cut -d. -f2))
+	$(eval PATCH=$(shell echo $(LAST_TAG) | cut -d. -f3))
+	@# Increment the patch version
+	$(eval NEW_PATCH=$(shell echo $$(($(PATCH) + 1))))
+	@# Construct new tag
+	$(eval NEW_TAG=$(MAJOR).$(MINOR).$(NEW_PATCH))
+	@echo "Creating new tag: $(NEW_TAG)"
+	@# Tag the repository
+	git tag $(NEW_TAG)
+	git push origin $(NEW_TAG)
+
+tag-minor-release:
+	@# Fetch the most recent tag
+	$(eval LAST_TAG=$(shell git describe --tags `git rev-list --tags --max-count=1`))
+	@# Break the tag into major, minor, and patch numbers
+	$(eval MAJOR=$(shell echo $(LAST_TAG) | cut -d. -f1))
+	$(eval MINOR=$(shell echo $(LAST_TAG) | cut -d. -f2))
+	@# Increment the minor version
+	$(eval NEW_MINOR=$(shell echo $$(($(MINOR) + 1))))
+	@# Reset patch to 0
+	$(eval NEW_TAG=$(MAJOR).$(NEW_MINOR).0)
+	@echo "Creating new minor version tag: $(NEW_TAG)"
+	@# Tag the repository
+	git tag $(NEW_TAG)
+	git push origin $(NEW_TAG)
+
+tag-major-release:
+	@# Fetch the most recent tag
+	$(eval LAST_TAG=$(shell git describe --tags `git rev-list --tags --max-count=1`))
+	@# Break the tag into major, minor, and patch numbers
+	$(eval MAJOR=$(shell echo $(LAST_TAG) | cut -d. -f1))
+	@# Increment the major version
+	$(eval NEW_MAJOR=$(shell echo $$(($(MAJOR) + 1))))
+	@# Reset minor and patch to 0
+	$(eval NEW_TAG=$(NEW_MAJOR).0.0)
+	@echo "Creating new major version tag: $(NEW_TAG)"
+	@# Tag the repository
+	git tag $(NEW_TAG)
+	git push origin $(NEW_TAG)
+
+.PHONY: up populate down restart init tag-patch-release tag-minor-release tag-major-release

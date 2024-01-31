@@ -2,10 +2,10 @@
 FROM node:20.9.0
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /backend
 
 # Copy package.json and package-lock.json first to leverage Docker layer caching
-COPY ./search/node/package*.json /app/
+COPY ./search/backend/package*.json ./
 
 # Install app dependencies
 RUN npm install
@@ -14,10 +14,10 @@ RUN npm install
 RUN npm install -g nodemon
 
 # Copy the rest of the application code
-COPY ./search/node/ /app/
+COPY ./search/backend/ ./
 
 # Expose port 3000
 EXPOSE 3000
 
 # Define the command to run the app using Nodemon
-ENTRYPOINT ["nodemon", "app.js"]
+ENTRYPOINT ["nodemon", "server.js"]

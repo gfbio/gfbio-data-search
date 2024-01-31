@@ -1,0 +1,93 @@
+<div class="card mt-3">
+  <div class="card-header white-background">
+    <strong>{{ item.getTitle() }}</strong>
+  </div>
+  <div class="card-body">
+    <div *ngFor="let desc of item.getDescription()">
+      <strong class="text-muted">{{ desc.title }}</strong>
+      <p [innerHTML]="desc.value"></p>
+      <!-- <pre>{{ item | json }}</pre> -->
+    </div>
+
+    <div *ngIf="item.getMultimediaObjs() && item.getMultimediaObjs().length">
+      <strong>Multimedia Links</strong>
+      <ul>
+        <li *ngFor="let media of item.getMultimediaObjs()">
+          <a href="{{ media.url }}" target="_blank">{{ media.url }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    class="card-footer d-flex justify-content-between align-items-center white-background"
+  >
+    <div>
+      <span
+        *ngFor="let label of item.getUpperLabels()"
+        class="badge badge-pill custom-badge mr-2"
+        [class]="label.colorClass"
+        [matTooltip]="label.tooltip"
+      >
+        <strong>{{ label.innerInfo }}</strong>
+      </span>
+      <span
+        class="badge badge-pill badge-yellow mr-2"
+        *ngIf="item.getLicence()"
+      >
+        <strong>{{ item.licence.join(" + ") }}</strong>
+      </span>
+      <span
+        class="badge badge-pill badge-secondary custom-badge"
+        *ngIf="item.getVat()"
+      >
+        <strong>VAT</strong>
+      </span>
+    </div>
+
+    <div class="my-button-group">
+      <a href="{{ item.getTitleUrl() }}" class="btn btn-outline-secondary mr-2"
+        >View More</a
+      >
+
+      <a
+        *ngIf="item.getType().includes('ABCD_Dataset')"
+        [href]="item.getLinkage().getData()"
+        class="btn btn-outline-secondary mr-2"
+        download
+        >Download</a
+      >
+
+      <button
+        *ngIf="
+          item.getCitation().getSource() !== undefined &&
+          item.getCitation().getCreator() !== []
+        "
+        (click)="openDialog(itemId)"
+        class="btn btn-outline-secondary mr-2"
+        matTooltip="Show citation"
+        matTooltipClass="result-item-tooltip"
+      >
+        Citation
+      </button>
+
+      <button
+        type="button"
+        class="btn"
+        [ngClass]="{
+          'btn-outline-danger': item.getCheckBox(),
+          'btn-outline-success': !item.getCheckBox()
+        }"
+        (click)="toggleCheckbox(itemId, $event.target)"
+      >
+        <i
+          class="fa"
+          [ngClass]="{
+            'fa-cart-arrow-down': item.getCheckBox(),
+            'fa-cart-plus': !item.getCheckBox()
+          }"
+        ></i>
+        Basket
+      </button>
+    </div>
+  </div>
+</div>

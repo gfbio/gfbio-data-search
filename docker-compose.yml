@@ -1,28 +1,28 @@
 version: "3"
 
 services:
-  back:
+  backend:
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    container_name: gfbio_search_back_dev
+    container_name: gfbio_search_backend_dev
     env_file:
-      - ./search/node/.env
+      - ./search/backend/.env
     ports:
       - "3000:3000"
     volumes:
-      - ./search/node:/app
+      - ./search/backend:/backend
       # - /app/node_modules
     networks:
       - custom_network
 
-  front:
+  frontend:
     build:
       context: .
       dockerfile: ./docker/frontend/Dockerfile.dev
-    container_name: gfbio_search_front_dev
+    container_name: gfbio_search_frontend_dev
     volumes:
-      - ./search/angular:/app
+      - ./search/frontend:/frontend
       # - /app/node_modules
     ports:
       - "4200:4200"
@@ -31,9 +31,9 @@ services:
     networks:
       - custom_network
 
-  elasticsearch:
+  index:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
-    container_name: gfbio_search_elastic_dev
+    container_name: gfbio_search_index_dev
     environment:
       - discovery.type=single-node
     ports:
@@ -53,8 +53,24 @@ services:
         limits:
           memory: 2g
 
+  # mysql:
+  #   image: mysql:5.7 # You can choose a specific MySQL version
+  #   ulimits:
+  #     nofile: # Fix memory leak issue on some systems when LimitCORE=infinity (containerd)
+  #       soft: 1048576
+  #       hard: 1048576
+  #   container_name: gfbio_search_mysql_dev
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpw
+  #     MYSQL_DATABASE: search
+  #   ports:
+  #     - "3306:3306" # Map the MySQL port to the host machine
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql # Persist data
+
 volumes:
   esdata:
+  # mysql_data:
 
 networks:
   custom_network:
