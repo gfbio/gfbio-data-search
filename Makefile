@@ -51,6 +51,7 @@ tag-patch-release:
 	@echo "Creating new tag: $(NEW_TAG)"
 	@# Tag the repository
 	git tag $(NEW_TAG)
+	git push
 	git push origin $(NEW_TAG)
 
 tag-minor-release:
@@ -68,6 +69,7 @@ tag-minor-release:
 	@echo "Creating new minor version tag: $(NEW_TAG)"
 	@# Tag the repository
 	git tag $(NEW_TAG)
+	git push
 	git push origin $(NEW_TAG)
 
 tag-major-release:
@@ -84,6 +86,7 @@ tag-major-release:
 	@echo "Creating new major version tag: $(NEW_TAG)"
 	@# Tag the repository
 	git tag $(NEW_TAG)
+	git push
 	git push origin $(NEW_TAG)
 
 .PHONY: up populate down restart init tag-patch-release tag-minor-release tag-major-release get-last-tag-releas update-backend-version update-frontend-version
