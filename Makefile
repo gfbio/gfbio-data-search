@@ -89,4 +89,8 @@ tag-major-release:
 	git tag $(NEW_TAG)
 	git push origin $(NEW_TAG)
 
-.PHONY: up populate down restart init tag-patch-release tag-minor-release tag-major-release get-last-tag-releas update-backend-version update-frontend-version
+clean-branches:
+	@git branch | grep -v "main\|production" | xargs git branch -d
+	@git branch -r | grep -v "main\|production" | sed 's/origin\///' | xargs -I {} git push origin --delete refs/heads/{}
+
+.PHONY: up populate down restart init tag-patch-release tag-minor-release tag-major-release get-last-tag-release update-backend-version update-frontend-version clean-branches
