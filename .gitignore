@@ -1,8 +1,8 @@
 **/.idea
 .env
 node_modules/
-search/angular/dist/
-search/angular/.angular/
+search/frontend/dist/
+search/frontend/.angular/
 gfbio.environment.prod.ts
 environment.prod.ts
 notes.txt
