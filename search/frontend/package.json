@@ -1,6 +1,6 @@
 {
   "name": "dataset-search",
-  "version": "0.0.0",
+  "version": "1.1.17",
   "scripts": {
     "ng": "ng",
     "config": "",
