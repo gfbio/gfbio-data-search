@@ -3,7 +3,7 @@ include:
     file:
       - ".create_merge_request_v3.yml"
       - ".tag_release.yml"
-      - ".web_test_v2.yml"
+      - ".web_test_v3.yml"
       - ".hotfix_workflow.yml"
   - local: ".gitlab-ci/common/variables.yml"
   - local: ".gitlab-ci/common/tags.yml"
