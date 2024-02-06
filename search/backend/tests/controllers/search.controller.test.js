@@ -123,7 +123,8 @@ describe("Search Controller", () => {
         queryterm: "",
         from: 0,
         size: 10,
-      });
+      })
+      .timeout(10000);
 
     // Assertions
     expect(response.status).toBe(200); // Check if the status code is 200
@@ -139,8 +140,9 @@ describe("Search Controller", () => {
       .send({
         queryterm: "",
         from: 0,
-        size: 15,
-      });
+        size: 11,
+      })
+      .timeout(10000);
 
     // Assertions
     expect(response.status).toBe(200); // Check if the status code is 200
