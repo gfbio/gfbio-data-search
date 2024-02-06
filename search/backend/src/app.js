@@ -40,7 +40,7 @@ sessionMiddleware.configureKeycloak(app);
 app.use("/api-docs", serve, setup);
 
 // Basic route to check if the server is running
-app.get("/", (req, res) => res.send("Server is up!"));
+app.get("/", (req, res) => res.json({ message: "Server is up!" }));
 
 // Application routes
 app.use("/gfbio", collectionRoutes); // Collection-related routes under /gfbio
