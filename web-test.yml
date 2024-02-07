@@ -11,7 +11,7 @@ services:
       dockerfile: ./docker/backend/Dockerfile
     image: gfbio_search_back
     env_file:
-      - ./.env
+      - ./search/backend/.env
     networks:
       - internalProxy
     restart: always
@@ -30,8 +30,6 @@ services:
       args:
         SERVICE_HOST: 'https:\/\/BRANCH.test.gfbio.dev' # this str will be used in sed, so we need to escape /
     image: gfbio_search_front
-    env_file:
-      - ./.env
     networks:
       - internalProxy
     restart: always

@@ -3,7 +3,7 @@ include:
     file:
       - ".create_merge_request_v3.yml"
       - ".tag_release.yml"
-      - ".web_test_v2.yml"
+      - ".web_test_v3.yml"
       - ".hotfix_workflow.yml"
   - local: ".gitlab-ci/common/variables.yml"
   - local: ".gitlab-ci/common/tags.yml"
@@ -19,14 +19,18 @@ stages:
   - web_test_stop
 
 create_merge_request:
-  extends: .dev-denbi-tags
   variables:
     REVIEWERS: "2370 3999"
+    PROJECT_NAME: "search"
+  extends:
+    - .dev-denbi-tags
 
 tag_release_check:
-  extends: .dev-denbi-tags
+  extends: .common-variables
   variables:
     MAIN_BRANCH_NAME: "production"
+  tags:
+    - docker-lxc
 
 tag_release:
   script:
@@ -38,8 +42,15 @@ tag_release:
     - docker-lxc
 
 web_test_update:
+  extends:
+    - .common-variables
+    - .dev-denbi-tags
+  variables:
+    COMPOSE_FILE: "web-test.yml"
   script:
     - .gitlab-ci/scripts/web_test_update.sh
 
 web_test_stop:
-  extends: .common-variables
+  extends:
+    - .common-variables
+    - .dev-denbi-tags
