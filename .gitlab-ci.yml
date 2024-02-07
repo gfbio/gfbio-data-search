@@ -40,8 +40,8 @@ tag_release:
 web_test_update:
   variables:
     COMPOSE_FILE: "web-test.yml"
+    PROJECT_NAME: "search"
   extends:
-    - .common-variables
     - .dev-denbi-tags
   script:
     - .gitlab-ci/scripts/web_test_update.sh
