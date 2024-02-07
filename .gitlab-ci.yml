@@ -19,11 +19,11 @@ stages:
   - web_test_stop
 
 create_merge_request:
+  variables:
+    REVIEWERS: "2370 3999"
   extends:
     - .dev-denbi-tags
     - .common-variables
-  variables:
-    REVIEWERS: "2370 3999"
 
 tag_release_check:
   extends: .common-variables
