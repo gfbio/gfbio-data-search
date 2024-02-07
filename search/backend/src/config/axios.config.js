@@ -29,16 +29,4 @@ const axiosInstance = axios.create({
  * });
  */
 
-// axiosInstance.interceptors.request.use((request) => {
-//   console.log("Request URL:", request.url);
-//   console.log("Request Parameters:", request.params);
-//   console.log("Request data:", request.data); // Request body data
-//   return request;
-// });
-//
-// axiosInstance.interceptors.response.use((response) => {
-//   console.log("Response data:", response.data); // Response body data
-//   return response;
-// });
-
 module.exports = axiosInstance;
