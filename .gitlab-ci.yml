@@ -38,6 +38,7 @@ tag_release:
     - docker-lxc
 
 web_test_update:
+  extends: .common-variables
   script:
     - .gitlab-ci/scripts/web_test_update.sh
 
