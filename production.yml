@@ -1,10 +1,11 @@
 version: "3"
 services:
   back:
+    image: gfbio_search_back_production:latest
     build:
       context: .
       dockerfile: ./docker/backend/Dockerfile
-    container_name: gfbio_search_back_stage
+    container_name: gfbio_search_back_production
     env_file:
       - ./search/backend/.env
     networks:
@@ -13,10 +14,11 @@ services:
     ports:
       - "3000:3000"
   front:
+    image: gfbio_search_front_production:latest
     build:
       context: .
       dockerfile: ./docker/frontend/Dockerfile
-    container_name: gfbio_search_front_stage
+    container_name: gfbio_search_front_production
     networks:
       - internalProxy
     restart: always
