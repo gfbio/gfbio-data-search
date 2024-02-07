@@ -53,4 +53,4 @@ web_test_update:
 web_test_stop:
   extends:
     - .common-variables
-    - .common-tags
+    - .dev-denbi-tags
