@@ -21,9 +21,9 @@ stages:
 create_merge_request:
   variables:
     REVIEWERS: "2370 3999"
+    PROJECT_NAME: "search"
   extends:
     - .dev-denbi-tags
-    - .common-variables
 
 tag_release_check:
   extends: .common-variables
