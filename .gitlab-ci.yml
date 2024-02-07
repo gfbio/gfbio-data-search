@@ -19,7 +19,9 @@ stages:
   - web_test_stop
 
 create_merge_request:
-  extends: .dev-denbi-tags
+  extends:
+    - .dev-denbi-tags
+    - .common-variables
   variables:
     REVIEWERS: "2370 3999"
 
@@ -40,9 +42,9 @@ tag_release:
 web_test_update:
   variables:
     COMPOSE_FILE: "web-test.yml"
-    PROJECT_NAME: "search"
   extends:
     - .dev-denbi-tags
+    - .common-variables
   script:
     - .gitlab-ci/scripts/web_test_update.sh
 
