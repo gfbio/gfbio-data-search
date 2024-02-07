@@ -24,7 +24,7 @@ create_merge_request:
     REVIEWERS: "2370 3999"
 
 tag_release_check:
-  extends: .dev-denbi-tags
+  extends: .common-variables
   variables:
     MAIN_BRANCH_NAME: "production"
 
@@ -39,19 +39,10 @@ tag_release:
 
 web_test_update:
   variables:
-    PROJECT_NAME: "search"
     COMPOSE_FILE: "web-test.yml"
+  extends: .dev-denbi-tags
   script:
-    # - .gitlab-ci/scripts/web_test_update.sh
-    - ISSUE_ID=$(awk -F- '{print $2}' <<< ${CI_COMMIT_REF_NAME})
-    - TEST_NAME=$ISSUE_ID-$PROJECT_NAME
-    - cp /home/gitlab-runner/.search-gfbio.node.env ./search/backend/.env
-    - cp /home/gitlab-runner/.environment.prod.ts ./search/frontend/src/environments/environment.prod.ts
-    - sed -i s/BRANCH/${TEST_NAME}/g $COMPOSE_FILE
-    - docker-compose -f $COMPOSE_FILE build
-    - docker stack rm $TEST_NAME || true
-    - while [[ $(docker ps | grep $TEST_NAME | wc -l) > 0 ]]; do sleep 1; done
-    - docker stack deploy -c $COMPOSE_FILE $TEST_NAME
+    - .gitlab-ci/scripts/web_test_update.sh
 
 web_test_stop:
   extends: .common-variables

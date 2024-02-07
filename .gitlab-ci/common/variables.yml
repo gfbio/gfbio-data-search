@@ -1,4 +1,3 @@
 .common-variables:
   variables:
-    COMPOSE_FILE: "web-test.yml"
     PROJECT_NAME: "gfbio-search"
