@@ -4,98 +4,192 @@
 
 ## Description
 
-The GFBio Data Search, built upon the Dai:Si Search UI, facilitates the
-exploration of datasets distributed and published across various [GFBio data
-centers](https://gfbio.org/data-centers/). These data centers, along with the
-resources they offer, are cataloged in an aggregator service. A dedicated
-harvester service then retrieves resources from the aggregator, extracting and
-organizing the information into an Elasticsearch index for efficient searching.
+The GFBio Dataset Search is built based on the Dai:Si Dataset Search UI. It
+facilitates the exploration of datasets which are distributed and published
+across the [GFBio data centers](https://gfbio.org/data-centers/). 
 
 ## Developer guide 
 
-This document provides guidance on building and running the GFBio Data Search
-application using Docker. The application consists of three main components:
+This section of the document provides a guide on setting up and operating the
+GFBio Dataset Search for local development purposes. It primarily focuses on
+the local development stack, which is comprehensively outlined in the Docker
+Compose file (docker-compose.yml). This file configures three main services: a
+Node Express API for the backend, an Angular application for the frontend, and
+an Elasticsearch index responsible for indexing and retrieving search results.
 
-* Backend: A Node.js application serving as the backend.
-* Frontend: An Angular-based user interface. 
+### Docker Stack
 
-Both applications are located in the search folder.
+```
+version: "3"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    container_name: gfbio_search_backend_dev
+    env_file:
+      - ./search/backend/.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./search/backend:/backend
+      # - /app/node_modules
+    networks:
+      - custom_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile.dev
+    container_name: gfbio_search_frontend_dev
+    volumes:
+      - ./search/frontend:/frontend
+      # - /app/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - custom_network
+
+  index:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: gfbio_search_index_dev
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - custom_network
+    # Elasticsearch specific optimizations
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          
+volumes:
+  esdata:
+  # mysql_data:
+
+networks:
+  custom_network:
+    driver: bridge
+```
+
+To initiate the local development stack for the GFBio Dataset Search, you need
+to run the following command in your terminal:
+
+```
+docker-compose up
+```
+
+This command activates the Docker Compose process, which reads the
+`docker-compose.yml` file to launch the specified services: the backend Node
+Express API, the frontend Angular application, and the Elasticsearch index for
+handling search functionalities.
+
+For rebuilding the services, especially after making changes to the Docker
+configuration or the service code, use the command:
+
+```
+docker-compose up --build
+```
+
+This instructs Docker Compose to rebuild the images before starting the
+services, ensuring any updates are incorporated.
+
+To stop the running services, you can use the command:
+
+```
+docker-compose down
+```
+
+This will halt all services started by Docker Compose and remove the
+containers, networks, and volumes created, effectively cleaning up your local
+development environment.
+
+After starting the stack the frontend will be available to you in the browser.
+under:
+
+```
+localhost:4200
+```
+
+Any modifications made to the frontend source code automatically trigger a
+browser reload to reflect these changes, facilitating a swift development
+process. 
+
+### Init the Elasticsearch Index
+
+Upon launching the development stack for the first time, it's important to note
+that the search functionality will not have any data to operate with initially.
+However, the repository includes some dummy data designed for the Elasticsearch
+index. This sample data can be utilized to populate the index, enabling the
+search feature to function and allowing developers to test and evaluate the
+search capabilities within a local development environment.
+
+The repository is equipped with a Makefile that houses a
+valuable set of commands designed to manage the development
+environment, including starting, stopping, restarting, and
+initializing processes. To begin, you can execute the
+following command:
+
+
+```
+make init
+```
+
+This command initiates the Docker development environment
+containers and fills the Elasticsearch index with sample
+data. After executing this command, when you navigate to:
+
+
+```
+localhost:4200 
+```
+
+you will be presented with 50 dummy datasets available for search. This setup is ideal for testing and development purposes, allowing you to simulate real-world search scenarios within the local development stack.
+
+
+### Where is the code
+
+
+The backend and frontend code are both located under the search folder.  
 
 ```
 search
-├── angular
+├── backend
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── README.md
+│   ├── server.js
+│   ├── src
+│   │   ├── ... 
+│   └── tests
+├── frontend
 │   ├── angular.json
 │   ├── dist
+│   │   └── DatasetSearch
 │   ├── karma.conf.js
-│   ├── node_modules
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── README.md
 │   ├── src
+│   │   ├── ... 
 │   ├── tsconfig.app.json
 │   ├── tsconfig.json
 │   ├── tsconfig.spec.json
 │   └── tslint.json
-├── LICENSE
-└── node
-    ├── app.js
-    ├── config
-    ├── connectionElastic.js
-    ├── controllers
-    ├── fileSaver.js
-    ├── gfbio.js
-    ├── models
-    ├── package.json
-    ├── package-lock.json
-    ├── README.md
+└── LICENSE
 ```
- 
-The Docker environment is configured to suit both local development and
-production deployment. The local Docker environment for development runs the
-front-end, the back-end, and a dockerized Elasticsearch index - all important
-components for an easy start.
-
-### Local Development Setup
-
-For building and running the containers. Navigate to the Project Directory
-
-```sh
-cd path/to/project
-```
-
-Then build and start the containers
-
-```sh
-docker-compose up --build
-```
-
-This command builds the images and starts the containers defined in
-docker-compose.yml. The --build flag ensures that Docker rebuilds the images,
-which is useful during development.
-
-Accessing the application
-
-* The frontend can be accessed at http://localhost:4200.
-* The backend is available at http://localhost:3000.
-
-When the containers are running. As a last step of preparation the local
-Elasticsearch index needs to be set up when you run it for the first time. You
-can use the script which is located in the index folder. 
-
-In the root folder of this repository you also find a Make script for your
-convenience to execute the commands for starting, stoping, restarting and
-initializing the index for you. For example:
-
-```
-# run the containers and populate the index with dummy metadata
-make init
-```
- 
-Making Changes
-
-When making changes to the source code, the respective containers can be
-rebuilt and restarted. For changes in the backend or frontend Dockerfiles,
-rerun the docker-compose up --build command.
 
 ## Contact Us
 
