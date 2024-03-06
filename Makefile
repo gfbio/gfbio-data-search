@@ -51,12 +51,12 @@ tag-patch-release:
 	$(eval NEW_PATCH=$(shell echo $$(($(PATCH) + 1))))
 	@# Construct new tag
 	$(eval NEW_TAG=$(MAJOR).$(MINOR).$(NEW_PATCH))
+	git tag $(NEW_TAG)
 	- make update-backend-version  # Update backend package.json
 	- make update-frontend-version # Update frontend package.json
 	@echo "Creating new tag: $(NEW_TAG)"
 	@# Tag the repository
 	git push
-	git tag $(NEW_TAG)
 	git push origin $(NEW_TAG)
 
 tag-minor-release:
@@ -69,12 +69,12 @@ tag-minor-release:
 	$(eval NEW_MINOR=$(shell echo $$(($(MINOR) + 1))))
 	@# Reset patch to 0
 	$(eval NEW_TAG=$(MAJOR).$(NEW_MINOR).0)
+	git tag $(NEW_TAG)
 	- make update-backend-version  # Update backend package.json
 	- make update-frontend-version # Update frontend package.json
 	@echo "Creating new minor version tag: $(NEW_TAG)"
 	@# Tag the repository
 	git push
-	git tag $(NEW_TAG)
 	git push origin $(NEW_TAG)
 
 tag-major-release:
@@ -86,12 +86,12 @@ tag-major-release:
 	$(eval NEW_MAJOR=$(shell echo $$(($(MAJOR) + 1))))
 	@# Reset minor and patch to 0
 	$(eval NEW_TAG=$(NEW_MAJOR).0.0)
+	git tag $(NEW_TAG)
 	- make update-backend-version  # Update backend package.json
 	- make update-frontend-version # Update frontend package.json
 	@echo "Creating new major version tag: $(NEW_TAG)"
 	@# Tag the repository
 	git push
-	git tag $(NEW_TAG)
 	git push origin $(NEW_TAG)
 
 clean-branches:
