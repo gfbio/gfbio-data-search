@@ -257,9 +257,11 @@ export class GfbioPreprocessDataService {
     });
 
     if (relation !== "") {
+      // dirty hack open in new tab as the index is contianing not only information but also markup
+      const modifiedRelation = relation.replace(/<a /g, '<a target="_blank" ');
       const descriptionItem = new Description();
       descriptionItem.setTitle("Relation:");
-      descriptionItem.setValue("<ul>" + relation + "</ul>");
+      descriptionItem.setValue("<ul>" + modifiedRelation + "</ul>");
       description.push(descriptionItem);
     }
     hit.setType(types);
