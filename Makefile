@@ -15,8 +15,13 @@ down:
 # Rebuild and restart services
 restart: down up
 
-init: up populate 
+# Copy .env.example to .env if .env does not exist
+setup-env:
+	if [ ! -f search/backend/.env ]; then \
+		cp search/backend/.env.example search/backend/.env; \
+	fi
 
+init: setup-env up populate 
 
 update-backend-version:
 	$(eval LAST_TAG=$(shell git describe --tags `git rev-list --tags --max-count=1`))
@@ -93,4 +98,4 @@ clean-branches:
 	@git branch | grep -v "main\|production" | xargs git branch -d
 	@git branch -r | grep -v "main\|production" | sed 's/origin\///' | xargs -I {} git push origin --delete refs/heads/{}
 
-.PHONY: up populate down restart init tag-patch-release tag-minor-release tag-major-release get-last-tag-release update-backend-version update-frontend-version clean-branches
+.PHONY: up populate down restart setup-env init tag-patch-release tag-minor-release tag-major-release get-last-tag-release update-backend-version update-frontend-version clean-branches
