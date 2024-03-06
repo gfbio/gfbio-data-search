@@ -6,7 +6,7 @@
     <div *ngFor="let desc of item.getDescription()">
       <strong class="text-muted">{{ desc.title }}</strong>
       <p [innerHTML]="desc.value"></p>
-      <!-- <pre>{{ item | json }}</pre> -->
+      <!-- <pre>{{ desc | json }}</pre> -->
     </div>
 
     <div *ngIf="item.getMultimediaObjs() && item.getMultimediaObjs().length">
@@ -45,7 +45,10 @@
     </div>
 
     <div class="my-button-group">
-      <a href="{{ item.getTitleUrl() }}" class="btn btn-outline-secondary mr-2"
+      <a
+        href="{{ item.getTitleUrl() }}"
+        target="_blank"
+        class="btn btn-outline-secondary mr-2"
         >View More</a
       >
 
