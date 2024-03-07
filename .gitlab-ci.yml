@@ -30,7 +30,7 @@ tag_release_check:
   variables:
     MAIN_BRANCH_NAME: "production"
   tags:
-    - docker-lxc
+    - denbi.rdc.prod.gfbio.search
 
 tag_release:
   script:
@@ -39,7 +39,7 @@ tag_release:
     name: production
     url: https://search.gfbio.org
   tags:
-    - docker-lxc
+    - denbi.rdc.prod.gfbio.search
 
 web_test_update:
   extends:
