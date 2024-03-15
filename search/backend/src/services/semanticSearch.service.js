@@ -1,4 +1,6 @@
 const axios = require("axios");
+const esClient = require("../config/elasticsearch.config");
+
 const { cartesianProduct } = require("cartesian-product-multiple-arrays");
 const {
   applyBoost,
@@ -8,7 +10,6 @@ const {
 } = require("../utils/query.utils");
 
 const GFBioTS_URL = process.env.GFBIOTS_URL;
-const Pangaea_URL = process.env.PANGAEA_URL;
 
 /**
  * Search for keywords and build combinations of keywords.
@@ -107,17 +108,27 @@ async function searchKeywords(keywords) {
  * @returns {Promise} - A promise that resolves with the search results.
  */
 async function performSemanticSearch(query, from, size, filter) {
-  const filteredQuery = getQuery(query, filter);
-  const boostedQuery = applyBoost(filteredQuery);
-  const data = getCompleteQuery(boostedQuery, from, size);
+  try {
+    // Construct the Elasticsearch query using utility functions.
+    const filteredQuery = getQuery(query, filter); // Adapt this if your function name or parameters differ.
+    const boostedQuery = applyBoost(filteredQuery);
+    const finalQuery = getCompleteQuery(boostedQuery, from, size);
 
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
+    // Prepare the search query for Elasticsearch.
+    const searchQuery = {
+      index: process.env.ELASTIC_INDEX_NAME, // Ensure your environment variable is correctly set.
+      from: from,
+      size: size,
+      body: finalQuery,
+    };
 
-  return axios.post(Pangaea_URL, data, config);
+    // Execute the search query using the Elasticsearch client.
+    const { body } = await esClient.search(searchQuery);
+    return body; // Return the full response body.
+  } catch (error) {
+    console.error("Error performing semantic search:", error);
+    throw error; // Ensure the error is caught and handled appropriately.
+  }
 }
 
 module.exports = {
