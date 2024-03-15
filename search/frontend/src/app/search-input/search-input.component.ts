@@ -100,8 +100,8 @@ export class SearchInputComponent implements OnInit {
 
   onSuggest(): void {
     this.nodeService.suggestSimple(this.searchKey).subscribe((data) => {
-      this.communicationService.setSuggest(data.suggest[0].options);
-      this.windowSuggestion = data.suggest[0].options.length !== 0;
+      this.communicationService.setSuggest(data);
+      this.windowSuggestion = data.length !== 0;
     });
   }
 }
