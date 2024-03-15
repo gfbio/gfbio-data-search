@@ -22,23 +22,28 @@ const semanticSearch = async (req, res) => {
     let from = 0;
     let size = 0;
 
-    if (req.body.from !== "undefined" && req.body.from >= 0) {
+    if (typeof req.body.from !== "undefined" && req.body.from >= 0) {
       from = req.body.from;
     }
 
-    if (req.body.size !== "undefined" && req.body.size >= 0) {
+    if (typeof req.body.size !== "undefined" && req.body.size >= 0) {
       size = req.body.size;
     }
 
-    if (req.body.filter !== "undefined") {
+    if (typeof req.body.filter !== "undefined") {
       filter = req.body.filter;
     }
 
+    // Adjusted for Elasticsearch client response.
     const resp = await performSemanticSearch(lastArr, from, size, filter);
-    resp.data.termData = termData;
+    const responseToClient = {
+      ...resp, // Spread the response
+      termData: termData, // Add termData property
+    };
 
+    // Extracting extended terms remains unchanged since structure under `resp.hits.hits` is the same.
     const extendedTerms = [];
-    const result = resp.data.hits.hits;
+    const result = resp.hits.hits; // Directly using resp.hits.hits, adjust based on actual response structure.
     for (let i = 0, iLen = result.length; i < iLen; i++) {
       const highlight = result[i].highlight;
       if (highlight != null) {
@@ -49,29 +54,22 @@ const semanticSearch = async (req, res) => {
           iHighlight < highlightArr.length;
           iHighlight++
         ) {
-          for (
-            let iExtended = 0;
-            iExtended < extendedTerms.length;
-            iExtended++
+          if (
+            !extendedTerms.some(
+              (term) =>
+                term.toLowerCase() === highlightArr[iHighlight].toLowerCase()
+            )
           ) {
-            if (
-              extendedTerms[iExtended].toLowerCase() ===
-              highlightArr[iHighlight].toLowerCase()
-            ) {
-              isAdded = true;
-            }
-          }
-          if (!isAdded) {
             extendedTerms.push(highlightArr[iHighlight]);
           }
         }
       }
     }
 
-    resp.data.lastItem = extendedTerms;
+    responseToClient.lastItem = extendedTerms; // Add the extended terms to the response object
 
     res.set("Content-Type", "application/json");
-    res.status(200).send(resp.data);
+    res.status(200).send(responseToClient); // Send the customized response
   } catch (err) {
     console.error(err);
     return res.status(500).json({
