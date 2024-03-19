@@ -1,8 +1,8 @@
 const axiosService = require("../config/axios.config");
 
-// Environment Variables
-const COLLECTIONS_API_URL = process.env.COLLECTIONS_API_URL;
-const COLLECTIONS_API_TOKEN = process.env.COLLECTIONS_API_TOKEN;
+const appRoot = require("app-root-path");
+const { COLLECTIONS_API_URL, COLLECTIONS_API_TOKEN } = require(appRoot +
+  "/src/config/environment"); // Import environment
 
 /**
  * Update an existing collection.
