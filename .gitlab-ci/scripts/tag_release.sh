@@ -4,13 +4,14 @@
 #  the backend configuraiton  #
 ###############################
 
-cat <<EOF > ./search/backend/.env
-ELASTIC_INDEX_URL="${ELASTIC_INDEX_URL}"
-ELASTIC_INDEX_NAME="${ELASTIC_INDEX_NAME}"
-ELASTIC_INDEX_PORT= "${ELASTIC_INDEX_PORT}"
-SESSION_SECRET= "${SESSION_SECRET}"
-COLLECTIONS_API_TOKEN= "${COLLECTIONS_API_TOKEN}"
-EOF
+# cat <<EOF > ./search/backend/.env
+# ELASTIC_INDEX_URL="${ELASTIC_INDEX_URL}"
+# ELASTIC_INDEX_NAME="${ELASTIC_INDEX_NAME}"
+# ELASTIC_INDEX_PORT= "${ELASTIC_INDEX_PORT}"
+# SESSION_SECRET= "${SESSION_SECRET}"
+# COLLECTIONS_API_TOKEN= "${COLLECTIONS_API_TOKEN}"
+# EOF
+cp /home/gitlab-runner/environments/search.gfbio.org/search.gfbio.org.backend.env ./search/backend/.env
 
 ################################
 #  the frontend configuraiton  #
