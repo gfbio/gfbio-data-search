@@ -9,7 +9,9 @@ const {
   extractHighlightedSearch,
 } = require("../utils/query.utils");
 
-const GFBioTS_URL = process.env.GFBIOTS_URL;
+const appRoot = require("app-root-path");
+const { GFBIOTS_URL, ELASTIC_INDEX_NAME } = require(appRoot +
+  "/src/config/environment"); // Import environment
 
 /**
  * Search for keywords and build combinations of keywords.
@@ -32,7 +34,7 @@ async function searchKeywords(keywords) {
   for (let i = 0; i < flatKeyWords.length; i++) {
     axiosArray.push(
       axios.get(
-        GFBioTS_URL + "search?query=" + flatKeyWords[i] + "&match_type=exact"
+        GFBIOTS_URL + "search?query=" + flatKeyWords[i] + "&match_type=exact"
       )
     );
   }
@@ -116,7 +118,7 @@ async function performSemanticSearch(query, from, size, filter) {
 
     // Prepare the search query for Elasticsearch.
     const searchQuery = {
-      index: process.env.ELASTIC_INDEX_NAME, // Ensure your environment variable is correctly set.
+      index: ELASTIC_INDEX_NAME, // Ensure your environment variable is correctly set.
       from: from,
       size: size,
       body: finalQuery,

@@ -6,6 +6,9 @@ const {
 } = require("../utils/query.utils");
 const esClient = require("../config/elasticsearch.config");
 
+const appRoot = require("app-root-path");
+const { ELASTIC_INDEX_NAME } = require(appRoot + "/src/config/environment"); // Import environment
+
 /**
  * Executes a search query against an Elasticsearch index.
  *
@@ -30,7 +33,7 @@ exports.executeSearch = async (queryterm, filter, from, size) => {
 
     // Prepare the search query for Elasticsearch.
     const searchQuery = {
-      index: process.env.ELASTIC_INDEX_NAME, // Use the index name from the environment variable.
+      index: ELASTIC_INDEX_NAME, // Use the index name from the environment variable.
       from, // Starting index for search results (for pagination).
       size, // Number of search results to return (for pagination).
       body: finalQuery, // The constructed query from utility functions.

@@ -1,7 +1,9 @@
 // External dependencies and configuration files
 const axiosService = require("../config/axios.config"); // Axios configuration for HTTP requests
 const esClient = require("../config/elasticsearch.config"); // Elasticsearch client configuration
-const TERMINOLOGY_SUGGEST_URL = process.env.TERMINOLOGY_SUGGEST_URL; // Environment variable for the terminology suggestion service URL
+const appRoot = require("app-root-path");
+const { TERMINOLOGY_SUGGEST_URL, ELASTIC_INDEX_NAME } = require(appRoot +
+  "/src/config/environment"); // Import environment
 
 /**
  * Fetches keyword suggestions from Elasticsearch based on the provided term.
@@ -16,7 +18,7 @@ exports.getSuggestionsPan = async (term) => {
   try {
     // Perform the search query against Elasticsearch
     const response = await esClient.search({
-      index: process.env.ELASTIC_INDEX_NAME, // The name of the Elasticsearch index
+      index: ELASTIC_INDEX_NAME, // The name of the Elasticsearch index
       body: {
         suggest: {
           text: term,
