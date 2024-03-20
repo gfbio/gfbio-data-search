@@ -13,7 +13,6 @@ export const environment = {
   vatRootUrl: "https://vat.gfbio.dev",
   collections: "/collection",
   collectionsUpdate: "/collection-update",
-
   apiUrl: "http://localhost:3000",
   context: "/gfbio",
   searchUrl: "/search",
@@ -26,7 +25,6 @@ export const environment = {
   deleteFromBasket: "/deleteFromBasket",
   deleteAllBasket: "/deleteAllBasket",
   readFromBasketUrl: "/api/baskets/user/",
-
   imagePath: "assets/img/",
   vatImg: "vat.png",
   semSearchImg: "icon_semsearch3.png",

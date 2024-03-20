@@ -2,13 +2,22 @@ var Keycloak = require("keycloak-connect");
 
 let _keycloak;
 
+const appRoot = require("app-root-path");
+const {
+  Keycloak_ClientId,
+  Keycloak_BearerOnly,
+  Keycloak_ServerUrl,
+  Keycloak_Realm,
+  Keycloak_Secret,
+} = require(appRoot + "/src/config/environment"); // Import environment
+
 var keycloakConfig = {
-  clientId: process.env.Keycloak_ClientId, // Your Keycloak client ID
-  bearerOnly: process.env.Keycloak_BearerOnly, // Set to true if this client is a bearer-only client
-  serverUrl: process.env.Keycloak_ServerUrl, // URL of your Keycloak server
-  realm: process.env.Keycloak_Realm, // Name of the Keycloak realm
+  clientId: Keycloak_ClientId, // Your Keycloak client ID
+  bearerOnly: Keycloak_BearerOnly, // Set to true if this client is a bearer-only client
+  serverUrl: Keycloak_ServerUrl, // URL of your Keycloak server
+  realm: Keycloak_Realm, // Name of the Keycloak realm
   credentials: {
-    secret: process.env.Keycloak_Secret, // Secret for the client (client ID)
+    secret: Keycloak_Secret, // Secret for the client (client ID)
   },
 };
 

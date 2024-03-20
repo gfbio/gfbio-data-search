@@ -3,6 +3,16 @@ const axiosService = require("../config/axios.config");
 const myCache = new NodeCache();
 const queryMap = new Map();
 
+const appRoot = require("app-root-path");
+const {
+  ELASTIC_INDEX_URL,
+  ELASTIC_INDEX_NAME,
+  ELASTIC_INDEX_PORT,
+} = require(appRoot + "/src/config/environment"); // Import environment
+
+// https://elasticsearch.gfbio.dev/dataportal-gfbio/_search
+const ELASTIC_INDEX_SEARCH_URL = `${ELASTIC_INDEX_URL}:${ELASTIC_INDEX_PORT}/${ELASTIC_INDEX_NAME}/_search`;
+
 const cacheMiddleware = (allowedRoutes, duration) => {
   return (req, res, next) => {
     // Check if the current route is in the allowedRoutes array
@@ -68,10 +78,17 @@ function clearCacheAtMidnight() {
 
     sortedQueries.forEach(([queryKey, queryValue]) => {
       const query = JSON.parse(queryKey);
+      console.log("==== debug the recaching ====");
+      console.log("-- the query ---");
+      console.log(query);
+      console.log("-- the query ---");
       let url;
+      console.log("-- the url ---");
+      console.log(url);
+      console.log("-- the url ---");
       switch (query.path) {
         case "/search":
-          url = Pangaea_URL;
+          url = ELASTIC_INDEX_SEARCH_URL;
           break;
         // Add cases for other routes as needed
       }
@@ -90,6 +107,7 @@ function clearCacheAtMidnight() {
         }
       }
     });
+    console.log("==== debug the recaching ====");
     queryMap.clear(); // Clear the map
     clearCacheAtMidnight();
   }, timeUntilMidnight);
