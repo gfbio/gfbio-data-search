@@ -4,8 +4,6 @@
 #  the backend configuraiton  #
 ###############################
 
-/search/backend/.env
-
 cat <<EOF > ./search/backend/.env
 ELASTIC_INDEX_URL="${ELASTIC_INDEX_URL}"
 ELASTIC_INDEX_NAME="${ELASTIC_INDEX_NAME}"
