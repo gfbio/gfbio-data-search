@@ -5,7 +5,8 @@ const {
 } = require("../services/semanticSearch.service");
 
 const axios = require("../config/axios.config");
-const GFBioTS_URL = process.env.GFBIOTS_URL;
+const appRoot = require("app-root-path");
+const { GFBIOTS_URL } = require(appRoot + "/src/config/environment"); // Import environment
 
 /**
  * Perform a semantic search based on the provided keywords and filters.
@@ -97,7 +98,7 @@ const semanticNarrow = async (req, res) => {
   };
 
   return axios
-    .get(GFBioTS_URL + id + "/narrower?uri=" + uri, config)
+    .get(GFBIOTS_URL + id + "/narrower?uri=" + uri, config)
     .then((resp) => {
       console.log(resp.data);
       res.status(200).send(resp.data);
@@ -129,7 +130,7 @@ const semanticBroaden = async (req, res) => {
   };
 
   return axios
-    .get(GFBioTS_URL + id + "/broader?uri=" + uri, config)
+    .get(GFBIOTS_URL + id + "/broader?uri=" + uri, config)
     .then((resp) => {
       console.log(resp.data);
       res.status(200).send(resp.data);

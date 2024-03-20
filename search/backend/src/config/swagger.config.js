@@ -1,5 +1,7 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const appRoot = require("app-root-path");
+const { HOST, APP_PORT } = require(appRoot + "/src/config/environment"); // Import environment
 
 const swaggerDefinition = {
   info: {
@@ -7,7 +9,7 @@ const swaggerDefinition = {
     version: "1.0.0",
     description: "Endpoints for dataset search",
   },
-  host: `${process.env.HOST}:${process.env.APP_PORT}`, // Host and port where your API is running
+  host: `${HOST}:${APP_PORT}`, // Host and port where your API is running
   basePath: "/", // Base path for your API
 };
 

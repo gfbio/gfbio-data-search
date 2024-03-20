@@ -1,13 +1,12 @@
 // Import necessary modules
 const app = require("./src/app");
-const dotenv = require("dotenv").config();
 
-// Define the default port (3000) if not specified in environment variables
-const PORT = process.env.APP_PORT || 3000;
+const appRoot = require("app-root-path");
+const { APP_PORT } = require(appRoot + "/src/config/environment"); // Import environment
 
 // Start the server and listen on the specified port
-const server = app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const server = app.listen(APP_PORT, () => {
+  console.log(`Server is running on port ${APP_PORT}`);
 });
 
 // Handle server shutdown gracefully
