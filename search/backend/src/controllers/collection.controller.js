@@ -56,7 +56,7 @@ const createCollection = (req, res) => {
   };
 
   // Make a POST request to create a new collection
-  return axios
+  return axiosService
     .post(COLLECTIONS_API_URL, req.body, { headers: headers })
     .then((resp) => {
       // Send the response from the API as the result
