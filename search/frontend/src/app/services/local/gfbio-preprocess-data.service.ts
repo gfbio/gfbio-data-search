@@ -28,35 +28,65 @@ export class GfbioPreprocessDataService {
   private vatTooltip = environment.vatTooltip;
   private noCoordinates = environment.noCoordinates;
 
-  /*maps the json which comes from the server to the Result class, it is the most important function in this service,
-    other functions can be deleted according to the json response
-    this method gets the json object and an array of parameters which are necessary for mapping*/
   getResult(jsonObject, parameters: Array<any>): Result {
+    // console.log('Incoming jsonObject in getResult:', jsonObject);
+    // console.log('Incoming parameters in getResult:', parameters);
+
     this.id = 10;
     const result = new Result();
-    result.setSemanticKeys(jsonObject?.lastItem);
+
+    if (jsonObject?.lastItem) {
+      result.setSemanticKeys(jsonObject.lastItem);
+    }
+
     const hits: Hit[] = this.getHits(jsonObject, parameters[0]);
     result.setHits(hits);
-    result.setAggregations(this.getAggregations(jsonObject));
-    result.setTotalNumber(jsonObject?.hits?.total);
+
+    if (jsonObject?.aggregations) {
+      result.setAggregations(this.getAggregations(jsonObject));
+    }
+
+    if (jsonObject?.hits?.total) {
+      result.setTotalNumber(jsonObject.hits.total);
+    }
+
     result.setOtherFilters(this.getOtherFilters());
     result.setDatePickers(this.getDatePickers());
-    result.setTermData(jsonObject?.termData);
-    console.log(result);
+
+    if (jsonObject?.termData) {
+      result.setTermData(jsonObject.termData);
+    }
+
+    // console.log('Processed result:', result);
     return result;
   }
 
-  // maps the datasets
   getHits(jsonObject, semantic): Hit[] {
+    // console.log('Incoming jsonObject in getHits:', jsonObject);
+    // console.log('Incoming semantic parameter in getHits:', semantic);
+
     const hits: Hit[] = [];
     const hitsOfObject = jsonObject?.hits?.hits;
+
+    if (!hitsOfObject || !Array.isArray(hitsOfObject)) {
+      console.warn('hitsOfObject is undefined or not an array:', hitsOfObject);
+      return hits;
+    }
+
     hitsOfObject.forEach((item) => {
-      hits.push(this.getHit(item, semantic));
+      if (item) {
+        hits.push(this.getHit(item, semantic));
+      } else {
+        console.warn('Encountered undefined or null item in hitsOfObject');
+      }
     });
+
+    // console.log('Processed hits:', hits);
     return hits;
   }
 
-  // maps the citation data
+  // The rest of the methods remain unchanged
+
   getCitation(item, titleURL): Citation {
     const citation = new Citation();
     const xmlStr = item?.xml;
@@ -90,7 +120,6 @@ export class GfbioPreprocessDataService {
     return citation;
   }
 
-  // maps the title
   getTopic(dataset, semantic): string {
     const dom = document
       .createRange()
@@ -111,7 +140,6 @@ export class GfbioPreprocessDataService {
     return topic;
   }
 
-  // maps the url title
   getTopicUrl(dom): string {
     const titleURL = dom?.querySelector(".citation a")?.getAttribute("href");
     if (titleURL === undefined || titleURL === "undefined") {
@@ -121,7 +149,6 @@ export class GfbioPreprocessDataService {
     }
   }
 
-  // maps the licenses
   getLicense(dataset): [] {
     let license = dataset?._source?.licenseShort;
     if (!Array.isArray(license)) {
@@ -146,7 +173,6 @@ export class GfbioPreprocessDataService {
     return license;
   }
 
-  // maps a dataset
   getHit(item, semantic): Hit {
     const source = item?._source;
     const hit = new Hit();
@@ -275,7 +301,6 @@ export class GfbioPreprocessDataService {
     return hit;
   }
 
-  // maps labels
   getLabels(item): UpperLabel[] {
     const upperLabels: UpperLabel[] = [];
     // if the citation date exist, a blue label will be created
@@ -368,8 +393,7 @@ export class GfbioPreprocessDataService {
     return upperLabels;
   }
 
-  // maps facets
-  getAggregations(jsonObject): Aggregation[] {
+getAggregations(jsonObject): Aggregation[] {
     const titles = [
       GfbioPreprocessDataService.dataCenter,
       GfbioPreprocessDataService.dataType,
@@ -409,7 +433,6 @@ export class GfbioPreprocessDataService {
     return aggregations;
   }
 
-  // maps other filters
   getOtherFilters(): Array<any> {
     return [
       {
@@ -457,7 +480,6 @@ export class GfbioPreprocessDataService {
     ];
   }
 
-  // maps datepicker filters
   getDatePickers(): Array<any> {
     return [
       {
@@ -497,7 +519,6 @@ export class GfbioPreprocessDataService {
     ];
   }
 
-  // available icons: https://jossef.github.io/material-design-icons-iconfont/
   selectIcon(filter): string {
     // default icon
     let icon = "filter_list";
