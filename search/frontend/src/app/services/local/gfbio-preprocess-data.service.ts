@@ -29,8 +29,8 @@ export class GfbioPreprocessDataService {
   private noCoordinates = environment.noCoordinates;
 
   getResult(jsonObject, parameters: Array<any>): Result {
-    console.log('Incoming jsonObject in getResult:', jsonObject);
-    console.log('Incoming parameters in getResult:', parameters);
+    // console.log('Incoming jsonObject in getResult:', jsonObject);
+    // console.log('Incoming parameters in getResult:', parameters);
 
     this.id = 10;
     const result = new Result();
@@ -57,13 +57,13 @@ export class GfbioPreprocessDataService {
       result.setTermData(jsonObject.termData);
     }
 
-    console.log('Processed result:', result);
+    // console.log('Processed result:', result);
     return result;
   }
 
   getHits(jsonObject, semantic): Hit[] {
-    console.log('Incoming jsonObject in getHits:', jsonObject);
-    console.log('Incoming semantic parameter in getHits:', semantic);
+    // console.log('Incoming jsonObject in getHits:', jsonObject);
+    // console.log('Incoming semantic parameter in getHits:', semantic);
 
     const hits: Hit[] = [];
     const hitsOfObject = jsonObject?.hits?.hits;
@@ -81,7 +81,7 @@ export class GfbioPreprocessDataService {
       }
     });
 
-    console.log('Processed hits:', hits);
+    // console.log('Processed hits:', hits);
     return hits;
   }
 
