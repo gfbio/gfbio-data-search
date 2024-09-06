@@ -10,6 +10,7 @@ ELASTIC_INDEX_NAME="${ELASTIC_INDEX_NAME}"
 ELASTIC_INDEX_PORT= "${ELASTIC_INDEX_PORT}"
 SESSION_SECRET= "${SESSION_SECRET}"
 COLLECTIONS_API_URL="https://collections.gfbio.dev/api/collections/"
+GFBIOTS_URL="https://dev-gfbio.bgbm.org/api/terminologies/"
 COLLECTIONS_API_TOKEN= "${COLLECTIONS_API_TOKEN}"
 VAT_ROOT_URL="https://vat.gfbio.org"
 EOF
