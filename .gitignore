@@ -3,6 +3,4 @@
 node_modules/
 search/frontend/dist/
 search/frontend/.angular/
-gfbio.environment.prod.ts
-environment.prod.ts
 notes.txt
