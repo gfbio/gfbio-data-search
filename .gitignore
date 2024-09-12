@@ -3,4 +3,5 @@
 node_modules/
 search/frontend/dist/
 search/frontend/.angular/
+environment.prod.ts
 notes.txt
