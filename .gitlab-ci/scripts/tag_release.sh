@@ -22,7 +22,7 @@ EOF
 cp ./search/frontend/src/environments/environment.ts ./search/frontend/src/environments/environment.prod.ts
 sed -i 's/production: false,/production: true,/' ./search/frontend/src/environments/environment.prod.ts
 sed -i 's|apiUrl: "http://localhost:3000",|apiUrl: "https://search.gfbio.org",|' ./search/frontend/src/environments/environment.prod.ts
-# sed -i 's|vatRootUrl: "https://vat.gfbio.dev",|vatRootUrl: "https://vat.gfbio.org",|' ./search/frontend/src/environments/environment.prod.ts
+sed -i 's|vatRootUrl: "https://vat.gfbio.dev",|vatRootUrl: "https://vat.gfbio.org",|' ./search/frontend/src/environments/environment.prod.ts
 
 ############################
 #  build the docker stack  #
