@@ -18,7 +18,11 @@ export class SearchInputComponent implements OnInit {
     private startSearchingService: StartSearchingService,
     private communicationService: CommunicationService,
     private inputAnalysis: InputAnalysisService
-  ) {}
+  ) {
+    this.communicationService.getResult().subscribe((result) => {
+      this.result = result;
+    });
+  }
 
   faSearch = faSearch;
   @Input() searchKey: any;
