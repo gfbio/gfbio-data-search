@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <!-- Logo/Brand -->
+    <a class="navbar-brand" href="#">
+      <img src="assets/img/gfbio-logo.svg" alt="GFBio Logo" height="40">
+    </a>
+
+    <!-- Navigation Items -->
+    <div class="d-flex align-items-center">
+      <!-- Dataset Basket -->
+      <div class="basket me-3" (click)="basketClick()">
+        <div class="basket-img position-relative">
+          <img src="assets/img/basket.png" alt="Dataset Basket" class="basket-icon">
+          <span class="basket-number position-absolute top-0 start-50 translate-middle badge rounded-pill bg-warning">
+            {{basketValues.length}}
+          </span>
+        </div>
+        <span class="basket-text ms-2">Dataset Basket</span>
+      </div>
+    </div>
+  </div>
+</nav>

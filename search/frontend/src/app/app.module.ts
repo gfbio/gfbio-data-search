@@ -38,6 +38,7 @@ import { initializeKeycloak } from "./utils/app.init";
     AppComponent,
     FooterComponent,
     NavigationComponent,
+    NavigationComponent,
     GfbioComponent,
     SearchInputComponent,
     SearchResultComponent,

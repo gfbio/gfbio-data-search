@@ -1,4 +1,4 @@
-<div>
+<div class="search-container">
   <form (ngSubmit)="onSearch()" autocomplete="off">
     <div class="input-group input-search">
       <input
@@ -13,16 +13,16 @@
       <div class="input-group-append">
         <button
           type="submit"
-          class="btn btn-outline-primary fw-bold"
+          class="btn btn-outline-primary"
           id="button-search"
         >
           Search
         </button>
         <button
           type="button"
-          class="btn btn-outline-primary fw-bold"
+          class="btn btn-outline-primary ms-2"
           (click)="semantic()"
-          id="button-search"
+          id="button-semantic-search"
         >
           Semantic Search
         </button>
@@ -36,8 +36,10 @@
         ></app-suggestion-window>
       </div>
     </div>
+    <div class="items-count" *ngIf="result?.getTotalNumber() > 0">
+      {{ result.getTotalNumber() }} items found
+    </div>
   </form>
-  <div class="text-muted pt-2 pl-1" *ngIf="result?.getTotalNumber() > 0">{{ result.getTotalNumber() }} items found</div>
   <div class="text-danger ml-1" *ngIf="alertSearch">
     <div>Please do not use these special characters in a search:</div>
     <div>!&#64;#$%^&_+-=[];':\|,<>/?{{ "{}" }}</div>
