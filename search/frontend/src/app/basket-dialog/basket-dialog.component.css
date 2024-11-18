@@ -1,0 +1,243 @@
+/* Override Material Dialog width */
+::ng-deep .basket-dialog {
+  max-width: 800px !important;
+  width: 90vw;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  max-height: 80vh;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header Styles */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: white;
+  flex-shrink: 0;
+}
+
+.dialog-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #335aa3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.close-button {
+  color: #335aa3;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+
+/* Content Styles */
+.dialog-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  min-height: 0;
+}
+
+.basket-content {
+  height: 100%;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #666;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 1rem;
+  color: #3cace4;
+}
+
+/* Dataset List */
+.dataset-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.dataset-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.dataset-item:hover {
+  background: #f0f2f5;
+}
+
+.dataset-info {
+  padding: 1rem;
+}
+
+.dataset-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.dataset-title {
+  flex: 1;
+  font-weight: 500;
+  color: #335aa3;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.remove-button {
+  flex-shrink: 0;
+  color: #dc3545;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: -8px -8px -8px 0;
+}
+
+.remove-button:hover {
+  opacity: 1;
+}
+
+.dataset-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.metadata-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #666;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.metadata-item .material-icons {
+  font-size: 16px;
+}
+
+/* Spinner */
+.spinner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Actions */
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: white;
+  flex-shrink: 0;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 48px;
+  padding: 0 1.25rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.action-button .material-icons {
+  font-size: 20px;
+}
+
+.clear-button {
+  background: #f8f9fa;
+  color: #dc3545;
+}
+
+.clear-button:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.download-button {
+  background: #f8f9fa;
+  color: #335aa3;
+}
+
+.download-button:hover {
+  background: #335aa3;
+  color: white;
+}
+
+.submit-button {
+  background: #3cace4;
+  color: white;
+}
+
+.submit-button:hover {
+  background: #1e9cd7;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .dialog-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .action-button {
+    justify-content: center;
+  }
+}

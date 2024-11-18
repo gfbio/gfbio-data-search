@@ -35,6 +35,8 @@ export class BasketDialogComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<BasketDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data, private nodeService: NodeService, private keycloakService: KeycloakService) {
+        // Set dialog panel class for width control
+        this.dialogRef.addPanelClass('basket-dialog');
     }
 
     ngOnInit(): void {
