@@ -8,15 +8,15 @@
     <!-- Navigation Items -->
     <div class="d-flex align-items-center">
       <!-- Dataset Basket -->
-      <div class="basket me-3" (click)="basketClick()">
-        <div class="basket-img position-relative">
-          <img src="assets/img/basket.png" alt="Dataset Basket" class="basket-icon">
-          <span class="basket-number position-absolute top-0 start-50 translate-middle badge rounded-pill bg-warning">
-            {{basketValues.length}}
-          </span>
+      <button class="basket me-3" (click)="basketClick()">
+        <div class="basket-content">
+          <div class="basket-img">
+            <img src="assets/icons/shopping-basket.svg" alt="Dataset Basket" class="basket-icon">
+            <span class="basket-number">{{basketValues.length}}</span>
+          </div>
+          <span class="basket-text">Dataset Basket</span>
         </div>
-        <span class="basket-text ms-2">Dataset Basket</span>
-      </div>
+      </button>
     </div>
   </div>
 </nav>

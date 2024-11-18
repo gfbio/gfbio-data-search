@@ -1,15 +1,14 @@
 <div>
   <!-- TODO: This basked I want to have in the navigation  <19-01-24, Claas> -->
 
-  <div class="basket mb-3" (click)="basketClick()">
-    <div class="basket-img">
-      <img src="assets/img/basket.png" class="w-100" />
-      <span class="basket-number Absolute-Center">{{
-        basketValues.length
-      }}</span>
+  <button class="basket mb-3" (click)="basketClick()" title="Dataset Basket">
+    <div class="basket-content">
+      <div class="basket-img">
+        <img src="assets/icons/shopping-basket.svg" alt="Dataset Basket" class="basket-icon">
+        <span class="basket-number">{{basketValues.length}}</span>
+      </div>
     </div>
-    <span class="basket-text">Dataset Basket</span>
-  </div>
+  </button>
 
   <div *ngIf="result?.getHits()?.length === 0" class="text-danger">
     No entries found
