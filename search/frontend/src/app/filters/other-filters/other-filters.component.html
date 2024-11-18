@@ -1,6 +1,6 @@
-<div>
-  <div *ngFor="let item of filter">
-    <label for="{{ item.id }}" class="pl-2 linkBlue m-0">
+<div class="other-filters-container">
+  <div *ngFor="let item of filter" class="other-filters-item">
+    <label for="{{ item.id }}" class="pl-2 m-0">
       <input
         id="{{ item.id }}"
         type="checkbox"
