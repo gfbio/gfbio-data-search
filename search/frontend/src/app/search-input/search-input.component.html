@@ -1,6 +1,6 @@
-<div class="search-container">
-  <form (ngSubmit)="onSearch()" autocomplete="off">
-    <div class="input-group input-search">
+<div class="container-fluid px-0">
+  <form (ngSubmit)="onSearch()">
+    <div class="input-group">
       <input
         #searchInput
         type="text"
@@ -20,7 +20,7 @@
         </button>
         <button
           type="button"
-          class="btn btn-outline-primary ms-2"
+          class="btn btn-outline-primary"
           (click)="semantic()"
           id="button-semantic-search"
         >
