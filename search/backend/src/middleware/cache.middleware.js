@@ -11,6 +11,7 @@ const myCache = new NodeCache({
 });
 
 const queryMap = new Map();
+const popularQueries = new Map(); // Track query popularity
 
 const appRoot = require("app-root-path");
 const {
@@ -20,6 +21,8 @@ const {
 } = require(appRoot + "/src/config/environment");
 
 const ELASTIC_INDEX_SEARCH_URL = `${ELASTIC_INDEX_URL}:${ELASTIC_INDEX_PORT}/${ELASTIC_INDEX_NAME}/_search`;
+const TOP_QUERIES_TO_CACHE = 50; // Number of top queries to keep in default cache
+const POPULARITY_DECAY_FACTOR = 0.95; // Decay factor for query popularity (favors recent queries)
 
 // Generate a consistent cache key
 function generateCacheKey(req) {
@@ -28,7 +31,6 @@ function generateCacheKey(req) {
     method: req.method,
     params: req.method === "POST" ? req.body : req.query,
     headers: {
-      // Only include relevant headers that might affect the response
       accept: req.headers.accept,
       'accept-language': req.headers['accept-language'],
     }
@@ -38,6 +40,54 @@ function generateCacheKey(req) {
     .createHash('sha256')
     .update(JSON.stringify(payload))
     .digest('hex');
+}
+
+// Update query popularity
+function updateQueryPopularity(key, query) {
+  const now = Date.now();
+  const queryInfo = popularQueries.get(key) || { 
+    count: 0, 
+    lastAccessed: now,
+    query: query
+  };
+  
+  // Apply decay factor based on time since last access
+  const daysSinceLastAccess = (now - queryInfo.lastAccessed) / (1000 * 60 * 60 * 24);
+  queryInfo.count = (queryInfo.count * Math.pow(POPULARITY_DECAY_FACTOR, daysSinceLastAccess)) + 1;
+  queryInfo.lastAccessed = now;
+  
+  popularQueries.set(key, queryInfo);
+}
+
+// Pre-cache popular queries
+async function updateDefaultCache() {
+  try {
+    // Sort queries by popularity
+    const sortedQueries = Array.from(popularQueries.entries())
+      .sort((a, b) => b[1].count - a[1].count)
+      .slice(0, TOP_QUERIES_TO_CACHE);
+
+    console.log(`Updating default cache with top ${sortedQueries.length} queries`);
+
+    // Pre-cache top queries
+    for (const [key, queryInfo] of sortedQueries) {
+      if (!myCache.has(key)) {
+        try {
+          const response = await axiosService.post(ELASTIC_INDEX_SEARCH_URL, queryInfo.query);
+          const cacheEntry = {
+            data: response.data,
+            timestamp: Date.now()
+          };
+          myCache.set(key, cacheEntry);
+          console.log(`Pre-cached query: ${key}`);
+        } catch (error) {
+          console.error(`Failed to pre-cache query ${key}:`, error.message);
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error updating default cache:', error);
+  }
 }
 
 // Validate cache entry
@@ -60,6 +110,11 @@ const cacheMiddleware = (allowedRoutes, duration = 3600) => {
     const key = generateCacheKey(req);
     
     try {
+      // Update query popularity
+      if (req.method === "POST") {
+        updateQueryPopularity(key, req.body);
+      }
+      
       const cachedEntry = myCache.get(key);
       
       if (cachedEntry && isValidCacheEntry(cachedEntry)) {
@@ -143,5 +198,11 @@ function maintainCache() {
 
 // Run cache maintenance every hour
 setInterval(maintainCache, 60 * 60 * 1000);
+
+// Update default cache every 6 hours
+setInterval(updateDefaultCache, 6 * 60 * 60 * 1000);
+
+// Initial default cache update
+updateDefaultCache();
 
 module.exports = cacheMiddleware;
