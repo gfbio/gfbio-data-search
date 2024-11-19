@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CitationComponent implements OnInit {
     result: Citation;
     @ViewChild('citationText') citationText: ElementRef;
+    isCopied = false;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: Hit,
@@ -28,11 +29,10 @@ export class CitationComponent implements OnInit {
     copyToClipboard(): void {
         const text = this.citationText.nativeElement.innerText;
         navigator.clipboard.writeText(text).then(() => {
-            this.snackBar.open('Citation copied to clipboard', 'Close', {
-                duration: 3000,
-                horizontalPosition: 'center',
-                verticalPosition: 'bottom'
-            });
+            this.isCopied = true;
+            setTimeout(() => {
+                this.isCopied = false;
+            }, 2000);
         });
     }
 }

@@ -32,9 +32,9 @@
 
     <!-- Dialog Actions -->
     <div class="dialog-actions">
-        <button mat-flat-button class="action-button copy-button" (click)="copyToClipboard()">
-            <span class="material-icons">content_copy</span>
-            Copy Citation
+        <button mat-flat-button class="action-button copy-button" (click)="copyToClipboard()" [class.copied]="isCopied">
+            <span class="material-icons">{{ isCopied ? 'check' : 'content_copy' }}</span>
+            {{ isCopied ? 'Copied!' : 'Copy Citation' }}
         </button>
     </div>
 </div>

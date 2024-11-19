@@ -126,6 +126,8 @@
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  min-width: 160px;
+  justify-content: center;
   
   &.copy-button {
     background: #3cace4;
@@ -134,10 +136,16 @@
     &:hover {
       background: #2d8ab8;
     }
+
+    &.copied {
+      background: #81b248;
+      pointer-events: none;
+    }
   }
   
   .material-icons {
     font-size: 20px;
+    transition: all 0.2s ease;
   }
 }
 
