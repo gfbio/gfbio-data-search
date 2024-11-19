@@ -1,40 +1,40 @@
-<div>
-  <div mat-dialog-title class="flex-container">
-    <span class="dialog-title"> Citation </span>
-    <button mat-button class="close-icon" [mat-dialog-close]="true">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-  <mat-dialog-content class="mat-typography">
-    <div *ngIf="result.getDataCenter() == 'PANGAEA'">
-      <span class="font-weight-bold" *ngFor="let creator of result.getCreator()"
-        >{{ creator }},
-      </span>
-      <span class="font-weight-bold">({{ result.getPubYear() }}):</span>
-      {{ result.getTitle() }},
-      <a
-        *ngIf="result.getDOI() !== 'undefined'"
-        href="{{ result.getDOI() }}"
-        target="_blank"
-        >{{ result.getDOI() }}</a
-      >
-    </div>
-    <div *ngIf="result.getDataCenter() == 'GATERSLEBEN'">
-      <span class="font-weight-bold" *ngFor="let creator of result.getCreator()"
-        >{{ creator }},
-      </span>
-      <span class="font-weight-bold">({{ result.getPubYear() }}):</span>
-      {{ result.getTitle() }},
-      <a
-        *ngIf="result.getDOI() !== 'undefined'"
-        href="{{ result.getDOI() }}"
-        target="_blank"
-        >{{ result.getDOI() }}</a
-      >
+<div class="dialog-container">
+    <!-- Dialog Header -->
+    <div class="dialog-header">
+        <h2 class="dialog-title">Citation</h2>
+        <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+            <span class="material-icons">close</span>
+        </button>
     </div>
 
-    <div *ngIf="result.getSource() !== undefined">
-      {{ result.getSource() }}
+    <!-- Dialog Content -->
+    <div class="dialog-content">
+        <div class="citation-content">
+            <div #citationText>
+                <div *ngIf="result.getDataCenter() == 'PANGAEA'" class="citation-text">
+                    <span class="font-weight-bold" *ngFor="let creator of result.getCreator()">{{ creator }}, </span>
+                    <span class="font-weight-bold">({{ result.getPubYear() }}):</span>
+                    {{ result.getTitle() }},
+                    <a *ngIf="result.getDOI() !== 'undefined'" href="{{ result.getDOI() }}" target="_blank">{{ result.getDOI() }}</a>
+                </div>
+                <div *ngIf="result.getDataCenter() == 'GATERSLEBEN'" class="citation-text">
+                    <span class="font-weight-bold" *ngFor="let creator of result.getCreator()">{{ creator }}, </span>
+                    <span class="font-weight-bold">({{ result.getPubYear() }}):</span>
+                    {{ result.getTitle() }},
+                    <a *ngIf="result.getDOI() !== 'undefined'" href="{{ result.getDOI() }}" target="_blank">{{ result.getDOI() }}</a>
+                </div>
+                <div *ngIf="result.getSource() !== undefined" class="citation-source">
+                    {{ result.getSource() }}
+                </div>
+            </div>
+        </div>
     </div>
-  </mat-dialog-content>
+
+    <!-- Dialog Actions -->
+    <div class="dialog-actions">
+        <button mat-flat-button class="action-button copy-button" (click)="copyToClipboard()">
+            <span class="material-icons">content_copy</span>
+            Copy Citation
+        </button>
+    </div>
 </div>
