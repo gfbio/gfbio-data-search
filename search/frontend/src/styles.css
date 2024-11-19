@@ -898,3 +898,63 @@ pre {
   color: white;
   position: absolute;
 }
+
+/* Active filter pills and clear all section */
+.active-filters {
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.clear-filters {
+  color: #495057;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  font-weight: normal;
+}
+
+/* Style for the filter chips/pills */
+.mat-chip-list-stacked {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mat-chip {
+  background: #f8f9fa !important;
+  color: #495057 !important;
+  border: 1px solid #e9ecef !important;
+  padding: 6px 12px !important;
+  font-size: 0.9rem !important;
+  height: auto !important;
+  border-radius: 20px !important;
+  transition: all 0.2s ease !important;
+}
+
+.mat-chip:hover {
+  background: #e9ecef !important;
+  border-color: #dee2e6 !important;
+}
+
+.mat-chip-remove {
+  opacity: 0.5;
+  margin-left: 6px !important;
+  font-size: 18px !important;
+  transition: opacity 0.2s ease;
+}
+
+.mat-chip:hover .mat-chip-remove {
+  opacity: 0.8;
+}
+
+.mat-chip .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}

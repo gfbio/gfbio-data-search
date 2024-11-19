@@ -5,28 +5,29 @@
         filters
       </mat-expansion-panel-header>
       <div class="pt-2">
-        <div class="mb-3">
-          <span class="ml-2 linkBlue" (click)="onClearAllFilters()"
-            >Clear All Filters</span
-          >
-        </div>
-        <div class="my-3">
-          <mat-chip-listbox
-            aria-label="article selection"
-            class="mat-chip-list-stacked"
-          >
-            <div *ngFor="let item of filterValues; let i = index">
-              <mat-chip
-                [selectable]="false"
-                [removable]="true"
-                (removed)="removeFilter(i)"
-                class="h-auto"
-              >
-                {{ item }}
-                <mat-icon matChipRemove>cancel</mat-icon>
-              </mat-chip>
-            </div>
-          </mat-chip-listbox>
+        <div class="active-filters">
+          <div class="mb-3">
+            <span class="clear-filters" (click)="onClearAllFilters()">
+              Clear All Filters
+            </span>
+          </div>
+          <div class="my-3">
+            <mat-chip-listbox
+              aria-label="Selected filters"
+              class="mat-chip-list-stacked"
+            >
+              <div *ngFor="let item of filterValues; let i = index">
+                <mat-chip
+                  [selectable]="false"
+                  [removable]="true"
+                  (removed)="removeFilter(i)"
+                >
+                  {{ item }}
+                  <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+              </div>
+            </mat-chip-listbox>
+          </div>
         </div>
         <div *ngFor="let item of result?.getAggregations(); let i = index">
           <mat-accordion>
