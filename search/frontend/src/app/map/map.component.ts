@@ -10,6 +10,7 @@ export class MapComponent implements AfterViewInit, OnChanges {
     private map;
     @Input() markers;
     private layerGroup;
+    mapExpanded = true;
 
     private initMap(): void {
         this.map = L.map('map', {
