@@ -180,26 +180,20 @@ em {
   margin-right: 8px;
   cursor: pointer;
   flex: 0 0 16px; /* Fixed width for checkboxes */
+  position: relative;
+  top: -1px; /* Slight adjustment to center the dash vertically */
 }
 
 .facet-label {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   color: #495057;
   font-size: 0.95rem;
   cursor: pointer;
   user-select: none;
   padding-right: 4px;
-}
-
-.facet-label span:first-child {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 100px; /* Minimum width for the text */
 }
 
 .facet-count {
@@ -210,7 +204,7 @@ em {
   border-radius: 12px;
   min-width: 32px;
   text-align: center;
-  justify-self: end; /* Align to the right */
+  margin-left: auto;
 }
 
 .facet-show-more {
