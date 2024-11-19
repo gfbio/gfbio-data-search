@@ -1,6 +1,15 @@
 const NodeCache = require("node-cache");
 const axiosService = require("../config/axios.config");
-const myCache = new NodeCache();
+const crypto = require('crypto');
+
+// Configure cache with standard TTL and max size
+const myCache = new NodeCache({
+  stdTTL: 3600, // Default TTL of 1 hour
+  checkperiod: 600, // Check for expired keys every 10 minutes
+  maxKeys: 1000, // Limit maximum number of keys
+  useClones: false // Improve performance by not cloning objects
+});
+
 const queryMap = new Map();
 
 const appRoot = require("app-root-path");
@@ -8,111 +17,131 @@ const {
   ELASTIC_INDEX_URL,
   ELASTIC_INDEX_NAME,
   ELASTIC_INDEX_PORT,
-} = require(appRoot + "/src/config/environment"); // Import environment
+} = require(appRoot + "/src/config/environment");
 
-// https://elasticsearch.gfbio.dev/dataportal-gfbio/_search
 const ELASTIC_INDEX_SEARCH_URL = `${ELASTIC_INDEX_URL}:${ELASTIC_INDEX_PORT}/${ELASTIC_INDEX_NAME}/_search`;
 
-const cacheMiddleware = (allowedRoutes, duration) => {
-  return (req, res, next) => {
-    // Check if the current route is in the allowedRoutes array
+// Generate a consistent cache key
+function generateCacheKey(req) {
+  const payload = {
+    path: req.path,
+    method: req.method,
+    params: req.method === "POST" ? req.body : req.query,
+    headers: {
+      // Only include relevant headers that might affect the response
+      accept: req.headers.accept,
+      'accept-language': req.headers['accept-language'],
+    }
+  };
+  
+  return crypto
+    .createHash('sha256')
+    .update(JSON.stringify(payload))
+    .digest('hex');
+}
+
+// Validate cache entry
+function isValidCacheEntry(entry) {
+  return entry && 
+         typeof entry === 'object' && 
+         !Array.isArray(entry) &&
+         entry.data !== undefined &&
+         entry.timestamp !== undefined;
+}
+
+const cacheMiddleware = (allowedRoutes, duration = 3600) => {
+  return async (req, res, next) => {
     const currentRoute = req.originalUrl;
 
     if (!allowedRoutes.includes(currentRoute)) {
-      // If not in allowedRoutes, skip caching and proceed to the next middleware
       return next();
     }
-    const key = JSON.stringify({
-      path: req.path,
-      method: req.method,
-      params: req.method === "POST" ? req.body : req.query,
-    });
 
-    const cacheEntry = queryMap.get(key) || { count: 0, params: req.params };
-    cacheEntry.count += 1;
-    queryMap.set(key, cacheEntry); // Update the map with the new count
-
-    const cachedResponse = myCache.get(key);
-    if (cachedResponse) {
-      console.log(`Cache hit for key: ${key}`);
-      return res.send(cachedResponse);
-    } else {
-      console.log(`Cache miss for key: ${key}`);
-    }
-
-    res.originalSend = res.send;
-    res.send = (body) => {
-      if (duration) {
-        myCache.set(key, body, duration);
-      } else {
-        myCache.set(key, body);
+    const key = generateCacheKey(req);
+    
+    try {
+      const cachedEntry = myCache.get(key);
+      
+      if (cachedEntry && isValidCacheEntry(cachedEntry)) {
+        // Update access statistics
+        const stats = queryMap.get(key) || { count: 0, lastAccessed: Date.now() };
+        stats.count += 1;
+        stats.lastAccessed = Date.now();
+        queryMap.set(key, stats);
+        
+        console.log(`Cache hit for key: ${key}`);
+        return res.json(cachedEntry.data);
       }
-      console.log(`Cache set for key: ${key}`);
-      res.originalSend(body);
-    };
-    next();
+      
+      // Store original send method
+      const originalSend = res.send;
+      
+      // Override send method to cache response
+      res.send = function(body) {
+        try {
+          const cacheEntry = {
+            data: JSON.parse(body),
+            timestamp: Date.now()
+          };
+          
+          myCache.set(key, cacheEntry, duration);
+          
+          // Initialize or update query statistics
+          queryMap.set(key, {
+            count: 1,
+            lastAccessed: Date.now(),
+            params: req.params
+          });
+          
+          console.log(`Cache set for key: ${key}`);
+        } catch (err) {
+          console.error('Error caching response:', err);
+        }
+        
+        originalSend.call(this, body);
+      };
+      
+      next();
+    } catch (err) {
+      console.error('Cache middleware error:', err);
+      next();
+    }
   };
 };
 
-function clearCacheAtMidnight() {
-  const now = new Date();
-  const midnight = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() + 1,
-    0,
-    0,
-    0
-  );
-  const timeUntilMidnight = midnight.getTime() - now.getTime();
-
-  setTimeout(() => {
-    console.log("Clearing cache and re-executing queries...");
-    console.log(`Cache size before clearing: ${myCache.keys().length} items`);
-    myCache.flushAll();
-
-    // Sort the queries based on access count
-    const sortedQueries = Array.from(queryMap).sort((a, b) => {
-      return b[1].count - a[1].count; // Sort based on count
-    });
-
-    sortedQueries.forEach(([queryKey, queryValue]) => {
-      const query = JSON.parse(queryKey);
-      console.log("==== debug the recaching ====");
-      console.log("-- the query ---");
-      console.log(query);
-      console.log("-- the query ---");
-      let url;
-      console.log("-- the url ---");
-      console.log(url);
-      console.log("-- the url ---");
-      switch (query.path) {
-        case "/search":
-          url = ELASTIC_INDEX_SEARCH_URL;
-          break;
-        // Add cases for other routes as needed
-      }
-
-      if (url) {
-        const axiosMethod = query.method.toLowerCase();
-        if (axiosService[axiosMethod]) {
-          axiosService[axiosMethod](url, query.params)
-            .then((response) => {
-              myCache.set(queryKey, response.data);
-              console.log(`Re-executed and cached query: ${queryKey}`);
-            })
-            .catch((error) =>
-              console.error(`Error re-executing query: ${queryKey}`, error)
-            );
-        }
+// Periodic cache maintenance
+function maintainCache() {
+  try {
+    const now = Date.now();
+    const stats = Array.from(queryMap.entries());
+    
+    // Remove entries that haven't been accessed in 24 hours
+    stats.forEach(([key, value]) => {
+      if (now - value.lastAccessed > 24 * 60 * 60 * 1000) {
+        queryMap.delete(key);
+        myCache.del(key);
       }
     });
-    console.log("==== debug the recaching ====");
-    queryMap.clear(); // Clear the map
-    clearCacheAtMidnight();
-  }, timeUntilMidnight);
+    
+    // If cache is near capacity, remove least accessed entries
+    if (myCache.keys().length > myCache.options.maxKeys * 0.9) {
+      const sortedKeys = stats
+        .sort((a, b) => a[1].count - b[1].count)
+        .map(([key]) => key);
+      
+      // Remove bottom 10% of least accessed entries
+      const keysToRemove = sortedKeys.slice(0, Math.floor(sortedKeys.length * 0.1));
+      keysToRemove.forEach(key => {
+        myCache.del(key);
+        queryMap.delete(key);
+      });
+    }
+  } catch (err) {
+    console.error('Cache maintenance error:', err);
+  }
 }
 
-clearCacheAtMidnight();
+// Run cache maintenance every hour
+setInterval(maintainCache, 60 * 60 * 1000);
 
 module.exports = cacheMiddleware;
