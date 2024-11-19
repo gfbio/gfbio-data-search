@@ -760,15 +760,29 @@ pre {
 }
 
 /* search items */
-.custom-badge {
-  color: white;
-  padding: 0.5em 0.75em;
+.badge {
+  padding: 5px 12px !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  border-radius: 16px !important;
+  margin-right: 8px !important;
+  letter-spacing: 0.3px;
+  border: 1px solid #e9ecef !important;
+  line-height: 1.2;
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
 }
 
-.badge-yellow {
-  background-color: #e36414;
-  color: white;
-  padding: 0.5em 0.75em;
+.badge-pill {
+  padding-right: 12px !important;
+  padding-left: 12px !important;
+}
+
+.badge-yellow,
+.badge-secondary {
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  border-color: #e9ecef !important;
 }
 
 .white-background {
@@ -1021,4 +1035,134 @@ pre {
 
 .facet-item:last-child {
   margin-bottom: 0 !important;
+}
+
+/* Search Result Cards */
+.card {
+  border: 1px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+  transition: all 0.2s ease !important;
+  margin: 16px 0 !important;
+}
+
+.card:hover {
+  border-color: #dee2e6 !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08) !important;
+}
+
+.card-header {
+  background: transparent !important;
+  border-bottom: 1px solid #e9ecef !important;
+  padding: 16px !important;
+}
+
+.card-header strong {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.card-body {
+  padding: 16px !important;
+  color: #495057;
+}
+
+.card-body strong.text-muted {
+  color: #6c757d !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.card-body p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.card-footer {
+  background: transparent !important;
+  border-top: 1px solid #e9ecef !important;
+  padding: 12px 16px !important;
+}
+
+/* Result Item Badges */
+.badge {
+  padding: 5px 12px !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  border-radius: 16px !important;
+  margin-right: 8px !important;
+  letter-spacing: 0.3px;
+  border: 1px solid #e9ecef !important;
+  line-height: 1.2;
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+}
+
+.badge-pill {
+  padding-right: 12px !important;
+  padding-left: 12px !important;
+}
+
+.badge-yellow,
+.badge-secondary {
+  background-color: #f8f9fa !important;
+  color: #495057 !important;
+  border-color: #e9ecef !important;
+}
+
+/* Action Buttons */
+.my-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn {
+  padding: 6px 16px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn i {
+  font-size: 16px;
+}
+
+.btn-outline-secondary {
+  color: #495057 !important;
+  border-color: #dee2e6 !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f8f9fa !important;
+  border-color: #ced4da !important;
+  color: #212529 !important;
+}
+
+.btn-outline-success {
+  color: var(--gfbio-green) !important;
+  border-color: var(--gfbio-green) !important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--gfbio-green) !important;
+  color: white !important;
+}
+
+.btn-outline-danger {
+  color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545 !important;
+  color: white !important;
 }
