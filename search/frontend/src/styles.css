@@ -228,17 +228,58 @@ em {
 }
 
 /****** Pagination *******/
+.pagination {
+  margin: 2.5rem 0;
+  gap: 6px;
+}
+
+.pagination .page-item .page-link {
+  border: 1px solid #e9ecef !important;
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  min-width: 45px;
+  font-size: 1rem !important;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.pagination .page-item:not(.active) .page-link:hover {
+  background-color: #f8f9fa !important;
+  border-color: #e9ecef !important;
+  color: var(--gfbio-green) !important;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--gfbio-green) !important;
+  border-color: var(--gfbio-green) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f8f9fa !important;
+  border-color: #e9ecef !important;
+  color: #adb5bd !important;
+}
+
+/* Hide first/last items if needed */
+.pagination .first-item,
+.pagination .last-item {
+  display: none;
+}
+
+.pagination li a {
+  color: var(--gfbio-green); /* Set text color to gfbio-green */
+}
+
+.pagination li a:hover {
+  background-color: #f2f2f2; /* Light gray background on hover */
+  color: var(--gfbio-green); /* Keep text color gfbio-green on hover */
+}
 
 .page-link {
   color: var(--primary-color);
-}
-
-.pagination .first-item {
-  display: none;
-}
-
-.pagination .last-item {
-  display: none;
 }
 
 .pagination .page-item {
@@ -249,15 +290,6 @@ em {
   z-index: 0 !important;
   background-color: var(--primary-color);
   border-color: var(--primary-color);
-}
-
-.pagination li a {
-  color: var(--gfbio-green); /* Set text color to gfbio-green */
-}
-
-.pagination li a:hover {
-  background-color: #f2f2f2; /* Light gray background on hover */
-  color: var(--gfbio-green); /* Keep text color gfbio-green on hover */
 }
 
 .modal-button {
