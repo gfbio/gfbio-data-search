@@ -1,52 +1,60 @@
-<div>
-  <!-- TODO: This basked I want to have in the navigation  <19-01-24, Claas> -->
+<div class="search-result-container">
+  <!-- Left column with search results -->
+  <div class="search-result-main">
+    <!-- TODO: This basked I want to have in the navigation  <19-01-24, Claas> -->
 
-  <button class="basket mb-3" (click)="basketClick()" title="Dataset Basket">
-    <div class="basket-content">
-      <div class="basket-img">
-        <img src="assets/icons/shopping-basket.svg" alt="Dataset Basket" class="basket-icon">
-        <span class="basket-number">{{basketValues.length}}</span>
-      </div>
+    <div *ngIf="result?.getHits()?.length === 0" class="text-danger">
+      No entries found
     </div>
-  </button>
-
-  <div *ngIf="result?.getHits()?.length === 0" class="text-danger">
-    No entries found
-  </div>
-  <div *ngIf="result?.getSemanticKeys() !== undefined">
-    <span>Expanded terms: </span>
-    <span *ngFor="let item of result?.getSemanticKeys()" class="highlightedKey">
-      <!-- only display a context-box for the hovered semantic key -->
-      <div
-        (mouseover)="popoverVisible = item"
-        (mouseleave)="popoverVisible = ''"
-      >
-        {{ item }}
-        <div [hidden]="popoverVisible != item">
-          <app-context-box
-            [term]="item"
-            [termData]="result?.getTermData()"
-          ></app-context-box>
+    <div *ngIf="result?.getSemanticKeys() !== undefined">
+      <span>Expanded terms: </span>
+      <span *ngFor="let item of result?.getSemanticKeys()" class="highlightedKey">
+        <!-- only display a context-box for the hovered semantic key -->
+        <div
+          (mouseover)="popoverVisible = item"
+          (mouseleave)="popoverVisible = ''"
+        >
+          {{ item }}
+          <div [hidden]="popoverVisible != item">
+            <app-context-box
+              [term]="item"
+              [termData]="result?.getTermData()"
+            ></app-context-box>
+          </div>
         </div>
-      </div>
-    </span>
-  </div>
-  <!-- <ngx-spinner></ngx-spinner> -->
-  <ngx-spinner type="ball-scale-pulse"></ngx-spinner>
-  <div *ngIf="result?.getHits()?.length !== 0">
-    <div *ngFor="let item of result?.getHits(); let i = index" class="pt-1">
-      <app-result-item
-        [item]="item"
-        [itemId]="i"
-        (checkBoxItem)="checkBoxClick($event)"
-      ></app-result-item>
+      </span>
     </div>
-
+    <!-- <ngx-spinner></ngx-spinner> -->
+    <ngx-spinner type="ball-scale-pulse"></ngx-spinner>
     <div *ngIf="result?.getHits()?.length !== 0">
-      <app-pagination
-        [result]="result"
-        (paginationClicked)="paginationClicked($event)"
-      ></app-pagination>
+      <div *ngFor="let item of result?.getHits(); let i = index" class="pt-1">
+        <app-result-item
+          [item]="item"
+          [itemId]="i"
+          (checkBoxItem)="checkBoxClick($event)"
+        ></app-result-item>
+      </div>
+
+      <div *ngIf="result?.getHits()?.length !== 0">
+        <app-pagination
+          [result]="result"
+          (paginationClicked)="paginationClicked($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right column with basket -->
+  <div class="search-result-basket">
+    <div class="basket-sticky">
+      <button class="basket" (click)="basketClick()" title="Dataset Basket">
+        <div class="basket-content">
+          <div class="basket-img">
+            <img src="assets/icons/shopping-basket.svg" alt="Dataset Basket" class="basket-icon">
+            <span class="basket-number">{{basketValues.length}}</span>
+          </div>
+        </div>
+      </button>
     </div>
   </div>
 </div>
