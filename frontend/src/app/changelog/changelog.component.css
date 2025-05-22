@@ -1,0 +1,100 @@
+.changelog-container {
+  padding-top: 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.changelog-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.changelog-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.changelog-header p {
+  color: #6c757d;
+  font-weight: 300;
+}
+
+.version-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.version-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.version-item:hover {
+  border-color: #dee2e6;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+.version-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.version-number {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.version-date {
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.version-changes {
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+  margin-top: 0.75rem;
+}
+
+.change-item {
+  padding: 0.4rem 0;
+  line-height: 1.5;
+  color: #495057;
+}
+
+/* Technical section title */
+.change-item:nth-child(5):after {
+  content: "";
+  display: block;
+  height: 1px;
+  background-color: #e9ecef;
+  margin: 1rem 0 0.75rem 0;
+}
+
+@media (max-width: 768px) {
+  .changelog-container {
+    padding-top: 40px;
+  }
+  
+  .version-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .version-date {
+    margin-top: 0.25rem;
+  }
+}

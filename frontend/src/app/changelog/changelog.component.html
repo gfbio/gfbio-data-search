@@ -1,0 +1,18 @@
+<div class="changelog-container">
+  <div class="changelog-header">
+    <h1>Changelog</h1>
+    <p>Track the evolution of our platform with our detailed version history</p>
+  </div>
+  
+  <div class="version-container">
+    <div *ngFor="let entry of changelogEntries" class="version-item">
+      <div class="version-header">
+        <div class="version-number">Version {{ entry.version }}</div>
+        <div class="version-date">{{ entry.date }}</div>
+      </div>
+      <ul class="version-changes">
+        <li *ngFor="let change of entry.changes" class="change-item">{{ change }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

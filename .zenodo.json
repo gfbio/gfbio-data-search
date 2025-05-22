@@ -1,0 +1,36 @@
+{
+  "creators": [
+    {
+      "orcid": "0000-0003-1572-8590",
+      "affiliation": "GFBio - German Federation for Biological Data e.V.",
+      "name": "Pfaff, Claas-Thido"
+    },
+    {
+      "orcid": "0000-0003-0694-5817",
+      "affiliation": "GFBio - German Federation for Biological Data e.V.",
+      "name": "Weber, Marc"
+    },
+    {
+      "orcid": "0009-0007-0441-8630",
+      "affiliation": "GFBio - German Federation for Biological Data e.V.",
+      "name": "Franz, Linus"
+    }
+
+  ],
+  "license": "MIT",
+  "title": "GFBio Data Search",
+  "description": "The GFBio Data Search is based on the Dai:Si search UI (https://api.semanticscholar.org/CorpusID:240005304) and enables a search of datasets\nwhich are distributed and published across the GFBio Data Centers (https://gfbio.org/data-centers/). The data centers and the data sources they provide are listed in an aggregator service. A harvester service collects the resources from the aggregator and extracts the information into an Elasticsearch index.",
+  "keywords": [
+    "Research Software",
+    "Research Data Management",
+    "Biodiversity",
+    "Ecology",
+    "GFBio"
+  ],
+  "communities": [
+    {
+      "identifier": "gfbio"
+    }
+  ],
+  "notes": "This work was supported by the German Research Foundation (DFG) within the project “Establishment of the National Research Data Infrastructure (NFDI)” in the consortium NFDI4Biodiversity (project number <a href=\"https://gepris.dfg.de/gepris/projekt/442032008\">442032008</a>).<br/>This work was supported by the German Research Foundation (DFG) within the project \"German Federation for Biological Data e.V.: Concept for a sustainable research data management of environmental data for Germany.\" (project number <a href=\"https://gepris.dfg.de/gepris/projekt/408180549\">408180549</a>)."
+}

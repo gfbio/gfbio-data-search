@@ -1,0 +1,78 @@
+.data-center-badge {
+  margin-left: 6px;
+  font-size: 1.2em;
+  cursor: help;
+  color: #1e88e5;
+  font-weight: bold;
+}
+
+.facet-item {
+  margin-bottom: 5px;
+}
+
+.facet-label {
+  display: flex;
+  align-items: center;
+}
+
+.facet-count {
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  font-size: 0.9em;
+}
+
+.d-none {
+  display: none;
+}
+
+.data-center-badge {
+  margin-left: 5px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.certified-icon {
+  color: #1565c0;
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  margin-top: -2px;
+}
+
+/* Styles for search filter */
+.facet-search {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.facet-search-input {
+  width: 100%;
+  padding: 6px 28px 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.facet-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+
+.facet-no-results {
+  color: #888;
+  font-size: 0.9em;
+  padding: 8px 0;
+  text-align: center;
+  font-style: italic;
+}
+

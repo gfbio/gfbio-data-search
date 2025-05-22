@@ -1,0 +1,24 @@
+# Stage 1: Build the Angular application
+FROM node:20.9.0 AS build
+
+# Set the working directory inside the container
+WORKDIR /frontend
+
+# Copy package.json and package-lock.json for npm install
+COPY ./frontend/package*.json ./
+RUN npm install --force
+
+# Copy the Angular project files into the container
+COPY ./frontend/ ./
+
+# Build the application
+RUN npm run ng build -- --configuration production
+
+# Stage 2: Serve the application with HTTPD
+FROM httpd:2.4
+
+# Install curl for healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copy the built Angular app to the HTTPD serve directory
+COPY --from=build /frontend/dist/DatasetSearch /usr/local/apache2/htdocs/

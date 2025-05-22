@@ -1,0 +1,157 @@
+/* Override Material Dialog width */
+::ng-deep .citation-dialog {
+  max-width: 800px !important;
+  width: 90vw;
+}
+
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  max-height: 80vh;
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Header Styles */
+.dialog-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: white;
+  flex-shrink: 0;
+}
+
+.dialog-title {
+  flex: 1;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #335aa3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.close-button {
+  color: #335aa3;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  margin: -8px;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+
+/* Content Styles */
+.dialog-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.citation-content {
+  height: 100%;
+  width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.citation-text {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: all 0.2s ease;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+
+  &:hover {
+    background: #f0f2f5;
+  }
+
+  a {
+    color: #335aa3;
+    text-decoration: none;
+    word-break: break-all;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.citation-source {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Dialog Actions */
+.dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: white;
+  flex-shrink: 0;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 48px;
+  padding: 0 1.25rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 160px;
+  justify-content: center;
+  
+  &.copy-button {
+    background: #3cace4;
+    color: white;
+    
+    &:hover {
+      background: #2d8ab8;
+    }
+
+    &.copied {
+      background: #81b248;
+      pointer-events: none;
+    }
+  }
+  
+  .material-icons {
+    font-size: 20px;
+    transition: all 0.2s ease;
+  }
+}
+
+:host ::ng-deep .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+}

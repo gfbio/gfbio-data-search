@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Pfaff"
+  given-names: "Claas-Thido"
+  orcid: "https://orcid.org/0000-0003-1572-8590"
+- family-names: "Weber"
+  given-names: "Marc"
+  orcid: "https://orcid.org/0000-0003-0694-5817"
+- family-names: "Franz"
+  given-names: "Linus"
+  orcid: "https://orcid.org/0009-0007-0441-8630"
+title: "GFBio Data Search"
+abstract: "The GFBio Data Search is based on the Dai:Si search UI (https://api.semanticscholar.org/CorpusID:240005304) and enables a search of datasets\nwhich are distributed and published across the GFBio Data Centers (https://gfbio.org/data-centers/). The data centers and the data sources they provide are listed in an aggregator service. A harvester service collects the resources from the aggregator and extracts the information into an Elasticsearch index."
+type: software
+doi: 10.5281/zenodo.8308204
+keywords:
+  - Research Software
+  - Research Data Management
+  - Biodiversity
+  - Ecology
+  - GfBio
+license: GNU LGPL v3.0 

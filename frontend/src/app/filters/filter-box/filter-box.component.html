@@ -1,0 +1,49 @@
+<div class="facet-container">
+  <!-- Search filter input -->
+  <div class="facet-search">
+    <input
+      type="text"
+      placeholder="Filter options..."
+      [(ngModel)]="searchTerm"
+      class="facet-search-input"
+    />
+    <button *ngIf="searchTerm" (click)="clearSearch()" class="facet-search-clear" title="Clear search">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Filtered facet items -->
+  <div *ngFor="let filter of getFilteredFacets(); let i = index">
+    <div class="facet-item" [ngClass]="{ 'd-none': !showLess(i) }">
+      <input
+        class="facet-checkbox"
+        id="id-{{ filter.getKey() }}"
+        type="checkbox"
+        (click)="sendFacet(filter.getKey(), filters.getId() + 'Facet')"
+        [checked]="filter.getChecked()"
+      />
+      <label class="facet-label" for="id-{{ filter.getKey() }}">
+        <span>{{ filter.getKey() }}</span>
+        <span *ngIf="filter.getIsDataCenter()" class="data-center-badge" title="Official GfBio Data Center">
+          <mat-icon class="certified-icon">verified</mat-icon>
+        </span>
+        <span class="facet-count">{{ filter.getDocCount() }}</span>
+      </label>
+    </div>
+  </div>
+  
+  <!-- No results message -->
+  <div *ngIf="getFilteredFacets().length === 0 && searchTerm" class="facet-no-results">
+    No matching options found
+  </div>
+  
+  <!-- Show more/less controls -->
+  <div *ngIf="getFilteredFacets().length > 5">
+    <div class="facet-show-more" *ngIf="!showMore" (click)="showMore = true">
+      Show more
+    </div>
+    <div class="facet-show-more" *ngIf="showMore" (click)="showMore = false">
+      Show less
+    </div>
+  </div>
+</div>

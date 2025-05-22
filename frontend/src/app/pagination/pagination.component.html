@@ -1,0 +1,15 @@
+<div class="container pagination-container">
+  <pagination
+    [(ngModel)]="currentPage"
+    [totalItems]="totalItemCount"
+    [itemsPerPage]="itemsPerPage"
+    [maxSize]="10"
+    [rotate]="true"
+    [boundaryLinks]="false"
+    [directionLinks]="true"
+    (pageChanged)="onChangePage($event)"
+  ></pagination>
+</div>
+
+<!-- Boundary links can be useful but requires the implementation of the scroll api -->
+<!-- of our elastic search index. -->
