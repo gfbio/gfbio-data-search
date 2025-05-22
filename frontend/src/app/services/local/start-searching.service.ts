@@ -14,6 +14,14 @@ export class StartSearchingService {
     private gfbioPreprocessData: GfbioPreprocessDataService
   ) {}
 
+  /**
+   * Start a search with progressive loading of results and stats
+   * 
+   * @param searchKey The search keywords
+   * @param semantic Whether to use semantic search
+   * @param from Pagination start index
+   * @param filters Applied filters
+   */
   startSearching(searchKey, semantic, from, filters): void {
     let urlTerm: string;
     const urlIndex = environment.context;
@@ -32,7 +40,10 @@ export class StartSearchingService {
       size: 10,
       filter: filters,
     });
-    this.nodeService.search(
+    
+    // Use the new progressive loading approach
+    // This will load results quickly, then fetch stats in the background
+    this.nodeService.searchResults(
       urlIndex + urlTerm,
       body,
       this.gfbioPreprocessData,

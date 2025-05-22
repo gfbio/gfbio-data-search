@@ -115,6 +115,86 @@ exports.getCompleteQuery = (boostedQuery, iDisplayStart, iDisplayLength) => {
 };
 
 /**
+ * Returns a query object without aggregations for faster results retrieval.
+ * Identical to getCompleteQuery but without the aggs section.
+ *
+ * @param {Object} boostedQuery - The boosted query object
+ * @param {number} iDisplayStart - Start index for pagination
+ * @param {number} iDisplayLength - Number of results to return
+ * @returns {Object} - Query object without aggregations
+ */
+exports.getQueryWithoutAggs = (boostedQuery, iDisplayStart, iDisplayLength) => {
+  return {
+    query: boostedQuery,
+    highlight: {
+      fields: { "*": {} },
+    },
+    from: iDisplayStart,
+    size: iDisplayLength
+    // No aggregations to speed up query performance
+  };
+};
+
+/**
+ * Returns a query object that only retrieves aggregations (stats) without search results.
+ *
+ * @param {Object} boostedQuery - The boosted query object
+ * @returns {Object} - Query object for aggregations only
+ */
+exports.getStatsOnlyQuery = (boostedQuery) => {
+  return {
+    query: boostedQuery,
+    size: 0, // No search results, only aggregations
+    aggs: {
+      taxonomy: {
+        terms: {
+          field: "taxonomyFacet",
+          size: 50,
+        },
+      },
+      region: {
+        terms: {
+          field: "regionFacet",
+          size: 50,
+        },
+      },
+      parameter: {
+        terms: {
+          field: "parameterFacet",
+          size: 50,
+        },
+      },
+      gfbioDataKind: {
+        terms: {
+          field: "gfbioDataKindFacet",
+          size: 50,
+        },
+      },
+      // dataCenter facet removed as part of provider unification
+      dataProvider: {
+        terms: {
+          field: "dataProviderFacet",
+          size: 50,
+        },
+        aggs: {
+          isDataCenter: {
+            terms: {
+              field: "isDataCenter"
+            }
+          }
+        },
+      },
+      type: {
+        terms: {
+          field: "typeFacet",
+          size: 50,
+        },
+      },
+    },
+  };
+};
+
+/**
  ** Description: collect all expanded terms found in the datasets (needs to be highlighted in text and listed as "expanded terms"),
  ** Input: array with fields containg html including <em>keyword</em>
  ** Output: array with keywords
