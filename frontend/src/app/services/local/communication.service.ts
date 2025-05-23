@@ -16,6 +16,7 @@ export class CommunicationService {
   private result: BehaviorSubject<Result>;
   private citation: BehaviorSubject<any>;
   private removedFilter: BehaviorSubject<any>;
+  private isResultsLoading: BehaviorSubject<boolean>;
 
   constructor() {
     // @ts-ignore
@@ -30,6 +31,8 @@ export class CommunicationService {
     this.removedFilter = new BehaviorSubject<any>();
     // @ts-ignore
     this.IsSearchKey = new BehaviorSubject<any>();
+    // @ts-ignore
+    this.isResultsLoading = new BehaviorSubject<boolean>(false);
   }
   setSuggest(suggest: string): void {
     this.suggest.next(suggest);
@@ -78,6 +81,15 @@ export class CommunicationService {
 
   setResult(key: Result): void {
     this.result.next(key);
+    this.setResultsLoading(false);
+  }
+  
+  setResultsLoading(isLoading: boolean): void {
+    this.isResultsLoading.next(isLoading);
+  }
+
+  getResultsLoading(): Observable<boolean> {
+    return this.isResultsLoading.asObservable();
   }
 
   getResult(): Observable<Result> {

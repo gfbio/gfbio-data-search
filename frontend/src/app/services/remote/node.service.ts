@@ -33,7 +33,8 @@ export class NodeService {
 
   search(urlTerm, body, serviceType, otherParameters: Array<any>): any {
     // console.log(body);
-    this.spinner.show();
+    // Set loading state for results skeleton loader
+    this.communicationService.setResultsLoading(true);
     const headers = this.headers;
     this.http.post<any>(this.url + urlTerm, body, { headers }).subscribe(
       (data) => {
@@ -42,11 +43,11 @@ export class NodeService {
         this.communicationService.setResult(results);
         // console.log(results);
         // console.log(data);
-        this.spinner.hide();
+        // Result loading state is set to false in the setResult method
       },
       (err) => {
         alert(environment.textAlertSemSearchError);
-        this.spinner.hide();
+        this.communicationService.setResultsLoading(false);
       }
     );
   }
