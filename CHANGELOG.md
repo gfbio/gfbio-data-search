@@ -14,3 +14,7 @@
 - Data center designation indicator in search results
 - Docker configuration for development and production environments
 - Comprehensive documentation
+- Progressive loading with facet skeleton UI for improved performance
+  - Decoupled search results from facet stats calculation
+  - Added skeleton loaders for facets during loading
+  - Improved perceived performance for large dataset searches

@@ -3,6 +3,8 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
 } from "@angular/core";
@@ -15,13 +17,15 @@ import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
   templateUrl: "./filters.component.html",
   styleUrls: ["./filters.component.css"],
 })
-export class FiltersComponent implements OnChanges {
+export class FiltersComponent implements OnChanges, OnInit, OnDestroy {
   @Input() result: Result;
   @Input() chosenFilter: Array<object> = [];
   filterValues: Array<string> = [];
   @Output() filters = new EventEmitter<any>();
   @Input() resetFilters: boolean;
   openChart = true;
+  statsLoading = false;
+  private statsLoadingSubscription: any;
   constructor(
     breakpointObserver: BreakpointObserver,
     private communicationService: CommunicationService
@@ -34,6 +38,23 @@ export class FiltersComponent implements OnChanges {
         }
       });
   }
+  
+  ngOnInit(): void {
+    // Subscribe to stats loading state
+    this.statsLoadingSubscription = this.communicationService.getStatsLoading().subscribe(
+      (isLoading) => {
+        this.statsLoading = isLoading;
+      }
+    );
+  }
+  
+  ngOnDestroy(): void {
+    // Clean up subscriptions to prevent memory leaks
+    if (this.statsLoadingSubscription) {
+      this.statsLoadingSubscription.unsubscribe();
+    }
+  }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.resetFilters?.currentValue === true) {
       this.clearAllFilters();
