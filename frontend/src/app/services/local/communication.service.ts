@@ -17,6 +17,8 @@ export class CommunicationService {
   private citation: BehaviorSubject<any>;
   private removedFilter: BehaviorSubject<any>;
   private statsLoading: BehaviorSubject<boolean>;
+  private isResultsLoading: BehaviorSubject<boolean>;
+  private currentPage: BehaviorSubject<number>;
 
   constructor() {
     // @ts-ignore
@@ -33,6 +35,10 @@ export class CommunicationService {
     this.IsSearchKey = new BehaviorSubject<any>();
     // @ts-ignore
     this.statsLoading = new BehaviorSubject<boolean>(false);
+    // @ts-ignore
+    this.isResultsLoading = new BehaviorSubject<boolean>(false);
+    // @ts-ignore
+    this.currentPage = new BehaviorSubject<number>(1);
   }
   setSuggest(suggest: string): void {
     this.suggest.next(suggest);
@@ -79,64 +85,77 @@ export class CommunicationService {
     return this.filter;
   }
 
-  setResult(result: any): void {
-    this.result.next(result);
+  setResult(key: Result): void {
+    this.result.next(key);
+    this.setResultsLoading(false);
   }
 
-  /**
-   * Sets only the search results portion without affecting the stats
-   * Used by the progressive loading implementation
-   */
   setResultsOnly(result: any): void {
-    // Get the current result value
     const currentResult = this.result.getValue();
     
-    // If we have a current result with stats, preserve them
     if (currentResult && currentResult.getAggregations) {
-      // Keep the aggregations from the current result if available
       const aggregations = currentResult.getAggregations ? currentResult.getAggregations() : undefined;
       if (aggregations) {
-        // Set the aggregations on the new result if possible
         if (result.setAggregations) {
           result.setAggregations(aggregations);
         }
       }
     }
     
-    // Update the result
     this.result.next(result);
+    this.setResultsLoading(false);
   }
   
-  /**
-   * Updates only the stats/aggregations portion of the result
-   * Used to update the UI after results are already displayed
-   */
   setStats(statsData: any): void {
-    // Get the current result value
     const currentResult = this.result.getValue();
     
-    // If we have a current result, add the stats to it
     if (currentResult && currentResult.setAggregations) {
       currentResult.setAggregations(statsData);
-      // Update the result with the new stats
       this.result.next(currentResult);
     }
+    this.setStatsLoading(false);
   }
   
-  /**
-   * Indicates whether stats are currently being loaded
-   * Used to show/hide skeleton loaders for facets
-   */
   setStatsLoading(isLoading: boolean): void {
     this.statsLoading.next(isLoading);
   }
   
-  /**
-   * Observable to track stats loading state
-   * Components can subscribe to this to show/hide skeleton loaders
-   */
   getStatsLoading(): Observable<boolean> {
     return this.statsLoading.asObservable();
+  }
+
+  setResultsLoading(isLoading: boolean): void {
+    this.isResultsLoading.next(isLoading);
+  }
+
+  getResultsLoading(): Observable<boolean> {
+    return this.isResultsLoading.asObservable();
+  }
+  
+  /**
+   * Resets pagination to page 1 whenever filters or search criteria change
+   * This ensures that when a user applies a filter, they always see the first page of results
+   */
+  resetPagination(): void {
+    this.currentPage.next(1);
+    this.pagination = 0; // Set from to 0 (first page)
+  }
+  
+  /**
+   * Updates the current page and pagination value
+   * This should only be called by explicit pagination interactions
+   */
+  setCurrentPage(page: number, from: number): void {
+    this.currentPage.next(page);
+    this.pagination = from;
+  }
+  
+  /**
+   * Gets the current page as an observable
+   * Components can subscribe to this to stay in sync with the pagination state
+   */
+  getCurrentPage(): Observable<number> {
+    return this.currentPage.asObservable();
   }
 
   getResult(): Observable<Result> {

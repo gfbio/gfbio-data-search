@@ -14,6 +14,8 @@ import { NodeService } from "../services/remote/node.service";
 import { Hit } from "../models/result/hit";
 import { plainToClass } from "class-transformer";
 import { KeycloakService } from "keycloak-angular";
+import { CommunicationService } from "../services/local/communication.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-search-result",
@@ -29,14 +31,24 @@ export class SearchResultComponent implements OnInit, OnChanges {
   popoverVisible = "";
   user;
   basketId;
+  isResultsLoading: boolean = false;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     public dialog: MatDialog,
     private nodeService: NodeService,
-    private keycloakService: KeycloakService
+    private keycloakService: KeycloakService,
+    private communicationService: CommunicationService
   ) {}
 
   ngOnInit(): void {
+    // Subscribe to results loading state
+    this.subscriptions.push(
+      this.communicationService.getResultsLoading().subscribe(isLoading => {
+        this.isResultsLoading = isLoading;
+      })
+    );
+    
     try {
       this.user = this.keycloakService.getUsername();
 
@@ -62,6 +74,11 @@ export class SearchResultComponent implements OnInit, OnChanges {
     this.basketId = null;
   }
 
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.result?.currentValue !== changes?.result?.previousValue) {
       this.controlCheckboxes(this.basketValues);

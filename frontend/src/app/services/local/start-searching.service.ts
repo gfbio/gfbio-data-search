@@ -34,6 +34,13 @@ export class StartSearchingService {
       key = searchKey.join(" ");
       urlTerm = environment.searchUrl;
     }
+    
+    // If from is undefined, use the pagination state from the communication service
+    // This ensures we're using the correct pagination value when navigation is used
+    if (from === undefined) {
+      from = this.communicationService.getPagination() || 0;
+    }
+    
     body = JSON.stringify({
       queryterm: key,
       from,

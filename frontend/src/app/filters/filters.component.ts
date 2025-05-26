@@ -90,6 +90,9 @@ export class FiltersComponent implements OnChanges, OnInit, OnDestroy {
         this.filterValues.push(key);
       }
     }
+    this.communicationService.setFilter(this.chosenFilter);
+    // Reset pagination when filters change
+    this.communicationService.resetPagination();
     this.startSearching();
   }
 
@@ -103,6 +106,8 @@ export class FiltersComponent implements OnChanges, OnInit, OnDestroy {
     this.communicationService.setRemovedFilter([this.filterValues[i]]);
     this.filterValues.splice(i, 1);
     this.chosenFilter.splice(i, 1);
+    // Reset pagination when filters are removed
+    this.communicationService.resetPagination();
     this.startSearching();
   }
 

@@ -64,6 +64,10 @@ export class SearchInputComponent implements OnInit {
     this.semanticValue = false;
     this.alertSearch = this.formatSimpleSearch.test(this.searchKey);
     this.alertSemanticSearch = false;
+    
+    // Reset pagination when a new search is performed
+    this.communicationService.resetPagination();
+    
     this.startSearching(this.semanticValue);
   }
 
@@ -72,6 +76,10 @@ export class SearchInputComponent implements OnInit {
     this.semanticValue = true;
     this.alertSearch = false;
     this.alertSemanticSearch = this.formatSemanticSearch.test(this.searchKey);
+    
+    // Reset pagination when a new search is performed
+    this.communicationService.resetPagination();
+    
     this.startSearching(this.semanticValue);
 
     const subject = this.communicationService.getSearchKey();

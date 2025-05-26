@@ -24,9 +24,25 @@
         </div>
       </span>
     </div>
-    <!-- <ngx-spinner></ngx-spinner> -->
-    <ngx-spinner type="ball-scale-pulse"></ngx-spinner>
-    <div *ngIf="result?.getHits()?.length !== 0">
+    <!-- Skeleton loader for search results -->
+    <div *ngIf="isResultsLoading" class="skeleton-container">
+      <!-- Generate 5 skeleton items to show loading state -->
+      <div *ngFor="let i of [0,1,2,3,4]" class="search-result-item skeleton-item">
+        <div class="skeleton-header"></div>
+        <div class="skeleton-body">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line skeleton-line-short"></div>
+          <div class="skeleton-line skeleton-line-medium"></div>
+        </div>
+        <div class="skeleton-footer">
+          <div class="skeleton-tag"></div>
+          <div class="skeleton-tag"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Actual search results -->
+    <div *ngIf="!isResultsLoading && result?.getHits()?.length !== 0">
       <div *ngFor="let item of result?.getHits(); let i = index" class="search-result-item">
         <app-result-item
           [item]="item"
@@ -34,13 +50,14 @@
           (checkBoxItem)="checkBoxClick($event)"
         ></app-result-item>
       </div>
+    </div>
 
-      <div *ngIf="result?.getHits()?.length !== 0">
-        <app-pagination
-          [result]="result"
-          (paginationClicked)="paginationClicked($event)"
-        ></app-pagination>
-      </div>
+    <!-- Always show pagination when results exist, even during loading -->
+    <div *ngIf="result?.getHits()?.length !== 0">
+      <app-pagination
+        [result]="result"
+        (paginationClicked)="paginationClicked($event)"
+      ></app-pagination>
     </div>
   </div>
 
