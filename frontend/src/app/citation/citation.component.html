@@ -23,7 +23,13 @@
                     {{ result.getTitle() }},
                     <a *ngIf="result.getDOI() !== 'undefined'" href="{{ result.getDOI() }}" target="_blank">{{ result.getDOI() }}</a>
                 </div>
-                <div *ngIf="result.getSource() !== undefined" class="citation-source">
+                <div *ngIf="result.getDataCenter() == 'GBIF'" class="citation-text">
+                    <span class="font-weight-bold">GBIF.org</span>
+                    <span class="font-weight-bold" *ngIf="result.getDate()"> ({{ result.getDate() }})</span>
+                    <span class="font-weight-bold"> GBIF Occurrence Download </span>
+                    <a *ngIf="result.getDOI() !== 'undefined'" href="{{ result.getDOI() }}" target="_blank">{{ result.getDOI() }}</a>
+                </div>
+                <div *ngIf="result.getSource() !== undefined && result.getDataCenter() !== 'GBIF'" class="citation-source">
                     {{ result.getSource() }}
                 </div>
             </div>

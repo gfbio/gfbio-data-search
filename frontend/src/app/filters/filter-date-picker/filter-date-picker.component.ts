@@ -108,7 +108,7 @@ export class FilterDatePickerComponent implements OnInit, OnChanges {
 
     const dateFields = this.isPublicationType()
       ? { start: 'citation_yearFacet', end: 'citation_yearFacet' }
-      : { start: 'maxDateTime', end: 'minDateTime' };
+      : { start: 'minDateTime', end: 'maxDateTime' };
 
     for (const filter of this.filters) {
       if (filter.range) {

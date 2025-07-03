@@ -105,6 +105,7 @@ export class GfbioPreprocessDataService {
         
         if (jsonResult && Array.isArray(jsonResult)) {
           const creator = [];
+          let gbifDownloadDOI = null;
           
           jsonResult.forEach((value) => {
             switch (value?.name) {
@@ -120,10 +121,23 @@ export class GfbioPreprocessDataService {
                 citation.setDate(value?.elements?.[0]?.text);
                 break;
               }
+              case "dc:identifier": {
+                // Check if this is a GBIF download DOI
+                const identifier = value?.elements?.[0]?.text;
+                if (identifier && identifier.includes('doi.org/10.15468/dl.')) {
+                  gbifDownloadDOI = identifier;
+                }
+                break;
+              }
             }
           });
           
           citation.setCreator(creator);
+          
+          // For GBIF downloads, use the download DOI instead of the occurrence URL
+          if (gbifDownloadDOI) {
+            citation.setDOI(gbifDownloadDOI);
+          }
         }
       }
     } catch (error) {
@@ -144,6 +158,11 @@ export class GfbioPreprocessDataService {
     } else if (item?.dataProvider) {
       // For data provider items, use the abbreviation (part before the dash)
       dataCenter = item.dataProvider.split(' - ')[0];
+      
+      // Map GBIF data providers to GBIF for proper citation handling
+      if (dataCenter === 'Data Provider LAND' || dataCenter.includes('GBIF')) {
+        dataCenter = 'GBIF';
+      }
     }
     
     citation.setDataCenter(dataCenter);

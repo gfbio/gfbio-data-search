@@ -140,14 +140,14 @@ export class FiltersComponent implements OnChanges, OnInit, OnDestroy {
       if (datePicker.type === "collection") {
         if (start !== undefined) {
           const date = {
-            range: { maxDateTime: { gte: start } },
+            range: { minDateTime: { gte: start } },
           };
           this.chosenFilter.push(date);
           this.filterValues.push("Collection start date");
         }
         if (end !== undefined) {
           const date = {
-            range: { minDateTime: { lte: end } },
+            range: { maxDateTime: { lte: end } },
           };
           this.chosenFilter.push(date);
           this.filterValues.push("Collection end date");
@@ -184,6 +184,7 @@ export class FiltersComponent implements OnChanges, OnInit, OnDestroy {
         let datePickerType, modifier;
         switch (facetName) {
           case "minDateTime":
+          case "maxDateTime":
             datePickerType = "Collection";
             break;
           case "citation_yearFacet":
