@@ -1,0 +1,430 @@
+{
+  "mappings": {
+    "panfmp_meta": {
+      "_all": {
+        "enabled": false
+      },
+      "dynamic_templates": [
+        {
+          "kv_pairs": {
+            "match": "*",
+            "mapping": {
+              "doc_values": false,
+              "index": false,
+              "store": false,
+              "type": "keyword"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "lastHarvested": {
+          "type": "keyword",
+          "index": false,
+          "doc_values": false
+        }
+      }
+    },
+    "pansimple": {
+      "_all": {
+        "enabled": false
+      },
+      "_source": {
+        "excludes": ["fulltext", "citation", "*Facet", "suggest"]
+      },
+      "dynamic_templates": [
+        {
+          "facets": {
+            "match": "*Facet",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "uris": {
+            "match": "^\\S*([Ii]dentifier|link)$",
+            "match_pattern": "regex",
+            "mapping": {
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "html": {
+            "match": "html*",
+            "mapping": {
+              "doc_values": false,
+              "index": false,
+              "type": "keyword"
+            }
+          }
+        },
+        {
+          "default": {
+            "match": "*",
+            "mapping": {
+              "fields": {
+                "folded": {
+                  "type": "text",
+                  "analyzer": "folding_index",
+                  "search_analyzer": "folding_search"
+                }
+              },
+              "type": "text"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "abcdDatasetIdentifier": {
+          "type": "keyword"
+        },
+        "accessRestricted": {
+          "type": "boolean"
+        },
+        "boost": {
+          "type": "float",
+          "index": false
+        },
+        "citation": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "citation_authorFacet": {
+          "type": "keyword"
+        },
+        "citation_authors": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "citation_date": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "citation_publisher": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "citation_source": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "citation_title": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "citation_yearFacet": {
+          "type": "short"
+        },
+        "dataCenter": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "dataCenterFacet": {
+          "type": "keyword"
+        },
+        "datalink": {
+          "type": "keyword"
+        },
+        "description": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "feature": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "featureFacet": {
+          "type": "keyword"
+        },
+        "format": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "fulltext": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "gfbioDataKindFacet": {
+          "type": "keyword"
+        },
+        "html-1": {
+          "type": "keyword",
+          "index": false,
+          "doc_values": false
+        },
+        "identifier": {
+          "type": "keyword"
+        },
+        "internal-datestamp": {
+          "type": "date",
+          "include_in_all": false,
+          "format": "dateOptionalTime"
+        },
+        "internal-source": {
+          "type": "keyword",
+          "include_in_all": false
+        },
+        "investigator": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "investigatorFacet": {
+          "type": "keyword"
+        },
+        "keyword": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "keywordFacet": {
+          "type": "keyword"
+        },
+        "kingdom": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "kingdomFacet": {
+          "type": "keyword"
+        },
+        "license": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "licenseFacet": {
+          "type": "keyword"
+        },
+        "licenseShort": {
+          "type": "keyword",
+          "index": false,
+          "doc_values": false,
+          "copy_to": ["licenseFacet"]
+        },
+        "maxDateTime": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        },
+        "maxLatitude": {
+          "type": "double"
+        },
+        "maxLongitude": {
+          "type": "double"
+        },
+        "metadatalink": {
+          "type": "keyword"
+        },
+        "method": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "methodFacet": {
+          "type": "keyword"
+        },
+        "minDateTime": {
+          "type": "date",
+          "format": "dateOptionalTime"
+        },
+        "minLatitude": {
+          "type": "double"
+        },
+        "minLongitude": {
+          "type": "double"
+        },
+        "multimedialink": {
+          "type": "keyword"
+        },
+        "parameter": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "parameterFacet": {
+          "type": "keyword"
+        },
+        "parentIdentifier": {
+          "type": "keyword"
+        },
+        "project": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "projectFacet": {
+          "type": "keyword"
+        },
+        "region": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "regionFacet": {
+          "type": "keyword"
+        },
+        "relation": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "suggest": {
+          "type": "legacy_completion",
+          "analyzer": "suggest_index",
+          "search_analyzer": "suggest_search",
+          "payloads": false,
+          "preserve_separators": true,
+          "preserve_position_increments": true,
+          "max_input_length": 30
+        },
+        "taxonomy": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "taxonomyFacet": {
+          "type": "keyword"
+        },
+        "type": {
+          "type": "text",
+          "fields": {
+            "folded": {
+              "type": "text",
+              "analyzer": "folding_index",
+              "search_analyzer": "folding_search"
+            }
+          }
+        },
+        "typeFacet": {
+          "type": "keyword"
+        },
+        "vatVisualizable": {
+          "type": "boolean"
+        },
+        "xml": {
+          "type": "keyword",
+          "index": false,
+          "doc_values": false
+        }
+      }
+    }
+  }
+}

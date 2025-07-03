@@ -1,0 +1,15 @@
+<div class="other-filters-container">
+  <div *ngFor="let item of filter" class="other-filters-item">
+    <label for="{{ item.id }}" class="pl-2 m-0">
+      <input
+        id="{{ item.id }}"
+        type="checkbox"
+        (click)="
+          sendFilter(item.parameterValue, item.parameterType, item.label)
+        "
+        [checked]="item.checked"
+      />
+      {{ item.label }}
+    </label>
+  </div>
+</div>

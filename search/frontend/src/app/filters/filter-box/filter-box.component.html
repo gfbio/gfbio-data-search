@@ -1,0 +1,25 @@
+<div class="facet-container">
+  <div *ngFor="let filter of filters.getFacets(); let i = index">
+    <div class="facet-item" [ngClass]="{ 'd-none': !showLess(i) }">
+      <input
+        class="facet-checkbox"
+        id="id-{{ filter.getKey() }}"
+        type="checkbox"
+        (click)="sendFacet(filter.getKey(), filters.getId() + 'Facet')"
+        [checked]="filter.getChecked()"
+      />
+      <label class="facet-label" for="id-{{ filter.getKey() }}">
+        <span>{{ filter.getKey() }}</span>
+        <span class="facet-count">{{ filter.getDocCount() }}</span>
+      </label>
+    </div>
+  </div>
+  <div *ngIf="filters.getFacets()?.length > 5">
+    <div class="facet-show-more" *ngIf="!showMore" (click)="showMore = true">
+      Show more
+    </div>
+    <div class="facet-show-more" *ngIf="showMore" (click)="showMore = false">
+      Show less
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+version: "3"
+services:
+  back:
+    image: gfbio_search_back_production:latest
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    container_name: gfbio_search_back_production
+    env_file:
+      - ./search/backend/.env
+    networks:
+      - internalProxy
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gfbio-search-back-production.rule=Host(`search.gfbio.org`) && PathPrefix(`/gfbio`)"
+      - "traefik.http.routers.gfbio-search-back-production.entrypoints=web"
+      - "traefik.http.services.gfbio-search-back-production.loadbalancer.server.port=3000"
+  front:
+    image: gfbio_search_front_production:latest
+    build:
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile
+    container_name: gfbio_search_front_production
+    networks:
+      - internalProxy
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gfbio-search-front-production.rule=Host(`search.gfbio.org`)"
+      - "traefik.http.routers.gfbio-search-front-production.entrypoints=web"
+      - "traefik.http.services.gfbio-search-front-production.loadbalancer.server.port=80"
+
+networks:
+  internalProxy:
+    external: true

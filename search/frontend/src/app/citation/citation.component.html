@@ -1,0 +1,40 @@
+<div class="dialog-container">
+    <!-- Dialog Header -->
+    <div class="dialog-header">
+        <h2 class="dialog-title">Citation</h2>
+        <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+            <span class="material-icons">close</span>
+        </button>
+    </div>
+
+    <!-- Dialog Content -->
+    <div class="dialog-content">
+        <div class="citation-content">
+            <div #citationText>
+                <div *ngIf="result.getDataCenter() == 'PANGAEA'" class="citation-text">
+                    <span class="font-weight-bold" *ngFor="let creator of result.getCreator()">{{ creator }}, </span>
+                    <span class="font-weight-bold">({{ result.getPubYear() }}):</span>
+                    {{ result.getTitle() }},
+                    <a *ngIf="result.getDOI() !== 'undefined'" href="{{ result.getDOI() }}" target="_blank">{{ result.getDOI() }}</a>
+                </div>
+                <div *ngIf="result.getDataCenter() == 'GATERSLEBEN'" class="citation-text">
+                    <span class="font-weight-bold" *ngFor="let creator of result.getCreator()">{{ creator }}, </span>
+                    <span class="font-weight-bold">({{ result.getPubYear() }}):</span>
+                    {{ result.getTitle() }},
+                    <a *ngIf="result.getDOI() !== 'undefined'" href="{{ result.getDOI() }}" target="_blank">{{ result.getDOI() }}</a>
+                </div>
+                <div *ngIf="result.getSource() !== undefined" class="citation-source">
+                    {{ result.getSource() }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialog Actions -->
+    <div class="dialog-actions">
+        <button mat-flat-button class="action-button copy-button" (click)="copyToClipboard()" [class.copied]="isCopied">
+            <span class="material-icons">{{ isCopied ? 'check' : 'content_copy' }}</span>
+            {{ isCopied ? 'Copied!' : 'Copy Citation' }}
+        </button>
+    </div>
+</div>

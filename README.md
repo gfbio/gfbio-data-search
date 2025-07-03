@@ -4,10 +4,9 @@
 
 ## Description
 
-The GFBio Dataset Search, built upon the Dai:Si Dataset Search UI, facilitates
-the exploration of datasets distributed and published across the [GFBio data
-centers](https://gfbio.org/data-centers/). It is an integral part of the GFBio
-Search and Harvesting Infrastructure.
+The GFBio Dataset Search, built upon the Dai:Si Dataset Search UI, facilitates the exploration of datasets distributed and published across the [GFBio data centers](https://gfbio.org/data-centers/). It is an integral part of the GFBio Search and Harvesting Infrastructure, as depicted below.
+
+![Structure Diagram](/assets/diagrams/search.png)
 
 ## Version
 
