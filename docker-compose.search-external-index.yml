@@ -1,0 +1,106 @@
+services:
+  traefik:
+    image: traefik:v3.3
+    ports:
+      - "80:80"
+    volumes:
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - app-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  search_backend:
+    build:
+      context: ./search
+      dockerfile: ./docker/backend/Dockerfile.development
+    env_file:
+      - ./search/backend/.env.development
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./search/backend:/backend
+      - /backend/node_modules
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    environment:
+      # Point to external Elasticsearch using the correct env vars
+      - ELASTIC_INDEX_URL=http://192.168.0.77
+      - ELASTIC_INDEX_PORT=9200
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.search-backend.rule=Host(`ddp.gfbio.dev`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.search-backend.entrypoints=web"
+      - "traefik.http.services.search-backend.loadbalancer.server.port=3001"
+      - "traefik.http.middlewares.search-backend-strip.stripprefix.prefixes=/api"
+      - "traefik.http.routers.search-backend.middlewares=search-backend-strip@docker"
+
+  search_frontend:
+    build:
+      context: ./search
+      dockerfile: ./docker/frontend/Dockerfile.development
+    volumes:
+      - ./search/frontend:/frontend
+      - /frontend/node_modules
+    ports:
+      - "4200:4200"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - search_backend
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.search-frontend.rule=Host(`ddp.gfbio.dev`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.search-frontend.entrypoints=web"
+      - "traefik.http.services.search-frontend.loadbalancer.server.port=4200"
+      - "traefik.http.routers.search-frontend.priority=1"
+
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-dbname}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-user} -d ${DB_NAME:-dbname}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
