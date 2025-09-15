@@ -6,7 +6,7 @@
     <div *ngIf="result?.getHits()?.length === 0" class="text-danger">
       No entries found
     </div>
-    <div *ngIf="result?.getSemanticKeys() !== undefined">
+    <div *ngIf="result?.getSemanticKeys() !== undefined" class="expanded-terms-section">
       <span>Expanded terms: </span>
       <span *ngFor="let item of result?.getSemanticKeys()" class="highlightedKey">
         <!-- only display a context-box for the hovered semantic key -->

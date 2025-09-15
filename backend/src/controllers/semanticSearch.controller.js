@@ -1,6 +1,8 @@
 const {
   searchKeywords,
   performSemanticSearch,
+  performSemanticSearchWithoutAggs,
+  performSemanticSearchStatsOnly,
   extractHighlightedSearch,
 } = require("../services/semanticSearch.service");
 
@@ -144,8 +146,113 @@ const semanticBroaden = async (req, res) => {
     });
 };
 
+/**
+ * Perform a semantic search and return only results (without aggregations)
+ * for faster initial page load
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
+const semanticSearchResultsOnly = async (req, res) => {
+  try {
+    const keywords = req.body.queryterm;
+    const { termData, lastArr } = await searchKeywords(keywords);
+
+    let filter = [];
+    let from = 0;
+    let size = 0;
+
+    if (typeof req.body.from !== "undefined" && req.body.from >= 0) {
+      from = req.body.from;
+    }
+
+    if (typeof req.body.size !== "undefined" && req.body.size >= 0) {
+      size = req.body.size;
+    }
+
+    if (typeof req.body.filter !== "undefined") {
+      filter = req.body.filter;
+    }
+
+    // Get results without aggregations
+    const resp = await performSemanticSearchWithoutAggs(lastArr, from, size, filter);
+    const responseToClient = {
+      ...resp,
+      termData: termData,
+    };
+
+    // Extract extended terms
+    const extendedTerms = [];
+    const result = resp.hits.hits;
+    for (let i = 0, iLen = result.length; i < iLen; i++) {
+      const highlight = result[i].highlight;
+      if (highlight != null) {
+        const highlightArr = extractHighlightedSearch(highlight);
+        for (
+          let iHighlight = 0;
+          iHighlight < highlightArr.length;
+          iHighlight++
+        ) {
+          if (
+            !extendedTerms.some(
+              (term) =>
+                term.toLowerCase() === highlightArr[iHighlight].toLowerCase()
+            )
+          ) {
+            extendedTerms.push(highlightArr[iHighlight]);
+          }
+        }
+      }
+    }
+
+    responseToClient.lastItem = extendedTerms;
+
+    res.set("Content-Type", "application/json");
+    res.status(200).send(responseToClient);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      msg: "Error",
+      err,
+    });
+  }
+};
+
+/**
+ * Get only statistics/aggregations for semantic search
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
+const semanticSearchStatsOnly = async (req, res) => {
+  try {
+    const keywords = req.body.queryterm;
+    const { termData, lastArr } = await searchKeywords(keywords);
+
+    let filter = [];
+
+    if (typeof req.body.filter !== "undefined") {
+      filter = req.body.filter;
+    }
+
+    // Get only aggregations
+    const statsData = await performSemanticSearchStatsOnly(lastArr, filter);
+
+    res.set("Content-Type", "application/json");
+    res.status(200).send(statsData);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      msg: "Error",
+      err,
+    });
+  }
+};
+
 module.exports = {
   semanticSearch,
+  semanticSearchResultsOnly,
+  semanticSearchStatsOnly,
   semanticBroaden,
   semanticNarrow,
 };

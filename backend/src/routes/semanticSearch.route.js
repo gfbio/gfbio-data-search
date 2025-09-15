@@ -48,6 +48,18 @@ const semanticSearchController = require("../controllers/semanticSearch.controll
 router.post("/semantic-search", semanticSearchController.semanticSearch);
 
 /**
+ * POST /semantic-search/results
+ * Returns only search results without aggregations for faster display
+ */
+router.post("/semantic-search/results", semanticSearchController.semanticSearchResultsOnly);
+
+/**
+ * POST /semantic-search/stats
+ * Returns only aggregation stats
+ */
+router.post("/semantic-search/stats", semanticSearchController.semanticSearchStatsOnly);
+
+/**
  * POST /broad
  * Semantic Broaden service for expanding semantic search
  * Expands the given term using the Semantic Broaden service.

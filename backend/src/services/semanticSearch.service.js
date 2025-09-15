@@ -6,6 +6,8 @@ const {
   applyBoost,
   getCompleteQuery,
   getQuery,
+  getQueryWithoutAggs,
+  getStatsOnlyQuery,
   extractHighlightedSearch,
 } = require("../utils/query.utils");
 
@@ -133,8 +135,74 @@ async function performSemanticSearch(query, from, size, filter) {
   }
 }
 
+/**
+ * Perform a semantic search without aggregations (results only)
+ * 
+ * @param {Array} query - The search query
+ * @param {number} from - The pagination start
+ * @param {number} size - The page size
+ * @param {Array} filter - The filters to apply
+ * @returns {Promise} - A promise that resolves with the search results without aggregations
+ */
+async function performSemanticSearchWithoutAggs(query, from, size, filter) {
+  try {
+    // Construct the Elasticsearch query using utility functions.
+    const filteredQuery = getQuery(query, filter);
+    const boostedQuery = applyBoost(filteredQuery);
+    const finalQuery = getQueryWithoutAggs(boostedQuery, from, size);
+
+    // Prepare the search query for Elasticsearch.
+    const searchQuery = {
+      index: ELASTIC_INDEX_NAME,
+      from: from,
+      size: size,
+      body: finalQuery,
+    };
+
+    // Execute the search query using the Elasticsearch client.
+    const { body } = await esClient.search(searchQuery);
+    return body;
+  } catch (error) {
+    console.error("Error performing semantic search without aggregations:", error);
+    throw error;
+  }
+}
+
+/**
+ * Get only statistics/aggregations for a semantic search
+ * 
+ * @param {Array} query - The search query
+ * @param {Array} filter - The filters to apply
+ * @returns {Promise} - A promise that resolves with only the aggregations
+ */
+async function performSemanticSearchStatsOnly(query, filter) {
+  try {
+    // Construct the Elasticsearch query using utility functions.
+    const filteredQuery = getQuery(query, filter);
+    const boostedQuery = applyBoost(filteredQuery);
+    const statsQuery = getStatsOnlyQuery(boostedQuery);
+
+    // Prepare the search query for Elasticsearch.
+    const searchQuery = {
+      index: ELASTIC_INDEX_NAME,
+      size: 0, // Don't return any results, only aggregations
+      body: statsQuery,
+    };
+
+    // Execute the search query using the Elasticsearch client.
+    const { body } = await esClient.search(searchQuery);
+    // Return only the aggregations part
+    return body.aggregations || {};
+  } catch (error) {
+    console.error("Error performing semantic search stats only:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   searchKeywords,
   performSemanticSearch,
+  performSemanticSearchWithoutAggs,
+  performSemanticSearchStatsOnly,
   extractHighlightedSearch,
 };

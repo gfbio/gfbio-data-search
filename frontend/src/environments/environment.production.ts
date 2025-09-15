@@ -13,7 +13,7 @@ export const environment = {
   vatRootUrl: "https://vat.gfbio.dev",
   collections: "/collection",
   collectionsUpdate: "/collection-update",
-  apiUrl: "http://search.gfbio.org/api",
+  apiUrl: "https://search.gfbio.org/api",
   context: "/gfbio",
   searchUrl: "/search",
   semSearchUrl: "/semantic-search",

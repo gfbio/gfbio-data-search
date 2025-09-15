@@ -51,6 +51,10 @@ export class ResultItemComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
+  getSanitizedTitle(): any {
+    return this.sanitizer.bypassSecurityTrustHtml(this.item.getTitle());
+  }
+
   checkBox(key, value): void {
     this.item.setCheckbox(value.checked);
     this.checkBoxItem.emit(this.item);
