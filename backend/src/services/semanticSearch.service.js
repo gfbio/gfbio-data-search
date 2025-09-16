@@ -36,16 +36,25 @@ async function searchKeywords(keywords) {
   for (let i = 0; i < flatKeyWords.length; i++) {
     axiosArray.push(
       axios.get(
-        GFBIOTS_URL + "search?query=" + flatKeyWords[i] + "&match_type=exact"
+        GFBIOTS_URL + "search?query=" + flatKeyWords[i] + "&match_type=exact",
+        { timeout: 5000 } // 5 second timeout
       )
     );
   }
 
-  return axios.all(axiosArray).then(
-    axios.spread((...responses) => {
-      for (let i = 0; i < axiosArray.length; i++) {
+  return axios.all(axiosArray.map(p => p.catch(e => ({ error: true, message: e.message })))).then(
+    (responses) => {
+      for (let i = 0; i < responses.length; i++) {
         let allKeyWords = [flatKeyWords[i]];
-        const results = responses[i].data.results;
+        
+        // Skip if this request failed
+        if (responses[i].error) {
+          console.warn(`Failed to fetch terminology for "${flatKeyWords[i]}": ${responses[i].message}`);
+          response.push(allKeyWords);
+          continue;
+        }
+        
+        const results = responses[i].data?.results || [];
         results.forEach(function (item) {
           for (const [key, value] of Object.entries(item)) {
             if (
@@ -98,7 +107,7 @@ async function searchKeywords(keywords) {
         termData,
         lastArr,
       };
-    })
+    }
   );
 }
 
