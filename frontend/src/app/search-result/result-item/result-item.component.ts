@@ -6,6 +6,7 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { CitationComponent } from "../../citation/citation.component";
 import { CommunicationService } from "../../services/local/communication.service";
+import { MatomoService } from "../../services/local/matomo.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatDialog } from "@angular/material/dialog";
 import { Hit } from "../../models/result/hit";
@@ -34,13 +35,41 @@ export class ResultItemComponent implements OnInit {
 
   constructor(
     private communicationService: CommunicationService,
+    private matomoService: MatomoService,
     private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {}
 
+  // ============ Tracking Methods ============
+
+  /**
+   * Track View More link click
+   */
+  trackViewMore(): void {
+    const position = this.itemId + 1; // Convert to 1-indexed
+    const title = this.item.getTitle();
+    const datasetType = this.item.getType()?.join(', ') || '';
+    this.matomoService.trackViewMore(title, position, datasetType);
+  }
+
+  /**
+   * Track Download button click
+   */
+  trackDownload(): void {
+    const position = this.itemId + 1;
+    const title = this.item.getTitle();
+    const datasetType = this.item.getType()?.join(', ') || '';
+    this.matomoService.trackDownload(title, position, datasetType);
+  }
+
   openDialog(i): void {
+    // Track citation view
+    const position = i + 1;
+    const title = this.item.getTitle();
+    this.matomoService.trackCitationView(title, position);
+
     this.communicationService.setCitation(i);
     const dialogRef = this.dialog.open(CitationComponent, {
       data: this.item,
@@ -61,7 +90,14 @@ export class ResultItemComponent implements OnInit {
   }
 
   toggleCheckbox(key, value) {
-    this.item.setCheckbox(!this.item.getCheckBox()); // Toggle the checkbox state
+    const wasInBasket = this.item.getCheckBox();
+    this.item.setCheckbox(!wasInBasket); // Toggle the checkbox state
+
+    // Track basket add/remove
+    const position = key + 1;
+    const title = this.item.getTitle();
+    this.matomoService.trackBasketAction(wasInBasket ? 'Remove' : 'Add', title, position);
+
     this.checkBoxItem.emit(this.item);
   }
 }
