@@ -3,17 +3,24 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
+
+  // Matomo Analytics - enabled in production
+  matomo: {
+    siteId: 5,
+    trackerUrl: 'https://analytics.gfbio.org/',
+    enabled: true
+  },
 
   Keycloak_Url: "https://keycloak.sso.gwdg.de/auth",
   Keycloak_RedirectUri: "https://dev.gfbio.uni-jena.de/daisi",
   Keycloak_Realm: "GFBio",
   Keycloak_ClientId: "dev-gfbio-angular",
 
-  vatRootUrl: "https://vat.gfbio.dev",
+  vatRootUrl: "https://vat.gfbio.org",
   collections: "/collection",
   collectionsUpdate: "/collection-update",
-  apiUrl: "http://search.gfbio.org/api",
+  apiUrl: "https://search.gfbio.org/api",
   context: "/gfbio",
   searchUrl: "/search",
   semSearchUrl: "/semantic-search",

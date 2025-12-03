@@ -37,7 +37,8 @@ export class GfbioPreprocessDataService {
     const result = new Result();
 
     if (jsonObject?.lastItem) {
-      result.setSemanticKeys(jsonObject.lastItem);
+      const filteredSemanticKeys = this.filterStopWords(jsonObject.lastItem);
+      result.setSemanticKeys(filteredSemanticKeys);
     }
 
     const hits: Hit[] = this.getHits(jsonObject, parameters[0]);
@@ -183,9 +184,12 @@ export class GfbioPreprocessDataService {
     });
     if (semantic) {
       const highLightTitle = dataset?.highlight?.citation_title?.[0];
-      let matchTitle = highLightTitle?.replace(/<em>/g, "");
-      matchTitle = matchTitle?.replace(/<\/em>/g, "");
-      topic = topic?.replace(matchTitle, highLightTitle);
+      if (highLightTitle) {
+        const filteredHighLightTitle = this.filterStopWordsFromHighlights(highLightTitle);
+        let matchTitle = highLightTitle?.replace(/<em>/g, "");
+        matchTitle = matchTitle?.replace(/<\/em>/g, "");
+        topic = topic?.replace(matchTitle, filteredHighLightTitle);
+      }
     }
     return topic;
   }
@@ -263,11 +267,10 @@ export class GfbioPreprocessDataService {
         highLightDescription.length > 0
       ) {
         highLightDescription.forEach((entry) => {
-          const entryCopy = entry;
-          entry = entry?.replace(/<em>/g, "");
-          entry = entry?.replace(/<\/em>/g, "");
+          const filteredEntry = this.filterStopWordsFromHighlights(entry);
+          const entryWithoutTags = entry?.replace(/<em>/g, "")?.replace(/<\/em>/g, "");
           description.forEach((row) => {
-            row.value = row.value?.replace(entry, entryCopy);
+            row.value = row.value?.replace(entryWithoutTags, filteredEntry);
           });
         });
       }
@@ -678,5 +681,45 @@ export class GfbioPreprocessDataService {
       }
     }
     return icon;
+  }
+
+  /**
+   * Common English stop words that should be filtered from search highlights
+   */
+  private readonly stopWords = new Set([
+    'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from',
+    'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the',
+    'to', 'was', 'were', 'will', 'with', 'but', 'or', 'nor', 'so',
+    'yet', 'i', 'you', 'we', 'they', 'them', 'their', 'this', 'these',
+    'those', 'have', 'had', 'been', 'being', 'do', 'does', 'did', 'can',
+    'could', 'should', 'would', 'may', 'might', 'must', 'shall'
+  ]);
+
+  /**
+   * Filter out common English stop words from semantic search expanded terms
+   * @param terms Array of terms to filter
+   * @returns Filtered array without stop words
+   */
+  private filterStopWords(terms: string[]): string[] {
+    return terms.filter(term => 
+      term && 
+      term.trim().length > 1 && 
+      !this.stopWords.has(term.toLowerCase().trim())
+    );
+  }
+
+  /**
+   * Filter stop words from highlighted HTML content
+   * @param highlightedText HTML string with <em> tags
+   * @returns HTML string with stop word highlights removed
+   */
+  private filterStopWordsFromHighlights(highlightedText: string): string {
+    if (!highlightedText) return highlightedText;
+    
+    // Replace <em>stopword</em> with just stopword (remove highlighting)
+    return highlightedText.replace(/<em>(.*?)<\/em>/gi, (match, word) => {
+      const cleanWord = word.trim().toLowerCase();
+      return this.stopWords.has(cleanWord) ? word : match;
+    });
   }
 }

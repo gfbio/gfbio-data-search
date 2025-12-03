@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, Input } from "@angular/core";
 import { NodeService } from "../services/remote/node.service";
 import { CommunicationService } from "../services/local/communication.service";
+import { MatomoService } from "../services/local/matomo.service";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { StartSearchingService } from "../services/local/start-searching.service";
 import { environment } from "../../environments/environment";
@@ -17,7 +18,8 @@ export class SearchInputComponent implements OnInit {
     private nodeService: NodeService,
     private startSearchingService: StartSearchingService,
     private communicationService: CommunicationService,
-    private inputAnalysis: InputAnalysisService
+    private inputAnalysis: InputAnalysisService,
+    private matomoService: MatomoService
   ) {
     this.communicationService.getResult().subscribe((result) => {
       this.result = result;
@@ -45,6 +47,9 @@ export class SearchInputComponent implements OnInit {
   // by entering a letter on the form, a request will be sent to the node server and then it will be sent to suggestion-window
   onWindowSuggestKey(value): void {
     if (value !== undefined) {
+      // Track suggestion selection in Matomo
+      this.matomoService.trackSuggestionSelected(value);
+
       const searchField = document.getElementById(
         "searchField"
       ) as HTMLInputElement;

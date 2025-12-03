@@ -6,7 +6,7 @@ export class Result {
     // the response from server contains several datasets
     private hits: Hit[];
     // the extended semantic keys related to the search key
-    private semanticKeys: [];
+    private semanticKeys: string[];
     private termData: [];
     // the number of founded datasets related to the search key
     private totalNumber: number;
@@ -44,7 +44,7 @@ export class Result {
         return this.semanticKeys;
     }
 
-    setSemanticKeys(semanticKeys: []): void {
+    setSemanticKeys(semanticKeys: string[]): void {
         this.semanticKeys = semanticKeys;
     }
 
