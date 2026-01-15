@@ -134,7 +134,7 @@ app-root, .mat-expansion-panel, .mat-expansion-panel-content, .mat-expansion-pan
     font-weight: 400;
     src: url('/static/fonts/material-icons.woff2') format('woff2');
 }
-  
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -150,4 +150,52 @@ app-root, .mat-expansion-panel, .mat-expansion-panel-content, .mat-expansion-pan
     -moz-font-feature-settings: 'liga';
     -moz-osx-font-smoothing: grayscale;
 }
-  
+
+/* Roboto Font - Local hosting for GDPR compliance */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: local(''),
+         url('/static/fonts/roboto-v50-latin-300.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('/static/fonts/roboto-v50-latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    src: local(''),
+         url('/static/fonts/roboto-v50-latin-500.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 300;
+    src: local(''),
+         url('/static/fonts/roboto-v50-latin-300italic.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 400;
+    src: local(''),
+         url('/static/fonts/roboto-v50-latin-italic.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 500;
+    src: local(''),
+         url('/static/fonts/roboto-v50-latin-500italic.woff2') format('woff2');
+}
