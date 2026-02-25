@@ -5,7 +5,6 @@ import { BrowserModule, Title } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { PaginationModule } from "ngx-bootstrap/pagination";
-import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from "ngx-google-analytics";
 import { NgxPaginationModule } from "ngx-pagination";
 import { NgxSpinnerModule } from "ngx-spinner";
 import "reflect-metadata";
@@ -71,8 +70,6 @@ import { initializeKeycloak } from "./utils/app.init";
     ReactiveFormsModule,
     MaterialModule,
     PaginationModule,
-    NgxGoogleAnalyticsModule.forRoot("G-F96NGEWFKC"),
-    NgxGoogleAnalyticsRouterModule,
   ],
   providers: [
     {
