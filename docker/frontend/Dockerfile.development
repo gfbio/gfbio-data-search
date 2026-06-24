@@ -4,9 +4,15 @@ FROM node:20.9.0
 # Set the working directory inside the container
 WORKDIR /frontend
 
-# Copy the package.json files and install dependencies
-COPY ./frontend/package.json ./
-RUN npm install --force
+# Copy the manifest AND the lockfile, then install the exact locked tree.
+# Installing from package-lock.json (npm ci) makes the image reproducible: it
+# resolves byte-for-byte the dependency tree verified on the host, instead of
+# re-resolving from scratch on every build. The previous `npm install --force`
+# (without the lockfile) let transitive versions drift and force-installed
+# incompatible ones (e.g. a newer `entities` nested under `parse5`), which broke
+# the Angular build tooling. Keep this in sync with package-lock.json.
+COPY ./frontend/package.json ./frontend/package-lock.json ./
+RUN npm ci
 
 # Copy the Angular project files into the container
 COPY ./frontend/ ./
