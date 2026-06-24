@@ -1,0 +1,167 @@
+<div class="about-container">
+  <!-- Hero -->
+  <header class="about-hero">
+    <h1>GFBio Search</h1>
+    <p>
+      Find, filter, map and collect biodiversity datasets from across Germany's
+      research data centers — all from a single search.
+    </p>
+  </header>
+
+  <!-- 1. Intro -->
+  <section class="content-card">
+    <p class="card-text">
+      The GFBio Search portal is the public gateway to biodiversity data held
+      across the German Federation for Biological Data (GFBio). From a single
+      search you can discover datasets contributed by certified data centers and
+      partner institutions all over Germany, and reuse them following the
+      <strong>FAIR data principles</strong>.
+    </p>
+
+    <p class="card-text">
+      It is operated by <strong>GFBio e.V.</strong> as part of
+      <strong>NFDI4Biodiversity</strong>, Germany's National Research Data
+      Infrastructure for the biological sciences. Behind the search box, a wider
+      infrastructure gathers, validates and harmonises metadata so that one
+      query can reach across many different data sources at once.
+    </p>
+
+    <div class="callout">
+      <i class="fas fa-info-circle callout-icon" aria-hidden="true"></i>
+      <p class="callout-text">
+        <strong>Contribute data:</strong> Are you a data center or institution
+        that would like to publish data through GFBio? Datasets are registered
+        and prepared for harvesting in the
+        <a href="https://www.gfbio.org/services/" target="_blank" rel="noopener noreferrer">GFBio data services</a> —
+        get in touch with us to start contributing.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. What this service does -->
+  <section class="content-card">
+    <div class="card-header">
+      <div class="card-icon"><i class="fas fa-compass" aria-hidden="true"></i></div>
+      <div>
+        <h2 class="section-title">What this service does</h2>
+        <p class="section-subtitle">Discover biodiversity data in one place</p>
+      </div>
+    </div>
+
+    <p class="card-text">
+      The Search portal brings together biodiversity metadata from many sources
+      into one searchable place. You do not need to know which institution holds
+      a dataset, or which standard it was described in — search once, and the
+      portal looks across them all.
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-item" *ngFor="let cap of capabilities">
+        <i class="fas {{ cap.icon }} feature-icon" aria-hidden="true"></i>
+        <div>
+          <div class="feature-title">{{ cap.title }}</div>
+          <p class="feature-text">{{ cap.text }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. How the system fits together -->
+  <section class="content-card">
+    <div class="card-header">
+      <div class="card-icon"><i class="fas fa-project-diagram" aria-hidden="true"></i></div>
+      <div>
+        <h2 class="section-title">How the system fits together</h2>
+        <p class="section-subtitle">From data center to your search results</p>
+      </div>
+    </div>
+
+    <p class="card-text">
+      GFBio Search is built from a handful of cooperating parts. Data centers
+      register with the Data Provider Manager; the harvester then collects
+      metadata from every source and translates the many input standards into
+      one shared format; the harmonised records are stored in a single search
+      index; and the portal lets you discover them.
+    </p>
+
+    <div class="diagram-container">
+      <app-mermaid [chart]="architectureDiagram"></app-mermaid>
+    </div>
+    <p class="diagram-caption">
+      The path biodiversity metadata follows, from a contributing data center
+      through to your search in the portal.
+    </p>
+  </section>
+
+  <!-- 4. How your data reaches researchers -->
+  <section class="content-card">
+    <div class="card-header">
+      <div class="card-icon"><i class="fas fa-route" aria-hidden="true"></i></div>
+      <div>
+        <h2 class="section-title">How your data reaches researchers</h2>
+        <p class="section-subtitle">The journey of a dataset, in four steps</p>
+      </div>
+    </div>
+
+    <p class="card-text">
+      Every dataset discoverable through GFBio follows the same path — from the
+      moment a data center registers it, to the moment you find it in the
+      portal.
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let item of journeySteps">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title">
+            <span class="timeline-step">{{ item.step }}:</span>
+            {{ item.title }}
+          </h3>
+          <p class="timeline-text">{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. The components at a glance -->
+  <section class="content-card">
+    <div class="card-header">
+      <div class="card-icon"><i class="fas fa-th-large" aria-hidden="true"></i></div>
+      <div>
+        <h2 class="section-title">The components at a glance</h2>
+        <p class="section-subtitle">The wider landscape the portal sits at the front of</p>
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="component-card" *ngFor="let comp of components">
+        <span class="component-tag">{{ comp.tag }}</span>
+        <div class="component-name">{{ comp.name }}</div>
+        <p class="feature-text">{{ comp.text }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Built on open standards -->
+  <section class="content-card">
+    <div class="card-header">
+      <div class="card-icon"><i class="fas fa-shield-alt" aria-hidden="true"></i></div>
+      <div>
+        <h2 class="section-title">Built on open standards</h2>
+        <p class="section-subtitle">Interoperable by design</p>
+      </div>
+    </div>
+
+    <p class="card-text card-text-last">
+      Biodiversity data arrives in many community standards. GFBio harmonises
+      them into one searchable catalogue so a single query can reach across
+      natural-history collections, environmental archives and molecular
+      repositories alike — and so the data stays Findable, Accessible,
+      Interoperable and Reusable.
+    </p>
+
+    <div class="pill-row">
+      <span class="pill" *ngFor="let standard of standards">{{ standard }}</span>
+    </div>
+  </section>
+</div>

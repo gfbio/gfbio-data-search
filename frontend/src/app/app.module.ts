@@ -29,6 +29,8 @@ import { ResultItemComponent } from "./search-result/result-item/result-item.com
 import { SearchResultComponent } from "./search-result/search-result.component";
 import { SuggestionWindowComponent } from "./suggestion-window/suggestion-window.component";
 import { ChangelogComponent } from "./changelog/changelog.component";
+import { AboutComponent } from "./about/about.component";
+import { MermaidComponent } from "./components/mermaid/mermaid.component";
 
 import { KeycloakAngularModule, KeycloakService } from "keycloak-angular";
 import { initializeKeycloak } from "./utils/app.init";
@@ -55,6 +57,8 @@ import { initializeKeycloak } from "./utils/app.init";
     ContextBoxComponent,
     MapComponent,
     ChangelogComponent,
+    AboutComponent,
+    MermaidComponent,
   ],
   imports: [
     BrowserModule,
