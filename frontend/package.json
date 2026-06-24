@@ -1,6 +1,6 @@
 {
   "name": "dataset-search",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "scripts": {
     "ng": "ng",
     "config": "",
@@ -39,6 +39,7 @@
     "keycloak-angular": "~15.0.0",
     "keycloak-js": "~22.0.0",
     "leaflet": "^1.7.1",
+    "mermaid": "^11.15.0",
     "moment": "^2.29.1",
     "ngx-bootstrap": "^12.0.0",
     "ngx-pagination": "~6.0.3",
