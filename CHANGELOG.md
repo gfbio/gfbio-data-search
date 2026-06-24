@@ -1,5 +1,17 @@
 # GFBio Search UI Changelog
 
+## [1.2.0] - 2026-06-24
+
+### Added
+- About page (`/about`) describing the GFBio Search portal and the end-to-end path a dataset travels from contributing data centers into the search index, with an embedded Mermaid system-architecture diagram centred on the Search portal
+- Reusable Mermaid diagram wrapper component for rendering flowcharts in Angular templates
+- "About" link in the main navigation, alongside "Changelog"
+
+### Changed
+- Reworked the in-app Changelog as a vertical timeline and aligned its content with user-focused guidelines (max five bullets per release; no implementation, infrastructure, or tooling detail); embedded those guidelines as a doc comment in the changelog component
+- Bumped the frontend application version to 1.2.0
+- Regenerated `frontend/package-lock.json` to match `package.json` (dropped the stale `ngx-google-analytics` entry left over from the Matomo migration)
+
 ## v1.1.0 - September 15, 2025
 
 ### Added
