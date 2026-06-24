@@ -1,18 +1,22 @@
 <div class="changelog-container">
-  <div class="changelog-header">
+  <header class="changelog-hero">
     <h1>Changelog</h1>
-    <p>Track the evolution of our platform with our detailed version history</p>
-  </div>
-  
-  <div class="version-container">
-    <div *ngFor="let entry of changelogEntries" class="version-item">
-      <div class="version-header">
-        <div class="version-number">Version {{ entry.version }}</div>
-        <div class="version-date">{{ entry.date }}</div>
+    <p>Track the evolution of GFBio Search through our release history</p>
+  </header>
+
+  <div class="timeline">
+    <div class="timeline-entry" *ngFor="let entry of changelogEntries">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="version-head">
+          <h2 class="version-number">v{{ entry.version }}</h2>
+          <span class="version-date">{{ entry.date }}</span>
+        </div>
+        <h3 class="whats-new">What's New</h3>
+        <ul class="change-list">
+          <li *ngFor="let change of entry.changes" class="change-item">{{ change }}</li>
+        </ul>
       </div>
-      <ul class="version-changes">
-        <li *ngFor="let change of entry.changes" class="change-item">{{ change }}</li>
-      </ul>
     </div>
   </div>
 </div>

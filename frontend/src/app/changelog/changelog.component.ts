@@ -1,6 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * CHANGELOG CONTENT GUIDELINES
+ * ============================
+ *
+ * Rule 1: Maximum 5 bullet points per release
+ *         - Forces prioritization of the most important user-facing changes
+ *         - Group minor fixes into "Various bug fixes and performance improvements"
+ *
+ * Rule 2: User-focused language
+ *         - Describe WHAT users can do, not HOW it was built
+ *         - Good: "Clearer search results with matching terms highlighted"
+ *         - Bad: "Implemented HTML-safe highlight rendering in the result component"
+ *
+ * Rule 3: No internal implementation details
+ *         - No technology names (Angular, Keycloak, Elasticsearch, Matomo, Docker, etc.)
+ *         - No infrastructure details (CI/CD, GitLab, database queries, caching)
+ *         - No security implementation specifics (token refresh, auth context)
+ *         - No internal tooling (Makefile, task management, test suites)
+ *
+ * Rule 4: No DevOps or deployment information
+ *         - Users don't need to know about deployments, migrations, or pipelines
+ *
+ * Rule 5: Combine related items
+ *         - Instead of 5 separate bug fixes, use "Various bug fixes and improvements"
+ *
+ * Entries are ordered newest-first. Keep this in sync with the developer-tier
+ * CHANGELOG.md at the repository root (which may carry technical detail).
+ */
+
 interface ChangelogEntry {
   version: string;
   date: string;
@@ -16,57 +45,38 @@ export class ChangelogComponent implements OnInit {
   ngOnInit(): void {
     // Initialize component
   }
-  
+
   changelogEntries: ChangelogEntry[] = [
     {
-      version: '1.1.0',
-      date: '2025-09-15',
+      version: '1.2.0',
+      date: 'June 24, 2026',
       changes: [
-        // Infrastructure and Analytics
-        'Added Docker Compose configuration for external Elasticsearch deployments in production environments',
-        'Integrated Matomo Tag Manager for comprehensive user analytics and behavior tracking',
-        'Enhanced repository structure and security by removing sensitive configuration files',
-        'Improved deployment flexibility with external index support for better scalability',
-        
-        // Search Experience Enhancements  
-        'Fixed search result highlighting to properly render HTML tags in both headers and descriptions',
-        'Implemented intelligent stop words filtering to remove common words like "and", "the", "is" from highlighted search terms',
-        'Enhanced expanded semantic search terms display with improved spacing and visual design',
-        'Improved search result card styling with better rectangular highlighting and proper padding',
-        'Consolidated stop words filtering logic for better maintainability and consistent behavior',
-        
-        // User Interface Improvements
-        'Added proper spacing below expanded terms section to prevent overlap with search results',
-        'Enhanced visual distinction between meaningful search terms and common stop words',
-        'Improved readability of search highlights with rounded corners and consistent styling',
-        'Optimized semantic search display for better user comprehension of expanded query terms'
+        'New About page that explains, in plain language, what GFBio Search does and how datasets travel from data centers into your search results',
+        'A visual overview showing how biodiversity data from many sources is gathered, harmonised and made searchable in one place',
+        'Clearer, plain-language release notes focused on what is new for you',
+        'Various bug fixes and performance improvements'
+      ]
+    },
+    {
+      version: '1.1.0',
+      date: 'September 15, 2025',
+      changes: [
+        'Clearer search results, with matching terms highlighted accurately in titles and descriptions',
+        'Smarter highlighting that ignores common words like "and", "the" and "is", so the terms that matter stand out',
+        'The related terms we add to your search are easier to read, with cleaner spacing and layout',
+        'Refreshed search result cards for better readability',
+        'Various bug fixes and performance improvements'
       ]
     },
     {
       version: '1.0.0',
-      date: '2025-07-03',
+      date: 'July 3, 2025',
       changes: [
-        // Technical changes
-        'Introduced clear distinction between Data Centers and Data Providers throughout the search system',
-        'Added new Data Center filter category with dedicated visualization in the search sidebar',
-        'Updated Elasticsearch index and backend to support efficient Data Center filtering',
-        'Implemented new iconography for Data Centers (storage) and Data Providers (business)',
-        'Enhanced dataset result cards and metadata display to highlight Data Center status',
-        'Implemented progressive loading with skeleton UI for enhanced user experience',
-        'Added skeleton loaders for search results to improve perceived performance',
-        'Enhanced pagination behavior with better loading states',
-        'Improved GBIF citation handling with proper download DOI formatting',
-        'Fixed date range filtering for collection dates (minDateTime/maxDateTime)',
-        
-        // Stakeholder-focused entries
-        'Enhanced visibility for official GFBio Data Centers in response to their feedback for clearer institutional recognition',
-        'Improved researcher experience by enabling direct filtering for datasets from certified Data Centers',
-        'Aligned with GFBio strategic initiative to highlight our Data Center network and its quality standards',
-        'Streamlined data discovery process for users seeking highly curated, long-term preserved datasets',
-        'No action required from Data Providers - categorization is managed by GFBio administrators',
-        'Integrated complete repository history with local progressive loading development',
-        'Established unified version alignment across all search components',
-        'Created comprehensive project documentation and development guidelines'
+        'Clear distinction between official GFBio Data Centers and other data providers throughout search, each with its own icon',
+        'New Data Center filter to focus your results on certified, long-term data centers',
+        'Dataset cards now show at a glance when data comes from an official Data Center',
+        'Smoother browsing — search results and filters appear with placeholders while they load',
+        'Various bug fixes and performance improvements'
       ]
     }
   ];
