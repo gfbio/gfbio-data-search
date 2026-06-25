@@ -42,6 +42,28 @@
       >
         <strong>VAT</strong>
       </span>
+      <span
+        *ngIf="item.getValidation() as validation"
+        class="badge badge-pill custom-badge validation-badge mr-2"
+        [ngClass]="qualityBadgeClass(validation)"
+        [matTooltip]="validationTooltip(validation)"
+        matTooltipClass="result-item-tooltip"
+      >
+        <strong *ngIf="validation.isValid === false; else qualityLabel">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          Invalid
+        </strong>
+        <ng-template #qualityLabel>
+          <strong>
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Data quality:
+            <ng-container *ngIf="validation.hasQualityScore(); else noScore"
+              >{{ validation.qualityScore | number: "1.0-0" }}%</ng-container
+            >
+            <ng-template #noScore>{{ validationStatusLabel(validation) }}</ng-template>
+          </strong>
+        </ng-template>
+      </span>
     </div>
 
     <div class="my-button-group">

@@ -9,6 +9,7 @@ import { CommunicationService } from "../../services/local/communication.service
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatDialog } from "@angular/material/dialog";
 import { Hit } from "../../models/result/hit";
+import { Validation } from "../../models/result/validation";
 import { ViewEncapsulation } from "@angular/core";
 import { environment } from "../../../environments/environment";
 
@@ -63,5 +64,73 @@ export class ResultItemComponent implements OnInit {
   toggleCheckbox(key, value) {
     this.item.setCheckbox(!this.item.getCheckBox()); // Toggle the checkbox state
     this.checkBoxItem.emit(this.item);
+  }
+
+  /**
+   * Colour class for the data-quality badge.
+   *
+   * A schema-INVALID dataset is always red, regardless of its field-quality
+   * score: a dataset can fail ABCD schema validation (is_valid=false) yet still
+   * have high mandatory/recommended field coverage, and we must not paint that
+   * reassuringly green. Otherwise colour by the weighted quality score (0..100);
+   * no score (not-yet / never validated) is neutral grey.
+   */
+  qualityBadgeClass(validation: Validation): string {
+    if (!validation) {
+      return "badge-quality-unknown";
+    }
+    if (validation.isValid === false) {
+      return "badge-quality-low";
+    }
+    if (!validation.hasQualityScore()) {
+      return "badge-quality-unknown";
+    }
+    if (validation.qualityScore >= 80) {
+      return "badge-quality-high";
+    }
+    if (validation.qualityScore >= 50) {
+      return "badge-quality-medium";
+    }
+    return "badge-quality-low";
+  }
+
+  /** Short status word shown on the badge when there is no numeric score. */
+  validationStatusLabel(validation: Validation): string {
+    switch (validation?.status) {
+      case "pending":
+      case "running":
+        return "pending";
+      case "failed":
+        return "failed";
+      default:
+        return "not validated";
+    }
+  }
+
+  /** Tooltip detail: mandatory / recommended percentages, file counts, date. */
+  validationTooltip(validation: Validation): string {
+    if (!validation) {
+      return "";
+    }
+    const parts: string[] = [];
+    if (typeof validation.qualityScore === "number") {
+      parts.push(`Quality ${Math.round(validation.qualityScore)}%`);
+    }
+    if (typeof validation.mandatoryPercentage === "number") {
+      parts.push(`Mandatory ${Math.round(validation.mandatoryPercentage)}%`);
+    }
+    if (typeof validation.recommendedPercentage === "number") {
+      parts.push(`Recommended ${Math.round(validation.recommendedPercentage)}%`);
+    }
+    if (
+      typeof validation.validFiles === "number" &&
+      typeof validation.totalFiles === "number"
+    ) {
+      parts.push(`${validation.validFiles}/${validation.totalFiles} files valid`);
+    }
+    if (validation.lastValidatedAt) {
+      parts.push(`validated ${validation.lastValidatedAt.substring(0, 10)}`);
+    }
+    return parts.join(" · ");
   }
 }

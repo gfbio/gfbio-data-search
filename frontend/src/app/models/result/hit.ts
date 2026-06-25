@@ -3,6 +3,7 @@ import { Description } from "./description";
 import { Linkage } from "./linkage";
 import { Type } from "class-transformer";
 import { UpperLabel } from "./upperLabel";
+import { Validation } from "./validation";
 
 // every dataset
 export class Hit {
@@ -44,6 +45,10 @@ export class Hit {
   private parentIdentifier: string;
 
   private dcType: Array<string>;
+
+  // Per-dataset validation summary (only present for aggregator-sourced datasets).
+  @Type(() => Validation)
+  private validation: Validation | null;
 
   constructor() {
     // ... other property assignments ...
@@ -242,5 +247,13 @@ export class Hit {
 
   setType(dcType: Array<string>): void {
     this.dcType = dcType;
+  }
+
+  getValidation(): Validation | null {
+    return this.validation;
+  }
+
+  setValidation(validation: Validation | null): void {
+    this.validation = validation;
   }
 }

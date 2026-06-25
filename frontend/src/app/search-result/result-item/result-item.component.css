@@ -16,3 +16,31 @@
 .card-body {
   padding: 1rem;
 }
+
+/* Data-quality badge: a compact, colour-coded pill on each aggregator-sourced
+   result card. Colours track the weighted quality score so low quality is
+   immediately visible. */
+.validation-badge {
+  color: #fff;
+}
+
+.validation-badge .fa {
+  margin-right: 0.25rem;
+}
+
+.badge-quality-high {
+  background-color: #2e7d32; /* green */
+}
+
+.badge-quality-medium {
+  background-color: #f9a825; /* amber */
+  color: #212529;
+}
+
+.badge-quality-low {
+  background-color: #c62828; /* red */
+}
+
+.badge-quality-unknown {
+  background-color: #6c757d; /* grey */
+}

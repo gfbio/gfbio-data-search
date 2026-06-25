@@ -8,6 +8,7 @@ import { Facet } from "../../models/result/facet";
 import { Description } from "../../models/result/description";
 import { Linkage } from "../../models/result/linkage";
 import { UpperLabel } from "../../models/result/upperLabel";
+import { Validation } from "../../models/result/validation";
 import { environment } from "../../../environments/environment";
 
 @Injectable({
@@ -227,10 +228,21 @@ export class GfbioPreprocessDataService {
     return license;
   }
 
+  /**
+   * Map the backend's per-hit `validation` object (merged from the aggregator)
+   * into a Validation model, or null when the hit carries none (non-aggregator
+   * sources). Kept small and pure so it is unit-testable without the DOM.
+   */
+  getValidation(item): Validation | null {
+    return Validation.fromApi(item?.validation);
+  }
+
   getHit(item, semantic): Hit {
     const source = item?._source;
     const hit = new Hit();
     hit.setId(item?._id);
+    // Validation summary is merged by the search backend as a sibling of _source.
+    hit.setValidation(this.getValidation(item));
     const dom = document
       .createRange()
       .createContextualFragment(source?.["html-1"]);
