@@ -56,4 +56,11 @@ module.exports = {
   COLLECTIONS_API_TOKEN: process.env.COLLECTIONS_API_TOKEN || "default-token",
 
   VAT_ROOT_URL: process.env.VAT_ROOT_URL || "https://default-vat.gfbio.dev",
+
+  // Aggregator backend, used to enrich search results with per-dataset
+  // validation stats. Server-to-server on the shared docker network; the
+  // enrichment degrades gracefully (results without validation) if it is
+  // unreachable or slow, so the timeout is kept tight to bound search latency.
+  AGGREGATOR_URL: process.env.AGGREGATOR_URL || "http://aggregator_backend:8000",
+  AGGREGATOR_TIMEOUT_MS: Number(process.env.AGGREGATOR_TIMEOUT_MS) || 1500,
 };

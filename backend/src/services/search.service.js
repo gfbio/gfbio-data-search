@@ -7,6 +7,7 @@ const {
   getStatsOnlyQuery,
 } = require("../utils/query.utils");
 const esClient = require("../config/elasticsearch.config");
+const { enrichHitsWithValidation } = require("./validationStats.service");
 
 const appRoot = require("app-root-path");
 const { ELASTIC_INDEX_NAME } = require(appRoot + "/src/config/environment"); // Import environment
@@ -41,9 +42,10 @@ exports.executeSearch = async (queryterm, filter, from, size) => {
       body: finalQuery, // The constructed query from utility functions.
     };
 
-    // Execute the search query using the Elasticsearch client and return the raw response body.
+    // Execute the search query using the Elasticsearch client.
     const { body } = await esClient.search(searchQuery);
-    return body; // Return the full response body to be handled by the caller.
+    // Enrich each hit with per-dataset validation stats (best-effort; never throws).
+    return await enrichHitsWithValidation(body);
   } catch (error) {
     // Log and rethrow the error to be handled by the caller.
     console.error(
@@ -85,7 +87,8 @@ exports.executeSearchWithoutAggs = async (queryterm, filter, from, size) => {
 
     // Execute the search query using the Elasticsearch client.
     const { body } = await esClient.search(searchQuery);
-    return body;
+    // Enrich each hit with per-dataset validation stats (best-effort; never throws).
+    return await enrichHitsWithValidation(body);
   } catch (error) {
     console.error(
       "Error executing search without aggregations:",
