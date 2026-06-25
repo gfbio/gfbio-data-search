@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ContextBoxComponent } from './context-box.component';
+import { NodeService } from '../services/remote/node.service';
 
 describe('ContextBoxComponent', () => {
   let component: ContextBoxComponent;
@@ -8,12 +10,11 @@ describe('ContextBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ContextBoxComponent ]
-    })
-    .compileComponents();
-  });
+      declarations: [ContextBoxComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: NodeService, useValue: {} }],
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ContextBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
