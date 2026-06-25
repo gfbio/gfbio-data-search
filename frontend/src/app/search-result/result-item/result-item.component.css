@@ -2,6 +2,7 @@
   transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the shadow */
   margin: 0 !important;
   border-radius: 4px;
+  contain: layout style paint;
 }
 
 .card:hover {

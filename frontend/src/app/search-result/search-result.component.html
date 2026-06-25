@@ -43,7 +43,7 @@
     
     <!-- Actual search results -->
     <div *ngIf="!isResultsLoading && result?.getHits()?.length !== 0">
-      <div *ngFor="let item of result?.getHits(); let i = index" class="search-result-item">
+      <div *ngFor="let item of result?.getHits(); let i = index; trackBy: trackByItemId" class="search-result-item">
         <app-result-item
           [item]="item"
           [itemId]="i"

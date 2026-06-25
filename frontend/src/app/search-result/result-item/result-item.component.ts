@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from "@angular/core";
 import { faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
@@ -18,6 +18,7 @@ import { environment } from "../../../environments/environment";
   templateUrl: "./result-item.component.html",
   styleUrls: ["./result-item.component.css"],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultItemComponent implements OnInit {
   @Input() item: Hit;

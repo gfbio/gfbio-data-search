@@ -6,6 +6,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from "@angular/core";
 import { Result } from "../models/result/result";
 import { BasketDialogComponent } from "../basket-dialog/basket-dialog.component";
@@ -21,6 +23,7 @@ import { Subscription } from "rxjs";
   selector: "app-search-result",
   templateUrl: "./search-result.component.html",
   styleUrls: ["./search-result.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultComponent implements OnInit, OnChanges {
   semantic: boolean;
@@ -38,7 +41,8 @@ export class SearchResultComponent implements OnInit, OnChanges {
     public dialog: MatDialog,
     private nodeService: NodeService,
     private keycloakService: KeycloakService,
-    private communicationService: CommunicationService
+    private communicationService: CommunicationService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +50,7 @@ export class SearchResultComponent implements OnInit, OnChanges {
     this.subscriptions.push(
       this.communicationService.getResultsLoading().subscribe(isLoading => {
         this.isResultsLoading = isLoading;
+        this.cdr.markForCheck();
       })
     );
     
@@ -128,5 +133,24 @@ export class SearchResultComponent implements OnInit, OnChanges {
 
   paginationClicked(from): void {
     this.from.emit(from);
+  }
+
+  /**
+   * TrackBy function for ngFor to optimize rendering of large result lists.
+   * Returns unique identifier per result item to prevent unnecessary re-renders.
+   */
+  trackByItemId(index: number, item: Hit): string {
+    return item.getId();
+  }
+
+  /**
+   * Optimized basket state sync using a Set for O(1) lookups instead of nested loops
+   * Replaces the O(n*m) nested loop implementation
+   */
+  private controlCheckboxesOptimized(basketValues: Hit[]): void {
+    const basketIdSet = new Set(basketValues.map(item => item.getId()));
+    this.result.getHits().forEach((resultItem) => {
+      resultItem.setCheckbox(basketIdSet.has(resultItem.getId()));
+    });
   }
 }
