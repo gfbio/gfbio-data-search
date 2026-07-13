@@ -83,7 +83,9 @@ export class MatomoService {
   }
 
   setResultCount(count: number): void {
-    this.push(['setCustomDimension', CustomDimension.RESULT_COUNT, count.toString()]);
+    // Analytics must never break the app: coerce a missing/undefined count to 0
+    // rather than calling .toString() on undefined.
+    this.push(['setCustomDimension', CustomDimension.RESULT_COUNT, String(count ?? 0)]);
   }
 
   setActiveFilters(count: number): void {

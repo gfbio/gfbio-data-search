@@ -57,7 +57,7 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
                     const query = Array.isArray(this.searchKey)
                         ? this.searchKey.join(' ')
                         : this.searchKey;
-                    const resultCount = value.getTotalNumber ? value.getTotalNumber() : 0;
+                    const resultCount = value.getTotalNumber?.() ?? 0;
                     const filterCount = this.filters?.length ?? 0;
 
                     this.matomoService.trackSearch(query, this.semantic, resultCount, filterCount);
