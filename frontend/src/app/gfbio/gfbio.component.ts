@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommunicationService} from '../services/local/communication.service';
+import {MatomoService} from '../services/local/matomo.service';
 import {Result} from '../models/result/result';
 import {StartSearchingService} from '../services/local/start-searching.service';
 import {SearchResult} from '../interface/search-result';
@@ -22,9 +23,11 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
     filters;
     markers;
     searchKeyFromQuery = "";
+    private pendingSearchTracking = false;
 
     constructor(private communicationService: CommunicationService,
                 private startSearchingService: StartSearchingService,
+                private matomoService: MatomoService,
                 private route: ActivatedRoute,
                 private location: Location) {
     }
@@ -34,18 +37,32 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
         if(filterFromUri != "") {
             this.filters = JSON.parse(decodeURIComponent(filterFromUri));
         }
-        
+
         this.semantic = (this.route.snapshot?.queryParamMap?.get("s")) == "1";
 
-        let queryFromUri = decodeURIComponent(this.route.snapshot?.queryParamMap?.get("q") ?? "");        
+        let queryFromUri = decodeURIComponent(this.route.snapshot?.queryParamMap?.get("q") ?? "");
         if( queryFromUri != "" && !queryFromUri.match(/(\<|\>)/)) {
             this.searchKeyFromQuery = queryFromUri;
             this.searchKey = [queryFromUri];
+            // Track initial search from URL
+            this.pendingSearchTracking = true;
         }
         this.startSearching();
         this.communicationService.getResult().subscribe(value => {
             if (value !== undefined) {
                 this.result = value;
+
+                // Track search after results are received (so we have result count)
+                if (this.pendingSearchTracking && this.searchKey?.length > 0) {
+                    const query = Array.isArray(this.searchKey)
+                        ? this.searchKey.join(' ')
+                        : this.searchKey;
+                    const resultCount = value.getTotalNumber ? value.getTotalNumber() : 0;
+                    const filterCount = this.filters?.length ?? 0;
+
+                    this.matomoService.trackSearch(query, this.semantic, resultCount, filterCount);
+                    this.pendingSearchTracking = false;
+                }
             }
         });
     }
@@ -66,6 +83,8 @@ export class GfbioComponent implements OnInit, SearchResult, Filters, SearchInpu
         this.semantic = key[1];
         this.from = 0;
         this.filters = [];
+        // Flag to track this search when results arrive
+        this.pendingSearchTracking = true;
         this.startSearching();
     }
 
