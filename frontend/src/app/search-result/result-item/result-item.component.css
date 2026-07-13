@@ -2,7 +2,9 @@
   transition: box-shadow 0.3s ease-in-out; /* Smooth transition for the shadow */
   margin: 0 !important;
   border-radius: 4px;
-  contain: layout style paint;
+  /* layout + style containment keep the long-list render fast; `paint` is
+     intentionally omitted so the quality-chip popover can overflow the card. */
+  contain: layout style;
 }
 
 .card:hover {
@@ -44,4 +46,153 @@
 
 .badge-quality-unknown {
   background-color: #6c757d; /* grey */
+}
+
+/* ---- Option C: one trust chip, plain-words breakdown on hover / focus ---- */
+.quality-chip {
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+.trust-chip {
+  cursor: help;
+}
+.quality-chip:focus-visible .trust-chip {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--gfbio-blue, #345aa2);
+}
+.chip-nums {
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.quality-pop {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  width: 290px;
+  background: #ffffff;
+  color: #495057;
+  border: 1px solid #e6e8ea;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  padding: 14px;
+  z-index: 30;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  pointer-events: none;
+  text-align: left;
+  white-space: normal;
+  font-weight: 400;
+}
+.quality-chip:hover .quality-pop,
+.quality-chip:focus .quality-pop,
+.quality-chip:focus-within .quality-pop {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .quality-pop {
+    transition: none;
+    transform: none;
+  }
+}
+.quality-pop::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 22px;
+  border: 7px solid transparent;
+  border-top-color: #ffffff;
+}
+.qp-title {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2f3833;
+  margin-bottom: 8px;
+  letter-spacing: 0;
+}
+.qp-std {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e9ecef;
+}
+.qp-std .fa {
+  margin-top: 2px;
+}
+.qp-std-ok .fa {
+  color: #2e7d32;
+}
+.qp-std-bad .fa {
+  color: #c62828;
+}
+.qp-std strong {
+  color: #2f3833;
+}
+.qp-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 34px;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  color: #6c757d;
+  margin: 7px 0;
+}
+.qp-lab {
+  font-weight: 600;
+  color: #495057;
+}
+.qp-track {
+  height: 7px;
+  border-radius: 5px;
+  background: #e9ecef;
+  overflow: hidden;
+  display: block;
+}
+.qp-fill {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+}
+.qp-fill.qf-ok {
+  background: #2e7d32;
+}
+.qp-fill.qf-warn {
+  background: #f9a825;
+}
+.qp-fill.qf-bad {
+  background: #c62828;
+}
+.qp-fill.qf-unknown {
+  background: #adb5bd;
+}
+.qp-fill-rec {
+  background: #81b248;
+}
+.qp-val {
+  text-align: right;
+  font-weight: 700;
+  color: #2f3833;
+  font-variant-numeric: tabular-nums;
+}
+.qp-hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: #6c757d;
+  line-height: 1.35;
+}
+.qp-when {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: #adb5bd;
 }

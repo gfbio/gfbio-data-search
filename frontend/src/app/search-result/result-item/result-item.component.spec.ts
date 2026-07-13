@@ -97,34 +97,51 @@ describe("ResultItemComponent", () => {
     });
   });
 
-  describe("data-quality badge rendering", () => {
-    it("renders a colour-coded badge with the score for an aggregator hit", () => {
+  describe("data-quality trust chip", () => {
+    it("renders a colour-coded 'Quality checked' chip for a conformant aggregator hit", () => {
       component.item = makeHit(Validation.fromApi({ quality_score: 90, validation_status: "completed" }));
       fixture.detectChanges();
 
-      const badge = fixture.nativeElement.querySelector(".validation-badge");
-      expect(badge).toBeTruthy();
-      expect(badge.textContent).toContain("90%");
-      expect(badge.classList).toContain("badge-quality-high");
+      const chip = fixture.nativeElement.querySelector(".validation-badge");
+      expect(chip).toBeTruthy();
+      expect(chip.textContent).toContain("Quality checked");
+      expect(chip.classList).toContain("badge-quality-high");
     });
 
-    it("renders no badge for a non-aggregator hit (no validation)", () => {
+    it("renders no chip for a non-aggregator hit (no validation)", () => {
       component.item = makeHit(null);
       fixture.detectChanges();
-      expect(fixture.nativeElement.querySelector(".validation-badge")).toBeNull();
+      expect(fixture.nativeElement.querySelector(".quality-chip")).toBeNull();
     });
 
-    it("renders a red 'Invalid' badge (not the score) for a schema-invalid dataset", () => {
+    it("renders a red 'Needs attention' chip for a schema-invalid dataset", () => {
       component.item = makeHit(
         Validation.fromApi({ is_valid: false, quality_score: 91, validation_status: "completed" })
       );
       fixture.detectChanges();
 
-      const badge = fixture.nativeElement.querySelector(".validation-badge");
-      expect(badge).toBeTruthy();
-      expect(badge.textContent).toContain("Invalid");
-      expect(badge.textContent).not.toContain("91%");
-      expect(badge.classList).toContain("badge-quality-low");
+      const chip = fixture.nativeElement.querySelector(".validation-badge");
+      expect(chip).toBeTruthy();
+      expect(chip.textContent).toContain("Needs attention");
+      expect(chip.classList).toContain("badge-quality-low");
+    });
+
+    it("shows a plain-words standards line and the required/recommended breakdown in the popover", () => {
+      component.item = makeHit(
+        Validation.fromApi({
+          is_valid: false,
+          mandatory_percentage: 100,
+          recommended_percentage: 71,
+          validation_status: "completed",
+        })
+      );
+      fixture.detectChanges();
+
+      const pop = fixture.nativeElement.querySelector(".quality-pop");
+      expect(pop).toBeTruthy();
+      expect(pop.textContent).toContain("Format issues");
+      expect(pop.textContent).toContain("Required");
+      expect(pop.textContent).toContain("Recommended");
     });
   });
 });

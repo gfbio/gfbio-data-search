@@ -170,4 +170,67 @@ export class ResultItemComponent implements OnInit {
     }
     return parts.join(" · ");
   }
+
+  // ---- Option C: trust chip + hover/focus breakdown ----
+
+  /** Whether we have any completeness numbers (Required / Recommended) to show. */
+  hasCompleteness(validation: Validation): boolean {
+    return (
+      typeof validation?.mandatoryPercentage === "number" ||
+      typeof validation?.recommendedPercentage === "number"
+    );
+  }
+
+  /** Short chip word: reassuring when conformant, a nudge when not. */
+  trustChipLabel(validation: Validation): string {
+    return validation?.isValid === false ? "Needs attention" : "Quality checked";
+  }
+
+  /** Plain-language sentence about standards conformance / machine-readability. */
+  standardsExplanation(validation: Validation): string {
+    return validation?.isValid === false
+      ? "Doesn't fully conform to the ABCD standard, so some tools may fail to read it automatically."
+      : "Conforms to the ABCD standard, so tools can open and process it automatically.";
+  }
+
+  /** Clamp a percentage into the 0..100 bar range (missing -> 0). */
+  clampPercent(value: number | null): number {
+    const n = typeof value === "number" ? value : 0;
+    return Math.max(0, Math.min(100, n));
+  }
+
+  /** Colour class for the Required bar: green once the minimum bar is (nearly) met. */
+  fillClass(percentage: number | null): string {
+    if (typeof percentage !== "number") {
+      return "qf-unknown";
+    }
+    if (percentage >= 80) {
+      return "qf-ok";
+    }
+    if (percentage >= 50) {
+      return "qf-warn";
+    }
+    return "qf-bad";
+  }
+
+  /** Accessible summary for screen readers on the trust chip. */
+  qualityAriaLabel(validation: Validation): string {
+    if (!validation) {
+      return "";
+    }
+    const parts: string[] = [
+      validation.isValid === false
+        ? "Standards: format issues, may not be machine-readable"
+        : "Standards: machine-readable",
+    ];
+    if (typeof validation.mandatoryPercentage === "number") {
+      parts.push(`required metadata ${Math.round(validation.mandatoryPercentage)} percent`);
+    }
+    if (typeof validation.recommendedPercentage === "number") {
+      parts.push(
+        `recommended metadata ${Math.round(validation.recommendedPercentage)} percent`,
+      );
+    }
+    return parts.join(", ");
+  }
 }

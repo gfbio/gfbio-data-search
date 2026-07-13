@@ -42,27 +42,92 @@
       >
         <strong>VAT</strong>
       </span>
+      <!-- Option C: one trust chip, plain-words breakdown on hover / focus -->
       <span
         *ngIf="item.getValidation() as validation"
-        class="badge badge-pill custom-badge validation-badge mr-2"
-        [ngClass]="qualityBadgeClass(validation)"
-        [matTooltip]="validationTooltip(validation)"
-        matTooltipClass="result-item-tooltip"
+        class="quality-chip mr-2"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="qualityAriaLabel(validation)"
       >
-        <strong *ngIf="validation.isValid === false; else qualityLabel">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          Invalid
-        </strong>
-        <ng-template #qualityLabel>
+        <span
+          class="badge badge-pill custom-badge validation-badge trust-chip"
+          [ngClass]="qualityBadgeClass(validation)"
+        >
           <strong>
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
-            Data quality:
-            <ng-container *ngIf="validation.hasQualityScore(); else noScore"
-              >{{ validation.qualityScore | number: "1.0-0" }}%</ng-container
+            <i
+              class="fa"
+              [ngClass]="
+                validation.isValid === false
+                  ? 'fa-exclamation-triangle'
+                  : 'fa-check-circle'
+              "
+              aria-hidden="true"
+            ></i>
+            {{ trustChipLabel(validation) }}
+            <span class="chip-nums" *ngIf="hasCompleteness(validation)"
+              >&middot; {{ validation.mandatoryPercentage | number: "1.0-0" }}/{{
+                validation.recommendedPercentage | number: "1.0-0"
+              }}</span
             >
-            <ng-template #noScore>{{ validationStatusLabel(validation) }}</ng-template>
           </strong>
-        </ng-template>
+        </span>
+
+        <span class="quality-pop" role="tooltip">
+          <span class="qp-title">Data-centre quality &amp; standards</span>
+
+          <span
+            class="qp-std"
+            [ngClass]="validation.isValid === false ? 'qp-std-bad' : 'qp-std-ok'"
+          >
+            <i
+              class="fa"
+              [ngClass]="
+                validation.isValid === false
+                  ? 'fa-exclamation-triangle'
+                  : 'fa-check-circle'
+              "
+              aria-hidden="true"
+            ></i>
+            <span>
+              <strong>{{
+                validation.isValid === false ? "Format issues." : "Machine-readable."
+              }}</strong>
+              {{ standardsExplanation(validation) }}
+            </span>
+          </span>
+
+          <span class="qp-row" *ngIf="validation.mandatoryPercentage != null">
+            <span class="qp-lab">Required</span>
+            <span class="qp-track"
+              ><span
+                class="qp-fill"
+                [ngClass]="fillClass(validation.mandatoryPercentage)"
+                [style.width.%]="clampPercent(validation.mandatoryPercentage)"
+              ></span
+            ></span>
+            <span class="qp-val">{{ validation.mandatoryPercentage | number: "1.0-0" }}%</span>
+          </span>
+
+          <span class="qp-row" *ngIf="validation.recommendedPercentage != null">
+            <span class="qp-lab">Recommended</span>
+            <span class="qp-track"
+              ><span
+                class="qp-fill qp-fill-rec"
+                [style.width.%]="clampPercent(validation.recommendedPercentage)"
+              ></span
+            ></span>
+            <span class="qp-val">{{ validation.recommendedPercentage | number: "1.0-0" }}%</span>
+          </span>
+
+          <span class="qp-hint"
+            >Required is the data centres' minimum bar; recommended fields add extra
+            detail.</span
+          >
+          <span class="qp-when" *ngIf="validation.lastValidatedAt"
+            >Validated {{ validation.lastValidatedAt.substring(0, 10) }}</span
+          >
+        </span>
       </span>
     </div>
 
