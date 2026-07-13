@@ -1,18 +1,21 @@
 # Stage 1: Build the Angular application
 FROM node:20.9.0 AS build
 
+# Select which environment file to bake in (production | staging | development)
+ARG BUILD_ENV=production
+
 # Set the working directory inside the container
 WORKDIR /frontend
 
-# Copy package.json and package-lock.json for npm install
+# Copy package.json and package-lock.json for a reproducible install
 COPY ./frontend/package*.json ./
-RUN npm install --force
+RUN npm ci
 
 # Copy the Angular project files into the container
 COPY ./frontend/ ./
 
-# Build the application
-RUN npm run ng build -- --configuration production
+# Build the application for the selected environment
+RUN npm run ng build -- --configuration ${BUILD_ENV}
 
 # Stage 2: Serve the application with HTTPD
 FROM httpd:2.4
