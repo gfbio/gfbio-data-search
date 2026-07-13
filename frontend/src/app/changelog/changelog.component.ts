@@ -48,6 +48,16 @@ export class ChangelogComponent implements OnInit {
 
   changelogEntries: ChangelogEntry[] = [
     {
+      version: '1.3.0',
+      date: 'July 17, 2026',
+      changes: [
+        'New data-quality signal on result cards: a single chip shows at a glance whether a dataset meets the quality bar the GFBio data centers set for themselves',
+        'Hover the chip to see the details in plain words: how much of the required (minimum) and recommended metadata a dataset provides',
+        'A clear standards-conformance signal tells you when a dataset is machine-readable, and flags datasets with format issues that some tools may not be able to open automatically',
+        'Various bug fixes and performance improvements'
+      ]
+    },
+    {
       version: '1.2.0',
       date: 'June 24, 2026',
       changes: [
