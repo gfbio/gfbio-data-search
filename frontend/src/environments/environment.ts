@@ -5,6 +5,13 @@
 export const environment = {
   production: false,
 
+  // Matomo Analytics - disabled in development
+  matomo: {
+    siteId: 5,
+    trackerUrl: 'https://analytics.gfbio.org/',
+    enabled: false
+  },
+
   Keycloak_Url: "https://keycloak.sso.gwdg.de/auth",
   Keycloak_RedirectUri: "https://dev.gfbio.uni-jena.de/daisi",
   Keycloak_Realm: "GFBio",

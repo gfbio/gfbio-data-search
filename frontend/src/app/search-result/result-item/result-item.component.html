@@ -71,6 +71,7 @@
         href="{{ item.getTitleUrl() }}"
         target="_blank"
         class="btn btn-outline-secondary mr-2"
+        (click)="trackViewMore()"
         >View More</a
       >
 
@@ -79,6 +80,7 @@
         [href]="item.getLinkage().getData()"
         class="btn btn-outline-secondary mr-2"
         download
+        (click)="trackDownload()"
         >Download</a
       >
 
